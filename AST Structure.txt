@@ -1,0 +1,113 @@
+ProgramNode
+	-Holds a list of ASTNodes
+	-Prints (for every ASTNode in list) ASTNodeList[i].visit
+functionDefNode
+	-contains a string(ID) for name
+	-contains a idListNode one or zero of these
+	-contains a expressionListNode thing
+	-Prints "defunc " + name + "(" + idlistNode.visit + ")" + expressionListNode.visit
+idListNode
+	-contains a list of strings(IDs)
+	-Prints ID[0] + (for every ID[i] where i>=1) "," + ID[i]
+classDefNode
+	-contains a string(ID) for name
+	-contains a classVarsNode thing
+	-contains a methodsNode thing
+	-Prints "defclass " + name + "{" + classVarsNode.visit + methodsNode.visit + "}"
+classVarsNode
+	-contains a idListNode thing
+	-Prints "vars" + idListNode.visit
+methodsNode
+	-contains a list of string(ID) name
+	-contains a list idListNode thing
+	-contains a list expressionListNode thing
+	-Prints (for every string in nameList) "method" + name[i] + "(" + idListNodeList[i].visit + ")" + expressionListNodeList[i].visit
+loadFileNode
+	-contains a string fileName
+	-Prints "load" + fileName
+expressionListNode
+	-contains a expressionNode thing
+	-Prints "{" + expressionNode.visit "}"
+expressionNode
+	-contains either a compExprNode thing and a list of logOpNode things and a list of compExprNode things
+	-or contains a compExprNode thing
+	-Prints	either compExprNode.visit + (for every item in both logOpNode and compExprNode lists) lopOpNodeList[i].visit + compExprNodeList[i].visit
+			or "!" + compExprNode.visit
+logOpNode
+	-contains a boolean: true for <OR>, false for <AND>
+	-Prints (if true) "||" (if false) "&&"
+compExprNode
+	-contains a addExprNode thing
+	-contains a list of compOpNode things
+	-contains a list of addExprNode things
+	-Prints addExprNode.visit + (for every item in compOpNode list) compOpNodeList[i].visit + addExprNodeList[i].visit
+compOpNode
+	-contains a integer identifying which operator it is
+	-Prints (if 1) "==" (if 2) "!=" (if 3) "<" (if 3) "<=" (if 4) ">" (if 5) ">="
+addExprNode
+	-contains a mulExprNode thing
+	-contains a list of booleans: true for <PLUS>, false for <MINUS>
+	-contains a list of mulExprNode things
+	-Prints mulExprNode.visit + (for every item in addOpNode list) (if true)[i] "+" (if false)[i] "-" + mulExprNodeList[i].visit
+mulExprNode
+	-contains a factorNode thing
+	-contains a list of mulOpNode things
+	-contains a list of factorNode things
+	-Prints factorNode.visit + (for every item in mulOpNode list) mulOpNodeList[i].visit + factorNodeList[i].visit
+mulOpNode
+	-contains a boolean: true for <MULTIPlY>, false for <DIVIDE>
+	-Prints (if true) "*" (if false) "/"
+factorNode
+	-contains a operandNode thing
+	-contains a callNode thing
+	-Prints operandNode.visit + (if exists) callNode.visit
+operandNode
+	-contains either: 	a varRefNode thing
+						a constantNode thing
+						a newExprNode thing
+						a ifExprNode thing
+						a funcExprNode thing
+						a assignExprNode thing
+						a condExprNode thing
+						a withExprNode thing
+						a expressionNode thing
+	-Prints either:	varRefNode.visit
+					constantNode.visit
+					newExprNode.visit
+					ifExprNode.visit
+					funcExprNode.visit
+					assignExprNode.visit
+					condExprNode.visit
+					withExprNode.visit
+					"(" + expressionNode.visit + ")"
+callNode
+	-contains a paramListNode thing
+	-Prints "invoke (" + paramList + ")"
+varRefNode
+	-contains a string(ID) name
+	-contains a list of strings(IDs)
+	-Prints name + (for each string in list of strings) "." + list[i]
+constantNode
+	-contains either: 	a int
+						a float
+						a listNode thing
+						a string
+						a boolean
+	-Prints either:	int
+					float
+					listNode.visit
+					string
+					boolean
+listNode
+	-contains a constantListNode thing
+	-Prints "[" constantListNode.visit + "]"
+constantListNode
+	-contains a constantNode thing
+	-contains a list of constantNode things
+	-Prints constantNode.visit + (for each item in the list) "," + constantNodeList[i].visit
+newExpr
+	-contains a string(ID) name
+	-Prints "new" + name
+ifExpr
+	-constains an expressionNode thing
+	
