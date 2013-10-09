@@ -1,0 +1,270 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  JDK_VERSION = "1.6";
+  static = true;
+}
+
+PARSER_BEGIN(L485Parser)
+package parser;
+
+public class L485Parser
+{
+
+}
+
+PARSER_END(L485Parser)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+| < "//" (~["\n","\r"])* ("\r")? "\n" >
+}
+
+TOKEN : /* Keywords */
+{
+  < DEFUNC : "defunc" >
+| < DEFCLASS : "defclass" >
+| < METHOD : "method" >
+| < FUNC : "func" >
+| < COND : "cond" >
+| < IF : "if" >
+| < THEN : "then" >
+| < ELSE: "else" >
+| < FI: "fi" >
+| < LOAD : "load" >
+| < NEW : "new" >
+| < VARS: "vars" >
+| < ASSIGN: "assign" >
+| < TO: "to" >
+| < WITH: "with" >
+| < TRUE: "true" >
+| < FALSE: "false" >
+
+}
+
+TOKEN : /* OPERATORS */
+{
+  < PLUS : "+" >
+| < MINUS : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < OR : "||" >
+| < AND : "&&" >
+| < NOT : "!" >
+| < EQUAL : "==" >
+| < NOTEQUAL : "!=" >
+| < LESS : "< " >
+| < LESSEQUAL : "<=" >
+| < GREATER: ">" >
+| < GREATEREQUAL: ">=" >
+| < INVOKE: "->" >
+}
+
+TOKEN :
+{
+  <STRING: "'"(~["'"])*"'">
+| <#DIGIT: ["0" - "9"] >
+| <#ALPHA: ["a" - "z"] | ["A" - "Z"] >
+| <ID: <ALPHA> (<ALPHA> | <DIGIT>)*>
+| <#EXPONENT: ("e" | "E") ("+" | "-")? (<DIGIT>)+ >
+| <FLOATNUM: <INTNUM> (< DOT > (<DIGIT>)+ (<EXPONENT>)? | <EXPONENT>) >
+| < #POSITIVE : ["1" - "9"] >
+| <INTNUM: "0" | < POSITIVE > (<DIGIT>)* >
+| < DOT : "." >
+| < LP : "(" >
+| < RP : ")" >
+| < LB : "{" >
+| < RB : "}" >
+| < LBK: "[" >
+| < RBK: "]" >
+| < COMMA: "," >
+}
+
+//Main program area
+ASTNode program() :{}
+{
+   (functionDef()
+| 	classDef()
+| 	expression()
+| 	loadFile())+
+}
+ASTNode functionDef(): {}
+{
+	< DEFUNC > < ID > < LP > (idList())? < RP > expressionList()
+}
+ASTNode idList(): {}
+{
+	< ID > ( < COMMA > < ID >)*
+}
+ASTNode classDef(): {}
+{
+	< DEFCLASS > < ID > < LB > (classVar())? (method())? < RB >
+}
+ASTNode classVar(): {}
+{
+	< VARS > idList()
+}
+ASTNode method(): {}
+{
+	(< METHOD > < ID > < LP > (idList())? < RP > expressionList())+
+}
+ASTNode loadFile(): {}
+{
+	< LOAD > < STRING >
+}
+ASTNode expressionList(): {}
+{
+	< LB > (expression())+ < RB >
+}
+ASTNode expression():{}
+{
+  compExpr() (logOp() compExpr())*
+| < NOT > compExpr()
+}
+ASTNode logOp(): {}
+{
+	< OR >	
+| 	< AND >
+}
+
+
+ASTNode compExpr(): {}
+{
+	addExpr() (compOp() addExpr())*
+}
+
+ASTNode compOp(): {}
+{
+	< EQUAL >
+| 	< NOTEQUAL >
+| 	< LESS >
+| 	< LESSEQUAL >
+| 	< GREATER >
+| 	< GREATEREQUAL >
+}
+
+ASTNode addExpr(): {}
+{
+	//mulExpr() (addOp() mulExpr())*
+	left = mulExpr()
+	( < PLUS > right = mulExpr()
+		{
+			left = new AddNode(left,right);
+		}
+|	< MINUS > right = mulExpr()
+		{
+			left = new SubNode(left,right);
+		}
+	)*
+	{
+		return left;
+	}
+}
+
+ASTNode addOp(): {}
+{
+	< PLUS > | < MINUS >
+}
+ASTNode mulExpr(): {}
+{
+	factor() (mulOp() factor())*
+}
+ASTNode mulOp(): {}
+{
+	< MULTIPLY >
+| 	< DIVIDE >
+}
+ASTNode factor(): {}
+{
+	operand() (call())?
+}
+ASTNode operand(): {}
+{
+	varRef()
+| 	constant()
+| 	newExpr()
+| 	ifExpr()
+| 	funcExpr()
+| 	assignExpr()
+| 	condExpr()
+|	withExpr()
+| 	< LP > expression() < RP >
+}
+ASTNode call(): {}
+{
+	< INVOKE > < LP > (paramList())? < RP >
+}
+ASTNode paramList(): {}
+{
+	expression() (< COMMA > expression())*
+}
+ASTNode varRef(): {}
+{
+	<ID> (<DOT> <ID>)?
+}
+
+ASTNode constant(): {}
+{
+	<INTNUM>
+| 	<FLOATNUM>
+| 	list()
+| 	<STRING>
+| 	<TRUE>
+| 	<FALSE>
+}
+
+ASTNode list(): {}
+{
+	<LBK> constantList() <RBK>
+}
+
+ASTNode constantList():{}
+{
+	constant() (<COMMA> constant())*
+}
+
+ASTNode newExpr(): {}
+{
+	<NEW> <ID>
+}
+
+ASTNode ifExpr(): {}
+{
+	<IF> expression() <THEN> expression() <ELSE> expression() <FI>
+}
+
+ASTNode funcExpr(): {}
+{
+	< FUNC > < LP > (idList())? < RP > expressionList()
+}
+
+ASTNode assignExpr(): {}
+{
+	< ASSIGN > expression() < TO > < ID >
+}
+
+ASTNode condExpr(): {}
+{
+	< COND > condClauses()
+}
+
+ASTNode condClauses(): {}
+{
+	(<LB> expression() expression() <RB>)+
+}
+
+ASTNode withExpr(): {}
+{
+	<WITH> < LP > variableDefs() < RP > expressionList()
+}
+
+ASTNode variableDefs(): {}
+{
+	(< LBK > < ID > expression() < RBK >)*
+}
