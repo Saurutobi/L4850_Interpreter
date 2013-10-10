@@ -10,6 +10,8 @@ options
 PARSER_BEGIN(L485Parser)
 package parser;
 
+import abstractSyntaxTree.*;
+
 public class L485Parser
 {
 
@@ -86,75 +88,131 @@ TOKEN :
 | < COMMA: "," >
 }
 
-void program():
-{}
+ASTNode program():
 {
-    (functionDef()
+	ASTNode node;
+}
+{
+    node = (functionDef()
     |
     classDef()
 	|
 	expression()
 	|
     loadFile())+
+    {		return node;
+    }
 }
-void functionDef():
-{}
+ASTNode functionDef():
 {
-    <DEFUNC> <ID> <LP> (idList())? <RP> expressionList()
+	ASTNode node;
 }
-void idList():
-{}
+{
+    node = <DEFUNC> <ID> <LP> (idList())? <RP> expressionList()
+    {		return node;
+    }
+}
+ASTNode idList():
+{
+	ASTNode node;
+}
 {
     <ID> (<COMMA> <ID>)*
+    {
+		return node;
+    }
 }
-void classDef():
-{}
+ASTNode classDef():
+{
+	ASTNode node;
+}
 {
     <DEFCLASS> <ID> <LB> (classVar())? (methods())? <RB>
+    {
+		return node;
+    }
 }
-void classVar():
-{}
+ASTNode classVar():
+{
+	ASTNode node;
+}
 {
     <VARS> idList()
+    {
+		return node;
+    }
 }
-void methods():
-{}
+ASTNode methods():
+{
+	ASTNode node;
+}
 {
     (<METHOD> <ID> <LP> (idList())? <RP> expressionList())+
+    {
+		return node;
+    }
 }
-void loadFile():
-{}
+ASTNode loadFile():
+{
+	ASTNode node;
+}
 {
     <LOAD> <STRING>
+    {
+		return node;
+    }
 }
-void expressionList():
-{}
+ASTNode expressionList():
+{
+	ASTNode node;
+}
 {
     <LB> (expression())+ <RB>
+    {
+		return node;
+    }
 }
-void expression():
-{}
+ASTNode expression():
 {
-    compExpr() (logOp() compExpr())*
+	ASTNode node;
+}
+{
+    (compExpr() (logOp() compExpr())*
     |
-    <NOT> compExpr()
+    <NOT> compExpr())
+    {
+		return node;
+    }
 }
-void logOp():
-{}
+ASTNode logOp():
 {
-    <OR>
+	ASTNode node;
+}
+{
+    (      <OR>
     |
     <AND>
+    )
+    {
+		return node;
+    }
 }
-void compExpr():
-{}
+ASTNode compExpr():
+{
+	ASTNode node;
+}
 {
     addExpr() (compOp() addExpr())*
+    {
+		return node;
+    }
 }
-void compOp():
-{}
+ASTNode compOp():
 {
-    <EQUAL>
+	ASTNode node;
+}
+{
+    (      <EQUAL>
     |
     <NOTEQUAL>
     |
@@ -165,40 +223,47 @@ void compOp():
     <GREATER>
     |
     <GREATEREQUAL>
+  )
+    {
+		return node;
+    }
 }
-void addExpr():
-{}
+ASTNode addExpr():
 {
-    mulExpr() (addOp() mulExpr())*
+	ASTNode node;
 }
-void addOp():
-{}
 {
-    <PLUS>
-    |
-    <MINUS>
+    mulExpr() (< PLUS > mulExpr() | < MINUS > mulExpr())*
+    {
+		return node;
+    }
 }
-void mulExpr():
-{}
+ASTNode mulExpr():
 {
-    factor() (mulOp() factor())*
+	ASTNode node;
 }
-void mulOp():
-{}
 {
-    <MULTIPLY>
-    |
-    <DIVIDE>
+    node = factor() (< MULTIPLY > factor() | < DIVIDE > factor())*
+    {
+		return node;
+    }
 }
-void factor():
-{}
+ASTNode factor():
+{
+	ASTNode node;
+}
 {
     operand() (call())?
+    {
+		return node;
+    }
 }
-void operand():
-{}
+ASTNode operand():
 {
-    varRef()
+	ASTNode node;
+}
+{
+    (      varRef()
     |
     constant()
     |
@@ -215,26 +280,52 @@ void operand():
     withExpr()
     |
     <LP> expression() <RP>
+    )
+    {
+		return node;
+    }
 }
-void call():
-{}
+ASTNode call():
+{
+	ASTNode node;
+}
 {
     <INVOKE> <LP> (paramList())? <RP>
+    {
+		return node;
+    }
 }
-void paramList():
-{}
+ASTNode paramList():
+{
+	ASTNode node;
+}
 {
     expression() (<COMMA> expression())*
+    {
+		return node;
+    }
 }
-void varRef():
-{}
+ASTNode varRef():
 {
-    <ID> (<DOT> <ID>)?
+	ASTNode node;
+	Token firstID = null;
+	Token secondID = null;
 }
-void constant():
-{}
 {
-    <INTNUM>
+    firstID = <ID> (<DOT> secondID = <ID>)?
+    {
+		if(secondID != null)
+		{			node = new varRefNode(firstID.image, secondID.image);
+			return node;
+		}
+    }
+}
+ASTNode constant():
+{
+	ASTNode node;
+}
+{
+    (      <INTNUM>
     |
     <FLOATNUM>
     |
@@ -245,54 +336,109 @@ void constant():
     <TRUE>
     |
     <FALSE>
+  )
+    {
+		return node;
+    }
 }
-void list():
-{}
+ASTNode list():
+{
+	ASTNode node;
+}
 {
     <LBK> constantList() <RBK>
+    {
+		return node;
+    }
 }
-void constantList():
-{}
+ASTNode constantList():
+{
+	ASTNode node;
+}
 {
     constant() (<COMMA> constant())*
+    {
+		return node;
+    }
 }
-void newExpr():
-{}
+ASTNode newExpr():
 {
-    <NEW> <ID>
+	ASTNode node;
 }
-void ifExpr():
-{}
+{
+    (      <NEW> <ID>
+      )
+    {
+		return node;
+    }
+}
+ASTNode ifExpr():
+{
+	ASTNode node;
+}
 {
     <IF> expression() <THEN> expression() <ELSE> expression() <FI>
+    {
+		return node;
+    }
 }
-void funcExpr():
-{}
+ASTNode funcExpr():
+{
+	ASTNode node;
+}
 {
     <FUNC> <LP> (idList())? <RP> expressionList()
+    {
+		return node;
+    }
 }
-void assignExpr():
-{}
+ASTNode assignExpr():
+{
+	ASTNode node;
+}
 {
     <ASSIGN> expression() <TO> <ID>
+    {
+		return node;
+    }
 }
-void condExpr():
-{}
+ASTNode condExpr():
+{
+	ASTNode node;
+}
 {
     <COND> condClauses()
+    {
+		return node;
+    }
 }
-void condClauses():
-{}
+ASTNode condClauses():
+{
+	ASTNode node;
+}
 {
     (<LB> expression() expression() <RB>)+
+    {
+		return node;
+    }
 }
-void withExpr():
-{}
+ASTNode withExpr():
+{
+	ASTNode node;
+}
 {
     <WITH> <LP> variableDefs() <RP> expressionList()
+    {
+		return node;
+    }
 }
-void variableDefs():
-{}
+ASTNode variableDefs():
+{
+	ASTNode node;
+}
 {
     (<LBK> <ID> expression() <RBK>)*
+    {
+		return node;
+    }
 }
