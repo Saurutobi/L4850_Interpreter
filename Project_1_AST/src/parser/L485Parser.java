@@ -3,7 +3,6 @@ package parser;
 
 public class L485Parser implements L485ParserConstants {
 
-//Main program area
   static final public void program() throws ParseException {
     label_1:
     while (true) {
@@ -114,7 +113,7 @@ public class L485Parser implements L485ParserConstants {
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case METHOD:
-      method();
+      methods();
       break;
     default:
       jj_la1[5] = jj_gen;
@@ -128,7 +127,7 @@ public class L485Parser implements L485ParserConstants {
     idList();
   }
 
-  static final public void method() throws ParseException {
+  static final public void methods() throws ParseException {
     label_3:
     while (true) {
       jj_consume_token(METHOD);
@@ -298,9 +297,8 @@ public class L485Parser implements L485ParserConstants {
     }
   }
 
-  static final public ExpressionNode addExpr() throws ParseException {
-    //mulExpr() (addOp() mulExpr())*
-            left = mulExpr();
+  static final public void addExpr() throws ParseException {
+    mulExpr();
     label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -312,25 +310,9 @@ public class L485Parser implements L485ParserConstants {
         jj_la1[14] = jj_gen;
         break label_7;
       }
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PLUS:
-        jj_consume_token(PLUS);
-        right = mulExpr();
-                        left = new AddNode(left,right);
-        break;
-      case MINUS:
-        jj_consume_token(MINUS);
-        right = mulExpr();
-                        left = new SubNode(left,right);
-        break;
-      default:
-        jj_la1[15] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      addOp();
+      mulExpr();
     }
-                {if (true) return left;}
-    throw new Error("Missing return statement in function");
   }
 
   static final public void addOp() throws ParseException {
@@ -342,7 +324,7 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(MINUS);
       break;
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -358,7 +340,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[16] = jj_gen;
         break label_8;
       }
       mulOp();
@@ -375,7 +357,7 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(DIVIDE);
       break;
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -388,7 +370,7 @@ public class L485Parser implements L485ParserConstants {
       call();
       break;
     default:
-      jj_la1[19] = jj_gen;
+      jj_la1[18] = jj_gen;
       ;
     }
   }
@@ -430,7 +412,7 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(RP);
       break;
     default:
-      jj_la1[20] = jj_gen;
+      jj_la1[19] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -458,7 +440,7 @@ public class L485Parser implements L485ParserConstants {
       paramList();
       break;
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[20] = jj_gen;
       ;
     }
     jj_consume_token(RP);
@@ -473,7 +455,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[22] = jj_gen;
+        jj_la1[21] = jj_gen;
         break label_9;
       }
       jj_consume_token(COMMA);
@@ -489,7 +471,7 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(ID);
       break;
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[22] = jj_gen;
       ;
     }
   }
@@ -515,7 +497,7 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(FALSE);
       break;
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[23] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -536,7 +518,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[24] = jj_gen;
         break label_10;
       }
       jj_consume_token(COMMA);
@@ -567,7 +549,7 @@ public class L485Parser implements L485ParserConstants {
       idList();
       break;
     default:
-      jj_la1[26] = jj_gen;
+      jj_la1[25] = jj_gen;
       ;
     }
     jj_consume_token(RP);
@@ -598,7 +580,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[27] = jj_gen;
+        jj_la1[26] = jj_gen;
         break label_11;
       }
     }
@@ -620,7 +602,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[28] = jj_gen;
+        jj_la1[27] = jj_gen;
         break label_12;
       }
       jj_consume_token(LBK);
@@ -640,7 +622,7 @@ public class L485Parser implements L485ParserConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[29];
+  static final private int[] jj_la1 = new int[28];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -648,10 +630,10 @@ public class L485Parser implements L485ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x20758ec0,0x20758ec0,0x0,0x0,0x20000,0x100,0x0,0x100,0x20750e00,0x18000000,0x20750e00,0x18000000,0xc0000000,0xc0000000,0x1800000,0x1800000,0x1800000,0x6000000,0x6000000,0x0,0x750e00,0x20750e00,0x0,0x0,0x600000,0x0,0x0,0x0,0x0,};
+      jj_la1_0 = new int[] {0x20758ec0,0x20758ec0,0x0,0x0,0x20000,0x100,0x0,0x100,0x20750e00,0x18000000,0x20750e00,0x18000000,0xc0000000,0xc0000000,0x1800000,0x1800000,0x6000000,0x6000000,0x0,0x750e00,0x20750e00,0x0,0x0,0x600000,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x45520,0x45520,0x100,0x100000,0x0,0x0,0x100,0x0,0x45520,0x0,0x45520,0x0,0xf,0xf,0x0,0x0,0x0,0x0,0x0,0x10,0x45520,0x45520,0x100000,0x2000,0x41420,0x100000,0x100,0x10000,0x40000,};
+      jj_la1_1 = new int[] {0x45520,0x45520,0x100,0x100000,0x0,0x0,0x100,0x0,0x45520,0x0,0x45520,0x0,0xf,0xf,0x0,0x0,0x0,0x0,0x10,0x45520,0x45520,0x100000,0x2000,0x41420,0x100000,0x100,0x10000,0x40000,};
    }
 
   /** Constructor with InputStream. */
@@ -672,7 +654,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -686,7 +668,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -703,7 +685,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -713,7 +695,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -729,7 +711,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -738,7 +720,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -794,7 +776,7 @@ public class L485Parser implements L485ParserConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 29; i++) {
+    for (int i = 0; i < 28; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

@@ -86,185 +86,213 @@ TOKEN :
 | < COMMA: "," >
 }
 
-//Main program area
-ASTNode program() :{}
+void program():
+{}
 {
-   (functionDef()
-| 	classDef()
-| 	expression()
-| 	loadFile())+
+    (functionDef()
+    |
+    classDef()
+	|
+	expression()
+	|
+    loadFile())+
 }
-ASTNode functionDef(): {}
+void functionDef():
+{}
 {
-	< DEFUNC > < ID > < LP > (idList())? < RP > expressionList()
+    <DEFUNC> <ID> <LP> (idList())? <RP> expressionList()
 }
-ASTNode idList(): {}
+void idList():
+{}
 {
-	< ID > ( < COMMA > < ID >)*
+    <ID> (<COMMA> <ID>)*
 }
-ASTNode classDef(): {}
+void classDef():
+{}
 {
-	< DEFCLASS > < ID > < LB > (classVar())? (method())? < RB >
+    <DEFCLASS> <ID> <LB> (classVar())? (methods())? <RB>
 }
-ASTNode classVar(): {}
+void classVar():
+{}
 {
-	< VARS > idList()
+    <VARS> idList()
 }
-ASTNode method(): {}
+void methods():
+{}
 {
-	(< METHOD > < ID > < LP > (idList())? < RP > expressionList())+
+    (<METHOD> <ID> <LP> (idList())? <RP> expressionList())+
 }
-ASTNode loadFile(): {}
+void loadFile():
+{}
 {
-	< LOAD > < STRING >
+    <LOAD> <STRING>
 }
-ASTNode expressionList(): {}
+void expressionList():
+{}
 {
-	< LB > (expression())+ < RB >
+    <LB> (expression())+ <RB>
 }
-ASTNode expression():{}
+void expression():
+{}
 {
-  compExpr() (logOp() compExpr())*
-| < NOT > compExpr()
+    compExpr() (logOp() compExpr())*
+    |
+    <NOT> compExpr()
 }
-ASTNode logOp(): {}
+void logOp():
+{}
 {
-	< OR >	
-| 	< AND >
+    <OR>
+    |
+    <AND>
 }
-
-
-ASTNode compExpr(): {}
+void compExpr():
+{}
 {
-	addExpr() (compOp() addExpr())*
+    addExpr() (compOp() addExpr())*
 }
-
-ASTNode compOp(): {}
+void compOp():
+{}
 {
-	< EQUAL >
-| 	< NOTEQUAL >
-| 	< LESS >
-| 	< LESSEQUAL >
-| 	< GREATER >
-| 	< GREATEREQUAL >
+    <EQUAL>
+    |
+    <NOTEQUAL>
+    |
+    <LESS>
+    |
+    <LESSEQUAL>
+    |
+    <GREATER>
+    |
+    <GREATEREQUAL>
 }
-
-ASTNode addExpr(): {}
+void addExpr():
+{}
 {
-	//mulExpr() (addOp() mulExpr())*
-	left = mulExpr()
-	( < PLUS > right = mulExpr()
-		{
-			left = new AddNode(left,right);
-		}
-|	< MINUS > right = mulExpr()
-		{
-			left = new SubNode(left,right);
-		}
-	)*
-	{
-		return left;
-	}
+    mulExpr() (addOp() mulExpr())*
 }
-
-ASTNode addOp(): {}
+void addOp():
+{}
 {
-	< PLUS > | < MINUS >
+    <PLUS>
+    |
+    <MINUS>
 }
-ASTNode mulExpr(): {}
+void mulExpr():
+{}
 {
-	factor() (mulOp() factor())*
+    factor() (mulOp() factor())*
 }
-ASTNode mulOp(): {}
+void mulOp():
+{}
 {
-	< MULTIPLY >
-| 	< DIVIDE >
+    <MULTIPLY>
+    |
+    <DIVIDE>
 }
-ASTNode factor(): {}
+void factor():
+{}
 {
-	operand() (call())?
+    operand() (call())?
 }
-ASTNode operand(): {}
+void operand():
+{}
 {
-	varRef()
-| 	constant()
-| 	newExpr()
-| 	ifExpr()
-| 	funcExpr()
-| 	assignExpr()
-| 	condExpr()
-|	withExpr()
-| 	< LP > expression() < RP >
+    varRef()
+    |
+    constant()
+    |
+    newExpr()
+    |
+    ifExpr()
+    |
+    funcExpr()
+    |
+    assignExpr()
+    |
+    condExpr()
+    |
+    withExpr()
+    |
+    <LP> expression() <RP>
 }
-ASTNode call(): {}
+void call():
+{}
 {
-	< INVOKE > < LP > (paramList())? < RP >
+    <INVOKE> <LP> (paramList())? <RP>
 }
-ASTNode paramList(): {}
+void paramList():
+{}
 {
-	expression() (< COMMA > expression())*
+    expression() (<COMMA> expression())*
 }
-ASTNode varRef(): {}
+void varRef():
+{}
 {
-	<ID> (<DOT> <ID>)?
+    <ID> (<DOT> <ID>)?
 }
-
-ASTNode constant(): {}
+void constant():
+{}
 {
-	<INTNUM>
-| 	<FLOATNUM>
-| 	list()
-| 	<STRING>
-| 	<TRUE>
-| 	<FALSE>
+    <INTNUM>
+    |
+    <FLOATNUM>
+    |
+    list()
+    |
+    <STRING>
+    |
+    <TRUE>
+    |
+    <FALSE>
 }
-
-ASTNode list(): {}
+void list():
+{}
 {
-	<LBK> constantList() <RBK>
+    <LBK> constantList() <RBK>
 }
-
-ASTNode constantList():{}
+void constantList():
+{}
 {
-	constant() (<COMMA> constant())*
+    constant() (<COMMA> constant())*
 }
-
-ASTNode newExpr(): {}
+void newExpr():
+{}
 {
-	<NEW> <ID>
+    <NEW> <ID>
 }
-
-ASTNode ifExpr(): {}
+void ifExpr():
+{}
 {
-	<IF> expression() <THEN> expression() <ELSE> expression() <FI>
+    <IF> expression() <THEN> expression() <ELSE> expression() <FI>
 }
-
-ASTNode funcExpr(): {}
+void funcExpr():
+{}
 {
-	< FUNC > < LP > (idList())? < RP > expressionList()
+    <FUNC> <LP> (idList())? <RP> expressionList()
 }
-
-ASTNode assignExpr(): {}
+void assignExpr():
+{}
 {
-	< ASSIGN > expression() < TO > < ID >
+    <ASSIGN> expression() <TO> <ID>
 }
-
-ASTNode condExpr(): {}
+void condExpr():
+{}
 {
-	< COND > condClauses()
+    <COND> condClauses()
 }
-
-ASTNode condClauses(): {}
+void condClauses():
+{}
 {
-	(<LB> expression() expression() <RB>)+
+    (<LB> expression() expression() <RB>)+
 }
-
-ASTNode withExpr(): {}
+void withExpr():
+{}
 {
-	<WITH> < LP > variableDefs() < RP > expressionList()
+    <WITH> <LP> variableDefs() <RP> expressionList()
 }
-
-ASTNode variableDefs(): {}
+void variableDefs():
+{}
 {
-	(< LBK > < ID > expression() < RBK >)*
+    (<LBK> <ID> expression() <RBK>)*
 }

@@ -1,0 +1,1 @@
+defunc odd(n) { if (n == 0) then false else even->(n - 1) fi }
