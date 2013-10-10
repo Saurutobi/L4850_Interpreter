@@ -1,15 +1,13 @@
 package interpreter;
+
 import java.io.*;
 import java.util.*;
-
 import parser.L485Parser;
 import parser.ParseException;
 
 
-/**
- * @author carr & Marcel Englmaier
- *
- */
+// @author carr & Marcel Englmaier
+
 
 public class L485Interpreter
 {
@@ -33,21 +31,17 @@ public class L485Interpreter
 				{
 					retVal.add(curLine);
 				}
+				buff.close();
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("It didn't work, try again");
 		}
+		scan.close();
 		return retVal.toArray(new String[retVal.size()]);
 	}
 	
-	private static String getUserInput() throws IOException
-	{
-		Scanner scan = new Scanner(System.in);
-		return scan.nextLine();
-	}
-
 	private static void repl()
 	{
 		//This section is modified to ask for 2 types of input: a single line input, or a directory path for batch processing
@@ -62,7 +56,7 @@ public class L485Interpreter
 			{
 	    		System.out.print( "====> ");
 	    		String [] temp = new String[1];
-	    		temp[0] = getUserInput();
+	    		temp[0] = operation.nextLine();
 				processCode(temp);
 			}
 			//Or from the directory
@@ -84,6 +78,7 @@ public class L485Interpreter
 		{
 			System.out.println("Uncaught Interpreter Exception: "+e);
 		}
+	    operation.close();
 	    repl();
 	}
 	
