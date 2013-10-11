@@ -37,7 +37,7 @@ public class PrintVisitor implements Visitor{
 
 	@Override
 	public Object visit(NewExprNode n) {
-		// TODO Auto-generated method stub
+		System.out.print("new ");
 		return null;
 	}
 

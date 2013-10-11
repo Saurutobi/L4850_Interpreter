@@ -1,17 +1,19 @@
 package abstractSyntaxTree;
 
-public class NewExprNode implements ASTNode{
-
+public class NewExprNode extends UnaryNode{
+	
+	public NewExprNode(ASTNode centerNode)
+	{
+		super(centerNode);
+	}
 	@Override
 	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
-		
+		v.visit(this);
+		centerNode.acceptDepthFirst(v);
 	}
 
 	@Override
 	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
-		return null;
+		return v.visit(this);
 	}
-
 }
