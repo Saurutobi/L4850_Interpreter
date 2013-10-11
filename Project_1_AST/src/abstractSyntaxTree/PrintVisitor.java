@@ -40,5 +40,11 @@ public class PrintVisitor implements Visitor{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Object visit(FunctionDefNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
