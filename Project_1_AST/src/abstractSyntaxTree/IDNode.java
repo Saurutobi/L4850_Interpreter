@@ -9,10 +9,16 @@ public class IDNode implements ASTNode
 		super();
 		this.name = name;
 	}
-	
-	@Override
-	public void visit()
+	public String getName()
 	{
-		 System.out.print(name);
+		return name;
+	}
+	@Override
+	public void acceptDepthFirst(Visitor v) {
+		v.visit(this);
+	}
+	@Override
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }

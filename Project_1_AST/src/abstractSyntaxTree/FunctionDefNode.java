@@ -13,17 +13,23 @@ public class FunctionDefNode extends BinaryNode
 		this.right = (ExpressionListNode)rightNode;
 	}
 
-	@Override
-	public void visit()
-	{
-		System.out.print("defunc " + name + "(");
-		left.visit();
-		System.out.print(")");
-		right.visit();
-	}
 	
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+
+	@Override
+	public void acceptDepthFirst(Visitor v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Object accept(Visitor v) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

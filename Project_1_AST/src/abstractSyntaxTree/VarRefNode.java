@@ -13,8 +13,6 @@ public class VarRefNode implements ASTNode
 		this.ID = ID;
 		this.extraIDs = moreIDs;
 	}
-	
-	@Override
 	public void visit()
 	{
 		 System.out.print(ID);
@@ -22,6 +20,24 @@ public class VarRefNode implements ASTNode
 		 {
 			 System.out.print("." + currentID);
 		 }
+	}
+
+	@Override
+	public void acceptDepthFirst(Visitor v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object accept(Visitor v) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public String getID() {
+		return ID;
+	}
+	public List<String> getextraIDs() {
+		return extraIDs;
 	}
 }
 

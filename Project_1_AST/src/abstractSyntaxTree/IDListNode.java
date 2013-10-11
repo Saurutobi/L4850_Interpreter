@@ -1,14 +1,9 @@
 package abstractSyntaxTree;
 
-import java.util.List;
-
-public class ProgramNode implements ASTNode
-{
-	List<ASTNode> listOfNodes;
-
-	public ProgramNode(List<ASTNode> nodes)
+public class IDListNode implements ASTNode{
+	public IDListNode()
 	{
-		listOfNodes = nodes;
+
 	}
 
 	@Override
@@ -21,9 +16,5 @@ public class ProgramNode implements ASTNode
 	public Object accept(Visitor v) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public List<ASTNode> getListOfNodes() {
-		return listOfNodes;
 	}
 }
