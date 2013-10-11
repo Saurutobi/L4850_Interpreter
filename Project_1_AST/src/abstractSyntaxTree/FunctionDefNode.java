@@ -26,7 +26,6 @@ public class FunctionDefNode extends TrinaryNode
 		
 	}
 
-
 	@Override
 	public Object accept(Visitor v) {
 		// TODO Auto-generated method stub
