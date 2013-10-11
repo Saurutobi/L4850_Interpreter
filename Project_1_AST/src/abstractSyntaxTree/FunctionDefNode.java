@@ -1,35 +1,23 @@
 package abstractSyntaxTree;
 
-public class FunctionDefNode extends BinaryNode
+public class FunctionDefNode extends TrinaryNode
 {
-	String name;
-	IDListNode left;
-	ExpressionListNode right;
 	
-	public FunctionDefNode(ASTNode leftNode, ASTNode rightNode)
+	public FunctionDefNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
 	{
-		super(leftNode, rightNode);
-		this.left = (IDListNode)leftNode;
-		this.right = (ExpressionListNode)rightNode;
+		super(leftNode, centerNode, rightNode);
 	}
-
-	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
 
 	@Override
-	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
+	public void acceptDepthFirst(Visitor v)
+	{
 		
 	}
 
 
 	@Override
-	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
+	public Object accept(Visitor v)
+	{
 		return null;
 	}
 }

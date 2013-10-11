@@ -1,7 +1,7 @@
-ProgramNode
+--ProgramNode
 	-Holds a list of ASTNodes
 	-Prints (for every ASTNode in list) ASTNodeList[i].visit
-functionDefNode
+-functionDefNode
 	-contains a string(ID) for name
 	-contains a idListNode one or zero of these
 	-contains a expressionListNode thing
@@ -83,7 +83,7 @@ operandNode
 callNode
 	-contains a paramListNode thing
 	-Prints "invoke (" + paramList + ")"
-varRefNode
+--varRefNode
 	-contains a string(ID) name
 	-contains a list of strings(IDs)
 	-Prints name + (for each string in list of strings) "." + list[i]
