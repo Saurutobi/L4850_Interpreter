@@ -16,6 +16,6 @@ public class FunctionDefNode extends TrinaryNode
 	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
 	}
 }

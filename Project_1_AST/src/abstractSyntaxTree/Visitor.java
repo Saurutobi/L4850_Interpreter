@@ -1,6 +1,7 @@
 package abstractSyntaxTree;
 
-public interface Visitor {
+public interface Visitor
+{
 	public Object visit(FunctionDefNode n);
 	public Object visit(IDNode n);
 	public Object visit(ProgramNode n);
