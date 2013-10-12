@@ -1,43 +1,22 @@
 package abstractSyntaxTree;
 
-import java.util.List;
-
-public class VarRefNode implements ASTNode
-{
-	private String ID;
-	private List<String> extraIDs;
-	
-	public VarRefNode(String ID, List<String> moreIDs)
+public class VarRefNode extends BinaryNode
+{	
+	public VarRefNode(ASTNode leftNode, ASTNode rightNode)
 	{
-		super();
-		this.ID = ID;
-		this.extraIDs = moreIDs;
-	}
-	public void visit()
-	{
-		 System.out.print(ID);
-		 for(String currentID : extraIDs)
-		 {
-			 System.out.print("." + currentID);
-		 }
+		super(leftNode, rightNode);
 	}
 
 	@Override
 	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
-		
+		leftNode.acceptDepthFirst(v);
+		v.visit(this);
+		rightNode.acceptDepthFirst(v);
 	}
 
 	@Override
 	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public String getID() {
-		return ID;
-	}
-	public List<String> getextraIDs() {
-		return extraIDs;
+		return v.visit(this);
 	}
 }
 
