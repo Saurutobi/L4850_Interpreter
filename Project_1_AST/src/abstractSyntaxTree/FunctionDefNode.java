@@ -10,7 +10,9 @@ public class FunctionDefNode extends TrinaryNode
 	@Override
 	public void acceptDepthFirst(Visitor v)
 	{
-		
+		leftNode.acceptDepthFirst(v);
+		v.visit(this);
+		rightNode.acceptDepthFirst(v);
 	}
 
 	@Override
