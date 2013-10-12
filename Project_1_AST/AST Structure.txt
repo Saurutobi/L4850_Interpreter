@@ -49,6 +49,9 @@ addExprNode
 	-contains a list of booleans: true for <PLUS>, false for <MINUS>
 	-contains a list of mulExprNode things
 	-Prints mulExprNode.visit + (for every item in addOpNode list) (if true)[i] "+" (if false)[i] "-" + mulExprNodeList[i].visit
+addOpNode
+	-stuff goes here
+	
 mulExprNode
 	-contains a factorNode thing
 	-contains a list of mulOpNode things

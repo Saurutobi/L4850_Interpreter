@@ -7,14 +7,14 @@ public class IDListNode implements ASTNode{
 	}
 
 	@Override
-	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
+	public void acceptDepthFirst(Visitor v)
+	{
 		
 	}
 
 	@Override
-	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
+	public Object accept(Visitor v)
+	{
 		return null;
 	}
 }
