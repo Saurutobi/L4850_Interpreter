@@ -94,6 +94,7 @@ ASTNode program():
 }
 {
   //I removed the ()+ from this becuase it was complaining IDK why it was complaining but it was
+    //You spelt because wrong
     node = functionDef()
     |
     classDef()
@@ -106,23 +107,24 @@ ASTNode program():
 }
 ASTNode functionDef():
 {
-	ASTNode node,idlist,elist;
+	ASTNode node, idList, expressionList;
 	Token id;
 }
 {
-    node = <DEFUNC> id = <ID> <LP> (idlist = idList())? <RP> elist = expressionList()
-    {		return new DefuncNode()node;
+    node = <DEFUNC> id = <ID> <LP> (idList = idList())? <RP> expressionList = expressionList()
+    {		return new DefuncNode(id.image, idList, expressionList);
     }
 }
 ASTNode idList():
 {
-	ASTNode right;
-	ASTNode left;
+  	ASTNode node;
+	Token id;
+	MaybeAListOrSomething ids;
 }
 {
-    left = <ID> (<COMMA> right = <ID>)*
+    node = id = <ID> (<COMMA> ids.add(<ID>))*
     {
-		return left;
+		return new idListNode(id.image, SOMETHING HERE LIKE MAYBE ids);
     }
 }
 ASTNode classDef():
@@ -130,7 +132,7 @@ ASTNode classDef():
 	ASTNode node;
 }
 {
-    <DEFCLASS> <ID> <LB> (classVar())? (methods())? <RB>
+    node = <DEFCLASS> <ID> <LB> (classVar())? (methods())? <RB>
     {
 		return node;
     }
