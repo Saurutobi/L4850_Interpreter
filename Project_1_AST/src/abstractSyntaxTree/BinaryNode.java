@@ -21,9 +21,4 @@ public abstract class BinaryNode implements ASTNode
 	{
 		return rightNode;
 	}
-
-	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
-		
-	}
 }

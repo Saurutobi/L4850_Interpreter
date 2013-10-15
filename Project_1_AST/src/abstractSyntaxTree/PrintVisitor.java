@@ -27,11 +27,7 @@ public class PrintVisitor implements Visitor{
 
 	@Override
 	public Object visit(VarRefNode n) {
-		 System.out.print(n.getID());
-		 for(String currentID : n.getextraIDs())
-		 {
-			 System.out.print("." + currentID);
-		 }
+		 System.out.print(".");
 		return null;
 	}
 
@@ -102,7 +98,7 @@ public class PrintVisitor implements Visitor{
 
 	@Override
 	public Object visit(AddOpNode n) {
-		// TODO Auto-generated method stub
+		System.out.print(n.getCenterNode());
 		return null;
 	}
 
@@ -114,8 +110,7 @@ public class PrintVisitor implements Visitor{
 
 	@Override
 	public Object visit(MulOpNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterNode();
 	}
 
 	@Override
@@ -198,6 +193,36 @@ public class PrintVisitor implements Visitor{
 
 	@Override
 	public Object visit(VariableDefsNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(IDListNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(ExpressionBinaryNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(ExpressionUnaryNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(CompExprNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(addOpNode n) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -93,13 +93,14 @@ ASTNode program():
 	ASTNode node;
 }
 {
-    node = (functionDef()
+  //I removed the ()+ from this becuase it was complaining IDK why it was complaining but it was
+    node = functionDef()
     |
     classDef()
 	|
 	expression()
 	|
-    loadFile())+
+    loadFile()
     {		return node;
     }
 }
@@ -114,12 +115,13 @@ ASTNode functionDef():
 }
 ASTNode idList():
 {
-	ASTNode node;
+	ASTNode right;
+	ASTNode left;
 }
 {
-    <ID> (<COMMA> <ID>)*
+    left = <ID> (<COMMA> right = <ID>)*
     {
-		return node;
+		return left;
     }
 }
 ASTNode classDef():

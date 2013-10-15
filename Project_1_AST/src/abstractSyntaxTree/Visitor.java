@@ -2,6 +2,7 @@ package abstractSyntaxTree;
 
 public interface Visitor
 {
+	public Object visit(IDNode n);
 	public Object visit(FunctionDefNode n);
 	public Object visit(IDListNode n);
 	public Object visit(ClassDefNode n);
@@ -15,7 +16,7 @@ public interface Visitor
 	public Object visit(CompExprNode n);
 	public Object visit(CompOpNode n);
 	public Object visit(AddExprNode n);
-	public Object visit(addOpNode n);
+	public Object visit(AddOpNode n);
 	public Object visit(MulExprNode n);
 	public Object visit(MulOpNode n);
 	public Object visit(FactorNode n);
