@@ -106,11 +106,12 @@ ASTNode program():
 }
 ASTNode functionDef():
 {
-	ASTNode node;
+	ASTNode node,idlist,elist;
+	Token id;
 }
 {
-    node = <DEFUNC> <ID> <LP> (idList())? <RP> expressionList()
-    {		return node;
+    node = <DEFUNC> id = <ID> <LP> (idlist = idList())? <RP> elist = expressionList()
+    {		return new DefuncNode()node;
     }
 }
 ASTNode idList():

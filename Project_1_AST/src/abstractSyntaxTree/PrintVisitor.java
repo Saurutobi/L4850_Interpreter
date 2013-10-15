@@ -7,39 +7,42 @@ public class PrintVisitor implements Visitor{
  * @Override
 	public Object visit(FunctionDefNode n) {
 		System.out.print("defunc " + name + "(");
-		left.visit();
+		left.acceptDepthFirst(this);
 		System.out.print(")");
 		right.visit();
 		return null;
 	}*/
 
 	@Override
-	public Object visit(IDNode n) {
+	public Object visit(IDNode n)
+	{
 			System.out.print(n.getName());
 		return null;
 	}
 
 	@Override
-	public Object visit(ProgramNode n) {
-		// TODO Auto-generated method stub
+	public Object visit(ProgramNode n)
+	{
 		return null;
 	}
 
 	@Override
-	public Object visit(VarRefNode n) {
+	public Object visit(VarRefNode n)
+	{
 		 System.out.print(".");
 		return null;
 	}
 
 	@Override
-	public Object visit(NewExprNode n) {
+	public Object visit(NewExprNode n)
+	{
 		System.out.print("new ");
 		return null;
 	}
 
 	@Override
-	public Object visit(FunctionDefNode n) {
-		// TODO Auto-generated method stub
+	public Object visit(FunctionDefNode n)
+	{
 		return null;
 	}
 
@@ -50,7 +53,7 @@ public class PrintVisitor implements Visitor{
 	}
 	public Object visit(ClassDefNode n){
 		//TODO: FIX THIS
-		System.out.print("funky shiitii")
+		System.out.print("funky shiitii");
 		return null;
 	}
 

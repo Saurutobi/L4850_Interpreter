@@ -2,7 +2,8 @@ package abstractSyntaxTree;
 
 public class FunctionDefNode extends TrinaryNode
 {
-	public FunctionDefNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+	String id;
+	public FunctionDefNode(String id, ASTNode centerNode, ASTNode rightNode)
 	{
 		super(leftNode, centerNode, rightNode);
 	}
