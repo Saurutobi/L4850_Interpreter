@@ -1,16 +1,10 @@
 package abstractSyntaxTree;
 
-public class FunctionDefNode implements ASTNode
+public class FunctionDefNode extends TrinaryNode
 {
-	protected String id;
-	protected ASTNode centerNode;
-	protected ASTNode rightNode;
-	
 	public FunctionDefNode(String id, ASTNode center, ASTNode right)
 	{
-		this.id = id;
-		this.centerNode = center;
-		this.rightNode = right;
+		super(id, center, right);
 	}
 
 	@Override

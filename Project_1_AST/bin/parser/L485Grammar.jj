@@ -105,16 +105,22 @@ ASTNode program():
     {		return node;
     }
 }
+
+//I think this is good
 ASTNode functionDef():
 {
-	ASTNode node, idList, expressionList;
+	ASTNode node, idListNode, expressionListNode;
 	Token id;
 }
 {
-    node = <DEFUNC> id = <ID> <LP> (idList = idList())? <RP> expressionList = expressionList()
-    {		return new DefuncNode(id.image, idList, expressionList);
+    node = <DEFUNC> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList()
+    {		return new FunctionDefNode(id.image, idListNode, expressionListNode);
     }
 }
+
+
+
+//THIS THING NEEDS WORK
 ASTNode idList():
 {
   	ASTNode node;
@@ -127,36 +133,51 @@ ASTNode idList():
 		return new idListNode(id.image, SOMETHING HERE LIKE MAYBE ids);
     }
 }
+
+
+
+//I think this is good
 ASTNode classDef():
 {
-	ASTNode node;
+	ASTNode node, classVarsNode, methodsNode;
+	Token id;
 }
 {
-    node = <DEFCLASS> <ID> <LB> (classVar())? (methods())? <RB>
+    node = <DEFCLASS> id = <ID> <LB> (classVarsNode = classVars())? (methodsNode = methods())? <RB>
     {
-		return node;
+		return new ClassDefNode(id.image, classVarsNode, methodsNode);
     }
 }
-ASTNode classVar():
+//I think this is good
+ASTNode classVars():
 {
-	ASTNode node;
+	ASTNode node, idListNode;
 }
 {
-    <VARS> idList()
+    <VARS> idListNode = idList()
     {
-		return node;
+		return new ClassVarsNode(idListNode);
     }
 }
+
+
+//THIS ONE PROBABLY NEEDS SOME WORK
 ASTNode methods():
 {
-	ASTNode node;
+	ASTNode node, idListNode, expressionListNode;
+	Token id;
 }
 {
-    (<METHOD> <ID> <LP> (idList())? <RP> expressionList())+
+    (<METHOD> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList())+
     {
-		return node;
+		return new MethodsNode(id.image, idListNode, expressionListNode);
     }
 }
+
+
+
+
+
 ASTNode loadFile():
 {
 	ASTNode node;

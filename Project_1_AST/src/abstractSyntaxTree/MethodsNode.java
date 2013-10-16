@@ -2,19 +2,11 @@ package abstractSyntaxTree;
 
 public class MethodsNode extends TrinaryNode
 {
-	public MethodsNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+	public MethodsNode(String id, ASTNode center, ASTNode right)
 	{
-		super(leftNode, centerNode, rightNode);
+		super(id, center, right);
 	}
-
-	@Override
-	public void acceptDepthFirst(Visitor v)
-	{
-		leftNode.acceptDepthFirst(v);
-		v.visit(this);
-		rightNode.acceptDepthFirst(v);
-	}
-
+	
 	@Override
 	public Object accept(Visitor v)
 	{

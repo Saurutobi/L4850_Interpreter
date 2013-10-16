@@ -2,17 +2,9 @@ package abstractSyntaxTree;
 
 public class ClassDefNode extends TrinaryNode
 {
-	public ClassDefNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+	public ClassDefNode(String id, ASTNode center, ASTNode right)
 	{
-		super(leftNode, centerNode, rightNode);
-	}
-
-	@Override
-	public void acceptDepthFirst(Visitor v)
-	{
-		leftNode.acceptDepthFirst(v);
-		v.visit(this);
-		rightNode.acceptDepthFirst(v);
+		super(id, center, right);
 	}
 
 	@Override

@@ -2,21 +2,21 @@ package abstractSyntaxTree;
 
 public abstract class TrinaryNode implements ASTNode
 {
-	protected ASTNode leftNode;
-	protected ASTNode centerNode;
-	protected ASTNode rightNode;
+	private String id;
+	private ASTNode centerNode;
+	private ASTNode rightNode;
 	
-	public TrinaryNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+	public TrinaryNode(String id, ASTNode center, ASTNode right)
 	{
 		super();
-		this.leftNode = leftNode;
-		this.centerNode = centerNode;
-		this.rightNode = rightNode;
+		this.id = id;
+		this.centerNode = center;
+		this.rightNode = right;
 	}
 	
-	public ASTNode getLeftNode()
+	public String getID()
 	{
-		return leftNode;
+		return id;
 	}
 	
 	public ASTNode getCenterNode()
