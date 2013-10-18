@@ -84,4 +84,32 @@ public class PrintVisitor implements Visitor
 		System.out.print("cond " + n.getCenterNode());
 		return null;
 	}
+
+	@Override
+	public Object visit(VarRefNode n) {
+		if(n.getRightNode() != null)
+		{
+			System.out.print(n.getLeftString());
+		}
+		else
+		{
+			System.out.print(n.getLeftString() + "." + n.getRightString());
+		}
+		return null;
+	}
+
+	//these methods may need to use different methods
+	// i think we have to do acceptDepthFirst here instead of what i'm currently using
+	// however i'm drunk so undrunk me will have to analyze this
+	@Override
+	public Object visit(AddExprNode n) {
+		System.out.print(n.getLeftNode() + " " + n.getCenterNode() + " " + n.getRightNode());
+		return null;
+	}
+
+	@Override
+	public Object visit(CompOpNode n) {
+		System.out.print(n.getCompOp());
+		return null;
+	}
 }

@@ -96,12 +96,18 @@ ASTNode program():
   //I removed the ()+ from this becuase it was complaining IDK why it was complaining but it was
     //You spelt because wrong
     node = functionDef()
-    |
-    classDef()
-	|
-	expression()
-	|
-    loadFile()
+    {
+		return node;
+    }
+    |node = classDef()
+    {
+		return node;
+    }
+	|node = expression()
+    {
+		return node;
+    }
+	|node = loadFile()
     {		return node;
     }
 }
@@ -125,6 +131,8 @@ ASTNode idList():
 {
   	ASTNode node;
 	Token id;
+
+	//best variable name ever
 	MaybeAListOrSomething ids;
 }
 {
@@ -174,17 +182,15 @@ ASTNode methods():
     }
 }
 
-
-
-
-
 ASTNode loadFile():
 {
 	ASTNode node;
+	Token id;
 }
 {
-    <LOAD> <STRING>
+    <LOAD> id = <STRING>
     {
+      	node = LoadFileNode(id.Token);
 		return node;
     }
 }
@@ -198,14 +204,17 @@ ASTNode expressionList():
 		return node;
     }
 }
+
+//some of these nodes are really difficult haha
 ASTNode expression():
 {
 	ASTNode node;
 }
 {
-    (compExpr() (logOp() compExpr())*
-    |
-    <NOT> compExpr())
+    compExpr() (logOp() compExpr())*
+    {		return node;
+    }
+    |<NOT> node = compExpr()
     {
 		return node;
     }
@@ -213,14 +222,18 @@ ASTNode expression():
 ASTNode logOp():
 {
 	ASTNode node;
+	Token id;
 }
 {
-    (      <OR>
-    |
-    <AND>
-    )
+    id = <OR>
     {
-		return node;
+      node = new LogOpNode(id.image);
+      return node;
+    }
+    |id = <AND >
+    {
+      node = new LogOpNode(id.image);
+      return node;
     }
 }
 ASTNode compExpr():
@@ -236,34 +249,48 @@ ASTNode compExpr():
 ASTNode compOp():
 {
 	ASTNode node;
+	Token id;
 }
 {
-    (      <EQUAL>
-    |
-    <NOTEQUAL>
-    |
-    <LESS>
-    |
-    <LESSEQUAL>
-    |
-    <GREATER>
-    |
-    <GREATEREQUAL>
-  )
+    id = <EQUAL>
+    {		node = CompOpNode(id.image);
+		return node;
+    }
+    | id = <NOTEQUAL>
     {
+		node = CompOpNode(id.image);
+		return node;
+    }
+    | id = <LESS>
+    {
+      	node = CompOpNode(id.image);
+		return node;    }
+    | id = <LESSEQUAL>
+    {		node = CompOpNode(id.image);
+		return node;
+    }
+    | id = <GREATER>
+    {		node = CompOpNode(id.image);
+		return node;
+    }
+    | id = <GREATEREQUAL>
+    {		node = CompOpNode(id.image);
 		return node;
     }
 }
 ASTNode addExpr():
 {
-	ASTNode node;
+	ASTNode leftNode, rightNode;
+	Token id;
 }
 {
-    mulExpr() (< PLUS > mulExpr() | < MINUS > mulExpr())*
+    leftNode = mulExpr() (id = < PLUS > rightNode = mulExpr() | id = < MINUS > rightNode = mulExpr())*
     {
-		return node;
+		//something goes here come back later jason
     }
 }
+
+//this node needs to look similar to the above node
 ASTNode mulExpr():
 {
 	ASTNode node;
@@ -289,24 +316,31 @@ ASTNode operand():
 	ASTNode node;
 }
 {
-    (      varRef()
-    |
-    constant()
-    |
-    newExpr()
-    |
-    ifExpr()
-    |
-    funcExpr()
-    |
-    assignExpr()
-    |
-    condExpr()
-    |
-    withExpr()
-    |
-    <LP> expression() <RP>
-    )
+    node = varRef()
+    {		return node;
+    }
+    | node = constant()
+    {		return node;
+    }
+    | node = newExpr()
+	{		return node;
+	}
+    | node = ifExpr()
+	{		return node;
+	}
+    | node = funcExpr()
+	{		return node;
+	}
+    | node = assignExpr()
+	{		return node;
+	}
+    | node = condExpr()
+	{		return node;
+	}
+  	| node = withExpr()
+	{		return node;
+	}
+    | <LP> node = expression() <RP>
     {
 		return node;
     }
@@ -349,22 +383,31 @@ ASTNode varRef():
 ASTNode constant():
 {
 	ASTNode node;
+	Token holder;
 }
 {
-    (      <INTNUM>
-    |
-    <FLOATNUM>
-    |
-    list()
-    |
-    <STRING>
-    |
-    <TRUE>
-    |
-    <FALSE>
-  )
+    id = <INTNUM>
+    {		
+    }
+    | id = <FLOATNUM>
     {
-		return node;
+		
+    }
+    | node = list()
+    {
+		
+    }
+    | id = <STRING>
+    {
+		
+    }
+    | id = <TRUE>
+    {
+		
+    }
+    | id = <FALSE>
+    {
+		
     }
 }
 ASTNode list():
@@ -400,11 +443,13 @@ ASTNode newExpr():
 }
 ASTNode ifExpr():
 {
-	ASTNode node;
+	ASTNode left, center, right;
+	IfExprNode node;
 }
 {
-    <IF> expression() <THEN> expression() <ELSE> expression() <FI>
+    <IF> left = expression() <THEN> center = expression() <ELSE> right = expression() <FI>
     {
+      	node = new IfExprNode(left,center,right);
 		return node;
     }
 }

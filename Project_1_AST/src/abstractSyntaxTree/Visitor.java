@@ -10,12 +10,13 @@ public interface Visitor
 	public Object visit(MulOpNode n);
 	public Object visit(IDNode n);
 	public Object visit(IfExprNode n);
-	public Object visit(LoadFileNode n)
+	public Object visit(LoadFileNode n);
 	
 	//ones that need work
-	;
+	public Object visit(CompOpNode n);
+	public Object visit(VarRefNode n);
 	public Object visit(CondExprNode n);
-	
+	public Object visit(AddExprNode n);
 	//ones that need sorting and stuff
 	public Object visit(FunctionDefNode n);
 	
