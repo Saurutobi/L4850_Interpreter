@@ -2,21 +2,17 @@ package abstractSyntaxTree;
 
 public class IDNode implements ASTNode
 {
-	private String name;
+	private String Token;
 	
 	public IDNode(String name)
 	{
-		super();
-		this.name = name;
+		Token = name;
 	}
-	public String getName()
+	public String getToken()
 	{
-		return name;
+		return Token;
 	}
-	@Override
-	public void acceptDepthFirst(Visitor v) {
-		v.visit(this);
-	}
+
 	@Override
 	public Object accept(Visitor v) {
 		return v.visit(this);

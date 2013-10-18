@@ -7,11 +7,11 @@ public class CondExprNode extends UnaryNode{
 		super(centerNode);
 	}
 
-	@Override
-	public void acceptDepthFirst(Visitor v) {
-		//write cond
-		centerNode.acceptDepthFirst(v);
-	}
+//	@Override
+//	public void acceptDepthFirst(Visitor v) {
+//		//write cond
+//		centerNode.acceptDepthFirst(v);
+//	}
 
 	@Override
 	public Object accept(Visitor v) {

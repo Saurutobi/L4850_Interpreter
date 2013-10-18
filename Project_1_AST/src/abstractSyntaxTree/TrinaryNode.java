@@ -3,9 +3,17 @@ package abstractSyntaxTree;
 public abstract class TrinaryNode implements ASTNode
 {
 	private String id;
+	private ASTNode leftNode;
 	private ASTNode centerNode;
 	private ASTNode rightNode;
 	
+	public TrinaryNode(ASTNode left, ASTNode center, ASTNode right)
+	{
+		super();
+		this.leftNode = left;
+		this.centerNode = center;
+		this.rightNode = right;
+	}
 	public TrinaryNode(String id, ASTNode center, ASTNode right)
 	{
 		super();
@@ -18,7 +26,10 @@ public abstract class TrinaryNode implements ASTNode
 	{
 		return id;
 	}
-	
+	public ASTNode getLeftNode()
+	{
+		return leftNode;
+	}
 	public ASTNode getCenterNode()
 	{
 		return centerNode;

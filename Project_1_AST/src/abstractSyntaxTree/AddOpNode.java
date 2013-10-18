@@ -1,19 +1,26 @@
 package abstractSyntaxTree;
 
-public class AddOpNode extends UnaryNode{
+public class AddOpNode implements ASTNode{
 	
-	public AddOpNode(ASTNode centerNode)
+	String PlusMinus;
+	
+	public AddOpNode(String Token)
 	{
-		super(centerNode);
+		PlusMinus = Token;
 	}
 
-	@Override
-	public void acceptDepthFirst(Visitor v) {
-		v.visit(this);
-	}
+//	@Override
+//	public void acceptDepthFirst(Visitor v) {
+//		v.visit(this);
+//	}
 
 	@Override
 	public Object accept(Visitor v) {
 		return v.visit(this);
+	}
+	
+	public String getToken()
+	{
+		return PlusMinus;
 	}
 }

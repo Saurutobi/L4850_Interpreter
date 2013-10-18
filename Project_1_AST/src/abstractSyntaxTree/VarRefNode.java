@@ -2,11 +2,11 @@ package abstractSyntaxTree;
 
 public class VarRefNode extends BinaryNode
 {	
-	public VarRefNode(ASTNode leftNode, ASTNode rightNode)
+	public VarRefNode(String leftNode, String rightNode)
 	{
 		super(leftNode, rightNode);
 	}
-
+	
 	@Override
 	public void acceptDepthFirst(Visitor v) {
 		leftNode.acceptDepthFirst(v);

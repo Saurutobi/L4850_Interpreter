@@ -1,6 +1,6 @@
 package abstractSyntaxTree;
 
-public class LoadFileNode extends UnaryNode{
+public class LoadFileNode implements ASTNode{
 	
 	//do we need to do a unary node or a ast node for a node
 	// that does not have any children at all
@@ -21,21 +21,28 @@ public class LoadFileNode extends UnaryNode{
 	// hopefully this got your attention
 	// hopefully this got your attention
 	// hopefully this got your attention
-	public LoadFileNode(ASTNode centerNode)
+	
+	private String FilePath;
+	
+	public LoadFileNode(String string)
 	{
-		super(centerNode);
+		FilePath = string;
 	}
 
-	@Override
-	public void acceptDepthFirst(Visitor v) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void acceptDepthFirst(Visitor v) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
-		return null;
+		return v.visit(this);
+	}
+	
+	public String getFilePath()
+	{
+		return FilePath;
 	}
 
 }

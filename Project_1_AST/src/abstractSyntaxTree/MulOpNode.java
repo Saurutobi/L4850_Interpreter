@@ -1,22 +1,21 @@
 package abstractSyntaxTree;
 
-public class MulOpNode extends UnaryNode{
+public class MulOpNode implements ASTNode{
 	
-	public MulOpNode(ASTNode centerNode)
+	private String TimesDivide;
+	
+	public MulOpNode(String Token)
 	{
-		super(centerNode);
+		TimesDivide = Token;
 	}
 
 	@Override
 	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
 		return v.visit(this);
 	}
-
-	@Override
-	public void acceptDepthFirst(Visitor v) {
-		v.visit(this);
-	}
 	
-
+	public String getToken()
+	{
+		return TimesDivide;
+	}
 }
