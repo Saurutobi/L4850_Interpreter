@@ -18,6 +18,7 @@ public interface Visitor
 	public Object visit(VarRefNode n);
 	public Object visit(CondExprNode n);
 	public Object visit(AddExprNode n);
+	public Object visit(MulExprNode n);
 	//ones that need sorting and stuff
 	public Object visit(FunctionDefNode n);
 	
@@ -29,4 +30,6 @@ public interface Visitor
 	public Object visit(ExpressionBinaryNode n);
 	public Object visit(ExpressionUnaryNode n);
 	public Object visit(ExpressionListNode n);
+	public Object visit(ProgramNode n);
+	public Object visit(FuncExprNode n);
 }

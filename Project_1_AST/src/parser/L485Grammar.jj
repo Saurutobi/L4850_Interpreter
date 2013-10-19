@@ -97,18 +97,19 @@ ASTNode program():
     //You spelt because wrong
     (node = functionDef()
     {
-		return node;
+		return new ProgramNode(node);
     }
     |node = classDef()
     {
-		return node;
+		return new ProgramNode(node);
     }
 	|node = expression()
     {
-		return node;
-    }
+		return new ProgramNode(node);
+	}
 	|node = loadFile()
-    {		return node;
+    {
+		return new ProgramNode(node);
     })+
 }
 

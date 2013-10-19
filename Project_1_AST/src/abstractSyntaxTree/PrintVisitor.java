@@ -119,6 +119,12 @@ public class PrintVisitor implements Visitor
 		
 		return null;
 	}
+	
+	public Object visit(ProgramNode n)
+	{
+		n.getCenterNode().accept(this);
+		return null;
+	}
 
 	@Override
 	public Object visit(CompOpNode n) {

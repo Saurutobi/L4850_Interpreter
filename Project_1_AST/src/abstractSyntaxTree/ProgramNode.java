@@ -2,16 +2,15 @@ package abstractSyntaxTree;
 
 import java.util.List;
 
-public class ProgramNode implements ASTNode
+public class ProgramNode extends UnaryNode
 {
-	public ProgramNode()
+	public ProgramNode(ASTNode centerNode)
 	{
-
+		super(centerNode);
 	}
 
 	@Override
 	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
-		return null;
+		return v.visit(this);
 	}
 }
