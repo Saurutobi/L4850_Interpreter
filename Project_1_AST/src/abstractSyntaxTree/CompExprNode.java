@@ -1,15 +1,15 @@
 package abstractSyntaxTree;
 
-public class CompExprNode extends TrinaryNode{
-	
-	public CompExprNode(ASTNode left, ASTNode center, ASTNode right)
+public class CompExprNode extends BinaryNode
+{
+	public CompExprNode(ASTNode leftNode, List<ASTNode> extraNodes)
 	{
-		super(left,center,right);
+		super(leftNode, extraNodes);
 	}
 
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
-
 }

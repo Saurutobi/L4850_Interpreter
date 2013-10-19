@@ -1,23 +1,22 @@
 package abstractSyntaxTree;
 
-public class CompOpNode implements ASTNode{
-	
-	String CompOp;
+public class CompOpNode implements ASTNode
+{
+	private String compOp;
 	
 	public CompOpNode(String Operation)
 	{
-		CompOp = Operation;
-	}
-
-	@Override
-	public Object accept(Visitor v) {
-		return v.visit(this);
+		this.compOp = Operation;
 	}
 	
 	public String getCompOp()
 	{
-		return CompOp;
+		return compOp;
 	}
 	
-
+	@Override
+	public Object accept(Visitor v)
+	{
+		return v.visit(this);
+	}
 }
