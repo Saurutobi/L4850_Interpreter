@@ -8,13 +8,15 @@ public class IDNode implements ASTNode
 	{
 		Token = name;
 	}
+	
 	public String getToken()
 	{
 		return Token;
 	}
 
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 }
