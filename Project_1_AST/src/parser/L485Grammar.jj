@@ -135,7 +135,7 @@ ASTNode idList():
 	List<String> ids = null;
 }
 {
-    id = <ID> (<COMMA> ids.add(<ID>))*
+    id = <ID> (<COMMA> <ID>)*
     {
 		return new idListNode(id.image, ids);
     }
@@ -249,34 +249,30 @@ ASTNode compExpr():
 }
 ASTNode compOp():
 {
-	ASTNode node;
 	Token id;
 }
 {
     id = <EQUAL>
-    {		node = CompOpNode(id.image);
-		return node;
+    {		return new CompOpNode(id.image); 
     }
     | id = <NOTEQUAL>
     {
-		node = CompOpNode(id.image);
-		return node;
+		return new CompOpNode(id.image);
     }
     | id = <LESS>
     {
-      	node = CompOpNode(id.image);
-		return node;    }
+		return new CompOpNode(id.image);    }
     | id = <LESSEQUAL>
-    {		node = CompOpNode(id.image);
-		return node;
+    {
+		return new CompOpNode(id.image);
     }
     | id = <GREATER>
-    {		node = CompOpNode(id.image);
-		return node;
+    {
+		return new CompOpNode(id.image);
     }
     | id = <GREATEREQUAL>
-    {		node = CompOpNode(id.image);
-		return node;
+    {
+		return new CompOpNode(id.image);
     }
 }
 ASTNode addExpr():
