@@ -4,7 +4,6 @@ import java.util.List;
 
 public class ExpressionListNode extends UnaryNode
 {
-	
 	public ExpressionListNode(List<ASTNode> centerNode)
 	{
 		super(centerNode);

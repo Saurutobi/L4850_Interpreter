@@ -1,11 +1,10 @@
 package abstractSyntaxTree;
 
-public class ExpressionBinaryNode extends TrinaryNode
+public class ExpressionBinaryNode extends BinaryNode
 {
-	
-	public ExpressionBinaryNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+	public ExpressionBinaryNode(ASTNode leftNode, List<ASTNode> extraNodes)
 	{
-		super(leftNode, centerNode, rightNode);
+		super(leftNode, extraNodes);
 	}
 
 	@Override
