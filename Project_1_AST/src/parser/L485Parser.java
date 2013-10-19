@@ -574,7 +574,7 @@ public class L485Parser implements L485ParserConstants {
 
   static final public ASTNode constant() throws ParseException {
         ASTNode node;
-        Token holder;
+        Token id;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INTNUM:
       id = jj_consume_token(INTNUM);

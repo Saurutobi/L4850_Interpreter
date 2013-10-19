@@ -380,11 +380,12 @@ ASTNode varRef():
 ASTNode constant():
 {
 	ASTNode node;
-	Token holder;
+	Token id;
 }
 {
     id = <INTNUM>
-    {		
+    {
+      		
     }
     | id = <FLOATNUM>
     {
@@ -452,12 +453,13 @@ ASTNode ifExpr():
 }
 ASTNode funcExpr():
 {
-	ASTNode node;
+	ASTNode left, right;
+	left = null;
 }
 {
-    <FUNC> <LP> (idList())? <RP> expressionList()
+    <FUNC> <LP> (left = idList())? <RP> right = expressionList()
     {
-		return node;
+		return new ;
     }
 }
 ASTNode assignExpr():
