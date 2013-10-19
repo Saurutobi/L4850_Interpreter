@@ -187,17 +187,16 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode loadFile() throws ParseException {
-        ASTNode node;
+        ASTNode node = null;
         Token id;
     jj_consume_token(LOAD);
     id = jj_consume_token(STRING);
-        node = LoadFileNode(id.image);
-                {if (true) return node;}
+        {if (true) return LoadFileNode(id.image);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode expressionList() throws ParseException {
-        ASTNode node;
+        ASTNode node = null;
     jj_consume_token(LB);
     label_4:
     while (true) {
@@ -232,7 +231,7 @@ public class L485Parser implements L485ParserConstants {
 
 //some of these nodes are really difficult haha
   static final public ASTNode expression() throws ParseException {
-        ASTNode node;
+        ASTNode node = null;
         ASTNode left, center, right = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case FUNC:

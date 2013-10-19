@@ -181,19 +181,18 @@ ASTNode methods():
 
 ASTNode loadFile():
 {
-	ASTNode node;
+	ASTNode node = null;
 	Token id;
 }
 {
     <LOAD> id = <STRING>
     {
-      	node = LoadFileNode(id.image);
-		return node;
+      	return LoadFileNode(id.image);
     }
 }
 ASTNode expressionList():
 {
-	ASTNode node;
+	ASTNode node = null;
 }
 {
     <LB> (expression())+ <RB>
@@ -205,7 +204,7 @@ ASTNode expressionList():
 //some of these nodes are really difficult haha
 ASTNode expression():
 {
-	ASTNode node;
+	ASTNode node = null;
 	ASTNode left, center, right = null;
 }
 {

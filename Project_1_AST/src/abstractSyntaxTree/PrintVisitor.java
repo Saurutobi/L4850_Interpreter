@@ -17,7 +17,7 @@ public class PrintVisitor implements Visitor
 		return null;
 	}
 
-	//IDLIST THING HERE
+	//TODO IDLIST THING HERE
 	
 	@Override
 	public Object visit(ClassDefNode n)
@@ -208,8 +208,20 @@ public class PrintVisitor implements Visitor
 
 	@Override
 	public Object visit(CompExprNode n) {
-		
-		System.out.print(" " );
+		n.getLeftNode().accept(this);
+		if(n.getCenterNode() != null)
+		{
+			System.out.print(" ");
+			n.getCenterNode().accept(this);
+			System.out.print(" ");
+			n.getRightNode().accept(this);
+		}
+		return null;
+	}
+
+	@Override
+	public Object visit(CondClausesNode n) {
+			
 		return null;
 	}
 }
