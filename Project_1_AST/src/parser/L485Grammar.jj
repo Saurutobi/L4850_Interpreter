@@ -116,7 +116,8 @@ ASTNode program():
 //I think this is good
 ASTNode functionDef():
 {
-	ASTNode node, idListNode, expressionListNode;
+	ASTNode idListNode, expressionListNode;
+	idListNode = null;
 	Token id;
 }
 {
@@ -126,19 +127,15 @@ ASTNode functionDef():
 }
 
 
-
-//THIS THING NEEDS WORK
 ASTNode idList():
 {
 	Token id;
-
-	//best variable name ever
 	List<String> ids = null;
 }
 {
-    id = <ID> (<COMMA> <ID>)*
+    id = <ID> (<COMMA> ids = <ID>)*
     {
-		return new idListNode(id.image, ids);
+		return new idListNode(id.image, ids.image);
     }
 }
 
@@ -147,11 +144,11 @@ ASTNode idList():
 //I think this is good
 ASTNode classDef():
 {
-	ASTNode node, classVarsNode, methodsNode;
+	ASTNode classVarsNode, methodsNode = null;
 	Token id;
 }
 {
-    node = <DEFCLASS> id = <ID> <LB> (classVarsNode = classVars())? (methodsNode = methods())? <RB>
+    <DEFCLASS> id = <ID> <LB> (classVarsNode = classVars())? (methodsNode = methods())? <RB>
     {
 		return new ClassDefNode(id.image, classVarsNode, methodsNode);
     }
@@ -190,7 +187,7 @@ ASTNode loadFile():
 {
     <LOAD> id = <STRING>
     {
-      	node = LoadFileNode(id.Token);
+      	node = LoadFileNode(id.image);
 		return node;
     }
 }
@@ -209,7 +206,7 @@ ASTNode expressionList():
 ASTNode expression():
 {
 	ASTNode node;
-	ASTNode left, center, right;
+	ASTNode left, center, right = null;
 }
 {
     left = compExpr() (center = logOp() right = compExpr())*
@@ -371,11 +368,7 @@ ASTNode varRef():
 }
 {
     firstID = <ID> (<DOT> secondID = <ID>)?
-    {
-		if(secondID != null)
-		{			node = new varRefNode(firstID.image, secondID.image);
-			return node;
-		}
+    {		return new VarRefNode(firstID.image, secondID.image);
     }
 }
 ASTNode constant():
@@ -460,7 +453,7 @@ ASTNode funcExpr():
 {
     <FUNC> <LP> (left = idList())? <RP> right = expressionList()
     {
-		return new ;
+		return new FuncExprNode(left,right);
     }
 }
 ASTNode assignExpr():

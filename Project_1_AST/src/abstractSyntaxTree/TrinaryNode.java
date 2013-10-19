@@ -1,11 +1,14 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public abstract class TrinaryNode implements ASTNode
 {
 	private String id;
 	private ASTNode leftNode;
 	private ASTNode centerNode;
 	private ASTNode rightNode;
+	private List<ASTNode> rightList;
 	
 	public TrinaryNode(ASTNode left, ASTNode center, ASTNode right)
 	{
