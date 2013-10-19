@@ -1,16 +1,15 @@
 package abstractSyntaxTree;
 
-public class MulExprNode extends TrinaryNode{
-
-	public MulExprNode(ASTNode leftNode, ASTNode centerNode, ASTNode rightNode)
+public class MulExprNode extends BinaryNode
+{
+	public MulExprNode(ASTNode leftNode, List<ASTNode> extraNodes)
 	{
-		super(leftNode, centerNode, rightNode);
+		super(leftNode, extraNodes);
 	}
-
 
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
-
 }

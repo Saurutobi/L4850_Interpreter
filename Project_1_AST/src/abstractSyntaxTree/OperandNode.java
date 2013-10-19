@@ -1,17 +1,15 @@
 package abstractSyntaxTree;
 
-public class OperandNode extends UnaryNode{
-	
+public class OperandNode extends UnaryNode
+{
 	public OperandNode(ASTNode centerNode)
 	{
 		super(centerNode);
 	}
 
 	@Override
-	public Object accept(Visitor v) {
-		// TODO Auto-generated method stub
+	public Object accept(Visitor v)
+	{
 		return null;
 	}
-	
-
 }

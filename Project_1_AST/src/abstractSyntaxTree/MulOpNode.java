@@ -1,21 +1,22 @@
 package abstractSyntaxTree;
 
-public class MulOpNode implements ASTNode{
-	
-	private String TimesDivide;
+public class MulOpNode implements ASTNode
+{
+	private String timesDivide;
 	
 	public MulOpNode(String Token)
 	{
-		TimesDivide = Token;
+		this.timesDivide = Token;
 	}
 
-	@Override
-	public Object accept(Visitor v) {
-		return v.visit(this);
-	}
-	
 	public String getToken()
 	{
 		return TimesDivide;
+	}
+	
+	@Override
+	public Object accept(Visitor v)
+	{
+		return v.visit(this);
 	}
 }
