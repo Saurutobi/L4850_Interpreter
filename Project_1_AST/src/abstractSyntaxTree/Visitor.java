@@ -20,9 +20,10 @@ public interface Visitor
 	//ones that need sorting and stuff
 	public Object visit(FunctionDefNode n);
 	
-	//IDLIST THING HERE
+	public Object visit(IDListNode n);
 	
 	public Object visit(ClassDefNode n);
 	public Object visit(ClassVarsNode n);
 	public Object visit(MethodsNode n);
+	public Object visit(ExpressionBinaryNode n);
 }

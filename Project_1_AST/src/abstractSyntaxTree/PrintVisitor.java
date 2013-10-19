@@ -1,5 +1,7 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class PrintVisitor implements Visitor
 {
 	@Override
@@ -97,19 +99,36 @@ public class PrintVisitor implements Visitor
 		}
 		return null;
 	}
-
-	//these methods may need to use different methods
-	// i think we have to do acceptDepthFirst here instead of what i'm currently using
-	// however i'm drunk so undrunk me will have to analyze this
+	
 	@Override
 	public Object visit(AddExprNode n) {
-		System.out.print(n.getLeftNode() + " " + n.getCenterNode() + " " + n.getRightNode());
+		System.out.print(n.getLeftNode().accept(this) + " " + n.getCenterNode().accept(this) + " " + n.getRightNode().accept(this));
 		return null;
 	}
 
 	@Override
 	public Object visit(CompOpNode n) {
 		System.out.print(n.getCompOp());
+		return null;
+	}
+
+	@Override
+	public Object visit(IDListNode n) {
+		System.out.print(n.getID());
+		for(int i = 0; i < n.getExtras().size(); i++)
+		{
+			System.out.print(" , " + n.getExtras().get(i));
+		}
+		return null;
+	}
+
+	@Override
+	public Object visit(ExpressionBinaryNode n) {
+		System.out.print(n.getFirst());
+		for(int i = 0; i < n.getExtras().size(); i++)
+		{
+			System.out.print(" " + n.get);
+		}
 		return null;
 	}
 }

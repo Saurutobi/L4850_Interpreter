@@ -1,17 +1,27 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class IDListNode implements ASTNode{
-	public IDListNode()
+	
+	private String localID;
+	private List<String> localIDs = null;
+	
+	public IDListNode(String id, List<String> ids)
 	{
-
+		localID = id;
+		localIDs = ids;
 	}
-
-	@Override
-	public void acceptDepthFirst(Visitor v)
+	
+	public String getID()
 	{
-		
+		return localID;
 	}
-
+	public List<String> getExtras()
+	{
+		return localIDs;
+	}
+	
 	@Override
 	public Object accept(Visitor v)
 	{

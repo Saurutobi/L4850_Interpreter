@@ -1,5 +1,7 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public abstract class BinaryNode implements ASTNode
 {
 	protected ASTNode leftNode;
@@ -7,12 +9,17 @@ public abstract class BinaryNode implements ASTNode
 	protected String leftString;
 	protected String rightString;
 	
+	public BinaryNode(){}
+	
 	public BinaryNode(String leftString, String rightString)
 	{
 		this.leftString = leftString;
 		this.rightString = rightString;
 	}
-	
+	public BinaryNode(ASTNode leftNode, List<ASTNode> extraNodes)
+	{
+		
+	}
 	public BinaryNode(ASTNode leftNode, ASTNode rightNode)
 	{
 		super();

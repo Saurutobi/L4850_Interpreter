@@ -95,7 +95,7 @@ ASTNode program():
 {
   //I removed the ()+ from this becuase it was complaining IDK why it was complaining but it was
     //You spelt because wrong
-    node = functionDef()
+    (node = functionDef()
     {
 		return node;
     }
@@ -109,7 +109,7 @@ ASTNode program():
     }
 	|node = loadFile()
     {		return node;
-    }
+    })+
 }
 
 //I think this is good
@@ -129,16 +129,15 @@ ASTNode functionDef():
 //THIS THING NEEDS WORK
 ASTNode idList():
 {
-  	ASTNode node;
 	Token id;
 
 	//best variable name ever
-	MaybeAListOrSomething ids;
+	List<String> ids = null;
 }
 {
-    node = id = <ID> (<COMMA> ids.add(<ID>))*
+    id = <ID> (<COMMA> ids.add(<ID>))*
     {
-		return new idListNode(id.image, SOMETHING HERE LIKE MAYBE ids);
+		return new idListNode(id.image, ids);
     }
 }
 

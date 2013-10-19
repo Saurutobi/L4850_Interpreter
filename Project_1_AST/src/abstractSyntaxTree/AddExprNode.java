@@ -11,14 +11,6 @@ public class AddExprNode extends TrinaryNode{
 	{
 		super(leftNode, centerNode, rightNode);
 	}
-// this one will need some work for sure
-//
-//	@Override
-//	public void acceptDepthFirst(Visitor v) {
-//		leftNode.acceptDepthFirst(v);
-//		centerNode.acceptDepthFirst(v);
-//		rightNode.acceptDepthFirst(v);
-//	}
 
 	@Override
 	public Object accept(Visitor v) {

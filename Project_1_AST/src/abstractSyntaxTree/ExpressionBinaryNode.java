@@ -1,23 +1,31 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class ExpressionBinaryNode extends BinaryNode
 {
-	public ExpressionBinaryNode(ASTNode leftNode, ASTNode rightNode)
-	{
-		super(leftNode, rightNode);
-	}
+	private List<ASTNode> extraExpressions = null;
+	private ASTNode leftNode;
 	
-	@Override
-	public void acceptDepthFirst(Visitor v)
+	public ExpressionBinaryNode(ASTNode leftNode, List<ASTNode> rightNode)
 	{
-		leftNode.acceptDepthFirst(v);
-		v.visit(this);
-		rightNode.acceptDepthFirst(v);
+		this.leftNode = leftNode;
+		extraExpressions = rightNode;
 	}
 
 	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
+	}
+	
+	public ASTNode getFirst()
+	{
+		return leftNode;
+	}
+	
+	public List<ASTNode> getExtras()
+	{
+		return extraExpressions;
 	}
 }
