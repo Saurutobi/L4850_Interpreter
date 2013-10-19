@@ -208,14 +208,16 @@ ASTNode expressionList():
 ASTNode expression():
 {
 	ASTNode node;
+	ASTNode left, center, right;
 }
 {
-    compExpr() (logOp() compExpr())*
-    {		return node;
+    left = compExpr() (center = logOp() right = compExpr())*
+    {
+		return new ExpressionBinaryNode(left,center,right);
     }
     |<NOT> node = compExpr()
     {
-		return node;
+		return new ExpressionUnaryNode(node);
     }
 }
 ASTNode logOp():

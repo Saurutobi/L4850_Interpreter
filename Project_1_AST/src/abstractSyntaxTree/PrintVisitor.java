@@ -117,7 +117,7 @@ public class PrintVisitor implements Visitor
 		System.out.print(n.getID());
 		for(int i = 0; i < n.getExtras().size(); i++)
 		{
-			System.out.print(" , " + n.getExtras().get(i));
+			System.out.print(" , " + n.getExtras().get(i).accept(this));
 		}
 		return null;
 	}
@@ -127,8 +127,14 @@ public class PrintVisitor implements Visitor
 		System.out.print(n.getFirst());
 		for(int i = 0; i < n.getExtras().size(); i++)
 		{
-			System.out.print(" " + n.get);
+			System.out.print(" " + n.getExtras().get(i).accept(this));
 		}
+		return null;
+	}
+
+	@Override
+	public Object visit(ExpressionUnaryNode n) {
+		System.out.print("not " + n.getCenterNode().accept(this));
 		return null;
 	}
 }

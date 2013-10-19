@@ -26,4 +26,5 @@ public interface Visitor
 	public Object visit(ClassVarsNode n);
 	public Object visit(MethodsNode n);
 	public Object visit(ExpressionBinaryNode n);
+	public Object visit(ExpressionUnaryNode n);
 }

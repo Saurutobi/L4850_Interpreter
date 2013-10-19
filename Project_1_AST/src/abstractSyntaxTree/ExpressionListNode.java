@@ -9,15 +9,8 @@ public class ExpressionListNode extends UnaryNode
 	}
 
 	@Override
-	public void acceptDepthFirst(Visitor v)
-	{
-		v.visit(this);
-		centerNode.acceptDepthFirst(v);
-	}
-
-	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
 	}
 }
