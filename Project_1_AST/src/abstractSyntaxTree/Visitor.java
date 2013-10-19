@@ -13,6 +13,7 @@ public interface Visitor
 	public Object visit(LoadFileNode n);
 	public Object visit(NewExprNode n);
 	public Object visit(CompExprNode n);
+	public Object visit(CondClausesNode n);
 	
 	//ones that need work
 	public Object visit(CompOpNode n);

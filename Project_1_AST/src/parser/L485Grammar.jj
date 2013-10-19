@@ -156,7 +156,7 @@ ASTNode classDef():
 //I think this is good
 ASTNode classVars():
 {
-	ASTNode node, idListNode;
+	ASTNode idListNode = null;
 }
 {
     <VARS> idListNode = idList()
@@ -477,12 +477,12 @@ ASTNode condExpr():
 }
 ASTNode condClauses():
 {
-	ASTNode node;
+	ASTNode left, right = null;
 }
 {
-    (<LB> expression() expression() <RB>)+
+    (<LB> left = expression() right = expression() <RB>)+
     {
-		return node;
+		return left;
     }
 }
 ASTNode withExpr():

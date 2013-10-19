@@ -1,8 +1,8 @@
 package abstractSyntaxTree;
 
-public class CondExprNode extends UnaryNode{
-
-	public CondExprNode(ASTNode centerNode)
+public class VariableDefNode extends UnaryNode{
+	
+	public VariableDefNode(ASTNode centerNode)
 	{
 		super(centerNode);
 	}

@@ -1,8 +1,8 @@
 package abstractSyntaxTree;
 
-public class CondClausesNode extends BinaryNode{
-	
-	public CondClausesNode(ASTNode leftNode, ASTNode rightNode)
+public class WithExprNode extends BinaryNode{
+
+	WithExprNode(ASTNode leftNode, ASTNode rightNode)
 	{
 		super(leftNode,rightNode);
 	}
