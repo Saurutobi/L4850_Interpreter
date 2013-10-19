@@ -11,6 +11,7 @@ public interface Visitor
 	public Object visit(IDNode n);
 	public Object visit(IfExprNode n);
 	public Object visit(LoadFileNode n);
+	public Object visit(NewExprNode n);
 	
 	//ones that need work
 	public Object visit(CompOpNode n);
@@ -27,4 +28,5 @@ public interface Visitor
 	public Object visit(MethodsNode n);
 	public Object visit(ExpressionBinaryNode n);
 	public Object visit(ExpressionUnaryNode n);
+	public Object visit(ExpressionListNode n);
 }
