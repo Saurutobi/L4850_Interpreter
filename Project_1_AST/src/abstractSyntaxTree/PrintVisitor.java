@@ -16,8 +16,6 @@ public class PrintVisitor implements Visitor
 		n.getRightNode().accept(this);
 		return null;
 	}
-
-	//TODO IDLIST THING HERE
 	
 	@Override
 	public Object visit(ClassDefNode n)
@@ -80,11 +78,11 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(IfExprNode n) {
 		System.out.print("if ");
-		n.FirstExpression();
+		n.getLeftNode().accept(this);
 		System.out.print(" then ");
-		n.SecondExpression();
+		n.getCenterNode().accept(this);
 		System.out.print(" else ");
-		n.ThirdExpression(); 
+		n.getRightNode().accept(this); 
 		System.out.print(" fi");
 		return null;
 	}
@@ -105,7 +103,7 @@ public class PrintVisitor implements Visitor
 
 	@Override
 	public Object visit(VarRefNode n) {
-		if(n.getRightNode() != null)
+		if(n.getRightString() != null)
 		{
 			System.out.print(n.getLeftString());
 		}
@@ -120,12 +118,11 @@ public class PrintVisitor implements Visitor
 	public Object visit(AddExprNode n) {
 		n.getLeftNode().accept(this);
 		System.out.print(" ");
-		n.getCenterNode().accept(this);
-		System.out.print(" ");
-		n.getRightNode().accept(this);
-		System.out.print(" ");
-		
-		
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			System.out.print(" ");
+			n.getExtraNodes().get(i).accept(this);
+		}
 		return null;
 	}
 	
@@ -154,12 +151,10 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(ExpressionBinaryNode n) {
 		n.getLeftNode().accept(this);
-		if(n.getCenterNode() != null)
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
 			System.out.print(" "); 
-			n.getCenterNode().accept(this);
-			System.out.print(" ");
-			n.getRightNode().accept(this);
+			n.getExtraNodes().get(i).accept(this);
 		}
 		return null;
 	}
@@ -190,7 +185,12 @@ public class PrintVisitor implements Visitor
 
 	@Override
 	public Object visit(MulExprNode n) {
-		System.out.print(n.getLeftNode().accept(this) + " " + n.getCenterNode().accept(this) + " " + n.getRightNode().accept(this));
+		System.out.print(n.getLeftNode().accept(this));
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			System.out.print(" ");
+			n.getExtraNodes().get(i).accept(this);
+		}
 		return null;
 	}
 
@@ -209,12 +209,10 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(CompExprNode n) {
 		n.getLeftNode().accept(this);
-		if(n.getCenterNode() != null)
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
 			System.out.print(" ");
-			n.getCenterNode().accept(this);
-			System.out.print(" ");
-			n.getRightNode().accept(this);
+			n.getExtraNodes().get(i).accept(this);
 		}
 		return null;
 	}
@@ -222,6 +220,80 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(CondClausesNode n) {
 			
+		return null;
+	}
+
+	@Override
+	public Object visit(FactorNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(OperandNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(CallNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(ParamListNode n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object visit(ConstantNode n) {
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(ListNode n) {
+		System.out.print("[");
+		n.getCenterNode().accept(this);
+		System.out.print("]");
+		return null;
+	}
+
+	@Override
+	public Object visit(ConstantListNode n) {
+		n.getRightNode().accept(this);
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			System.out.print(", ");
+			n.getExtraNodes().get(i).accept(this);
+		}
+		return null;
+	}
+
+	@Override
+	public Object visit(AssignExprNode n) {
+		System.out.print("assign ");
+		n.getLeftNode().accept(this);
+		System.out.print(" to " + n.getRightString());
+		return null;
+	}
+
+	@Override
+	public Object visit(WithExprNode n) {
+		System.out.print("with ( ");
+		n.getLeftNode().accept(this);
+		System.out.print(" )" );
+		n.getRightNode().accept(this);
+		return null;
+	}
+
+	@Override
+	public Object visit(VariableDefsNode n) {
+		System.out.print("[" + n.getLeftString());
+		n.getRightNode().accept(this);
+		System.out.print("]");
 		return null;
 	}
 }
