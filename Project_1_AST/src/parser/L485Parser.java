@@ -147,7 +147,7 @@ public class L485Parser implements L485ParserConstants {
 
 //I think this is good
   static final public ASTNode classVars() throws ParseException {
-        ASTNode node, idListNode;
+        ASTNode idListNode = null;
     jj_consume_token(VARS);
     idListNode = idList();
                 {if (true) return new ClassVarsNode(idListNode);}
@@ -631,9 +631,10 @@ public class L485Parser implements L485ParserConstants {
 
   static final public ASTNode newExpr() throws ParseException {
         ASTNode node;
+        Token id;
     jj_consume_token(NEW);
-    jj_consume_token(ID);
-                {if (true) return node;}
+    id = jj_consume_token(ID);
+                {if (true) return new NewExprNode(id.image);}
     throw new Error("Missing return statement in function");
   }
 
@@ -690,12 +691,12 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode condClauses() throws ParseException {
-        ASTNode node;
+        ASTNode left, right = null;
     label_11:
     while (true) {
       jj_consume_token(LB);
-      expression();
-      expression();
+      left = expression();
+      right = expression();
       jj_consume_token(RB);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case LB:
@@ -706,7 +707,7 @@ public class L485Parser implements L485ParserConstants {
         break label_11;
       }
     }
-                {if (true) return node;}
+                {if (true) return left;}
     throw new Error("Missing return statement in function");
   }
 
@@ -723,6 +724,7 @@ public class L485Parser implements L485ParserConstants {
 
   static final public ASTNode variableDefs() throws ParseException {
         ASTNode node;
+        Token id;
     label_12:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -734,8 +736,8 @@ public class L485Parser implements L485ParserConstants {
         break label_12;
       }
       jj_consume_token(LBK);
-      jj_consume_token(ID);
-      expression();
+      id = jj_consume_token(ID);
+      node = expression();
       jj_consume_token(RBK);
     }
                 {if (true) return node;}

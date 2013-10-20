@@ -2,8 +2,8 @@ package abstractSyntaxTree;
 
 public class VarRefNode implements ASTNode
 {
-	private String leftString;
-	private String rightString;
+	private String leftString = null;
+	private String rightString = null;
 	
 	public VarRefNode(String leftString, String rightString)
 	{
