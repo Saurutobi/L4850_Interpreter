@@ -113,36 +113,29 @@ ASTNode program():
 }
 ASTNode functionDef():
 {
-	ASTNode idListNode, expressionListNode;
-	idListNode = null;
 	Token id;
+	ASTNode idListNode = null, expressionListNode;
 }
 {
-    node = <DEFUNC> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList()
+    <DEFUNC> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList()
     {		return new FunctionDefNode(id.image, idListNode, expressionListNode);
     }
 }
-
-
 ASTNode idList():
 {
-	Token id;
-	List<String> ids = null;
+	Token id, anotherID;
+	List<String> ids = new ArrayList<String>();
 }
 {
-    id = <ID> (<COMMA> ids = <ID>)*
+    id = <ID> (<COMMA> anotherID = <ID> {ids.add(anotherID.image);} )*
     {
-		return new idListNode(id.image, ids.image);
+		return new idListNode(id.image, anotherID);
     }
 }
-
-
-
-//I think this is good
 ASTNode classDef():
 {
-	ASTNode classVarsNode, methodsNode = null;
 	Token id;
+	ASTNode classVarsNode = null, methodsNode = null;
 }
 {
     <DEFCLASS> id = <ID> <LB> (classVarsNode = classVars())? (methodsNode = methods())? <RB>
@@ -150,7 +143,6 @@ ASTNode classDef():
 		return new ClassDefNode(id.image, classVarsNode, methodsNode);
     }
 }
-//I think this is good
 ASTNode classVars():
 {
 	ASTNode idListNode = null;
@@ -161,13 +153,10 @@ ASTNode classVars():
 		return new ClassVarsNode(idListNode);
     }
 }
-
-
-//THIS ONE PROBABLY NEEDS SOME WORK
 ASTNode methods():
 {
-	ASTNode node, idListNode, expressionListNode;
 	Token id;
+	ASTNode idListNode = null, expressionListNode;
 }
 {
     (<METHOD> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList())+
@@ -175,10 +164,8 @@ ASTNode methods():
 		return new MethodsNode(id.image, idListNode, expressionListNode);
     }
 }
-
 ASTNode loadFile():
 {
-	ASTNode node = null;
 	Token id;
 }
 {
@@ -189,12 +176,13 @@ ASTNode loadFile():
 }
 ASTNode expressionList():
 {
-	ASTNode node = null;
+	ASTNode node;
+	List<ASTNode> expressionList = new ArrayList<ASTNode>();
 }
 {
-    <LB> (expression())+ <RB>
+    <LB> (node = expression() {expressionList.add(node);} )+ <RB>
     {
-		return node;
+		return new ExpressionListNode(expressionList);
     }
 }
 
