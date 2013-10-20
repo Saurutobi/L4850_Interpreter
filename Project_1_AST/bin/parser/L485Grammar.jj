@@ -88,13 +88,12 @@ TOKEN :
 | < COMMA: "," >
 }
 
+//Suspected Good
 ASTNode program():
 {
 	ASTNode node;
 }
 {
-  //I removed the ()+ from this becuase it was complaining IDK why it was complaining but it was
-    //You spelt because wrong
     (node = functionDef()
     {
 		return new ProgramNode(node);
@@ -112,8 +111,6 @@ ASTNode program():
 		return new ProgramNode(node);
     })+
 }
-
-//I think this is good
 ASTNode functionDef():
 {
 	ASTNode idListNode, expressionListNode;

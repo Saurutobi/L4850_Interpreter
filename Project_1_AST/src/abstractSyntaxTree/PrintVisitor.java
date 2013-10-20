@@ -225,31 +225,52 @@ public class PrintVisitor implements Visitor
 
 	@Override
 	public Object visit(FactorNode n) {
-		// TODO Auto-generated method stub
+		n.getLeftNode().accept(this);
+		if(n.getRightNode() != null)
+		{
+			n.getRightNode().accept(this);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(OperandNode n) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public Object visit(CallNode n) {
-		// TODO Auto-generated method stub
+		System.out.print("invoke ( ");
+		if(n.getCenterNode() != null) 
+		{
+			n.getCenterNode().accept(this);
+		}
+		System.out.print(")");
 		return null;
 	}
 
 	@Override
 	public Object visit(ParamListNode n) {
-		// TODO Auto-generated method stub
+		n.getLeftNode().accept(this);
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			System.out.print(", ");
+			n.getExtraNodes().get(i).accept(this);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(ConstantNode n) {
-		
+		if(n.getToken() != null)
+		{
+			System.out.print(n.getToken());
+		}
+		else
+		{
+			n.getCenterNode().accept(this);
+		}
 		return null;
 	}
 

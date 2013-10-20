@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class UnaryNode implements ASTNode
 {
-	protected ASTNode centerNode;
+	protected ASTNode centerNode = null;
 	protected List<ASTNode> centerList;
-	protected String centerString;
+	protected String centerString = null;
 	
 	public UnaryNode(List<ASTNode> centerList)
 	{
