@@ -1,5 +1,7 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class AddExprNode extends BinaryNode
 {
 	public AddExprNode(ASTNode leftNode, List<ASTNode> extraNodes)

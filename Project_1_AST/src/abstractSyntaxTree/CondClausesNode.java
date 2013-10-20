@@ -1,14 +1,17 @@
 package abstractSyntaxTree;
 
-public class CondClausesNode extends BinaryNode{
-	
-	public CondClausesNode(ASTNode leftNode, ASTNode rightNode)
+import java.util.List;
+
+public class CondClausesNode extends UnaryNode
+{
+	public CondClausesNode(List<ASTNode> centerNodeList)
 	{
-		super(leftNode,rightNode);
+		super(centerNodeList);
 	}
 
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 }

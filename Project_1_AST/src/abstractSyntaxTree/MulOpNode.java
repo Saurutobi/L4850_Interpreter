@@ -11,7 +11,7 @@ public class MulOpNode implements ASTNode
 
 	public String getToken()
 	{
-		return TimesDivide;
+		return timesDivide;
 	}
 	
 	@Override

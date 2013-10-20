@@ -1,5 +1,7 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class CompExprNode extends BinaryNode
 {
 	public CompExprNode(ASTNode leftNode, List<ASTNode> extraNodes)

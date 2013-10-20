@@ -1,14 +1,15 @@
 package abstractSyntaxTree;
 
-public class NewExprNode extends UnaryNode{
-	
-	public NewExprNode(ASTNode centerNode)
+public class NewExprNode extends UnaryNode
+{
+	public NewExprNode(String token)
 	{
-		super(centerNode);
+		super(token);
 	}
 	
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 }

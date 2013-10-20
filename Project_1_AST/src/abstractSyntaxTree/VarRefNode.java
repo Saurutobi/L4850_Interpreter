@@ -1,25 +1,29 @@
 package abstractSyntaxTree;
 
-public class VarRefNode extends BinaryNode
-{	
+public class VarRefNode implements ASTNode
+{
+	private String leftString;
+	private String rightString;
+	
 	public VarRefNode(String leftString, String rightString)
 	{
-		super(leftString, rightString);
-	}
-	public VarRefNode(String leftString)
-	{
-		super(leftString, null);
+		this.leftString = leftString;
+		this.rightString = rightString;
 	}
 	
-//	@Override
-//	public void acceptDepthFirst(Visitor v) {
-//		leftNode.acceptDepthFirst(v);
-//		v.visit(this);
-//		rightNode.acceptDepthFirst(v);
-//	}
-
+	public String getLeftString()
+	{
+		return leftString;
+	}
+	
+	public String getRightString()
+	{
+		return rightString;
+	}
+	
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 }

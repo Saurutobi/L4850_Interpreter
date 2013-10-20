@@ -1,14 +1,17 @@
 package abstractSyntaxTree;
 
-public class ConstantListNode extends BinaryNode{
-	
-	public ConstantListNode(ASTNode leftNode, ASTNode rightNode)
+import java.util.List;
+
+public class ConstantListNode extends BinaryNode
+{
+	public ConstantListNode(ASTNode leftNode, List<ASTNode> extraNodes)
 	{
-		super(leftNode,rightNode);
+		super(leftNode, extraNodes);
 	}
 	
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 }

@@ -1,14 +1,17 @@
 package abstractSyntaxTree;
 
-public class ParamListNode extends BinaryNode{
+import java.util.List;
 
-	public ParamListNode(ASTNode leftNode, ASTNode rightNode)
+public class ParamListNode extends BinaryNode
+{
+	public ParamListNode(ASTNode leftNode, List<ASTNode> extraNodes)
 	{
-		super(leftNode,rightNode);
+		super(leftNode, extraNodes);
 	}
 
 	@Override
-	public Object accept(Visitor v) {
+	public Object accept(Visitor v)
+	{
 		return v.visit(this);
 	}
 	

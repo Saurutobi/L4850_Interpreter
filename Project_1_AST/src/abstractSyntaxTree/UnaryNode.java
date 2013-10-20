@@ -20,7 +20,6 @@ public abstract class UnaryNode implements ASTNode
 	
 	public UnaryNode(ASTNode centerNode)
 	{
-		super();
 		this.centerNode = centerNode;
 	}
 	
@@ -28,6 +27,7 @@ public abstract class UnaryNode implements ASTNode
 	{
 		return centerNode;
 	}
+	
 	public String getCenterString()
 	{
 		return centerString;
