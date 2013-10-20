@@ -11,6 +11,8 @@ PARSER_BEGIN(L485Parser)
 package parser;
 
 import abstractSyntaxTree.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class L485Parser
 {
@@ -113,36 +115,29 @@ ASTNode program():
 }
 ASTNode functionDef():
 {
-	ASTNode idListNode, expressionListNode;
-	idListNode = null;
 	Token id;
+	ASTNode IDListNode = null, expressionListNode;
 }
 {
-    node = <DEFUNC> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList()
-    {		return new FunctionDefNode(id.image, idListNode, expressionListNode);
+    <DEFUNC> id = <ID> <LP> (IDListNode = idList())? <RP> expressionListNode = expressionList()
+    {		return new FunctionDefNode(id.image, IDListNode, expressionListNode);
     }
 }
-
-
 ASTNode idList():
 {
-	Token id;
-	List<String> ids = null;
+	Token id, anotherID;
+	List<String> ids = new ArrayList<String>();
 }
 {
-    id = <ID> (<COMMA> ids = <ID>)*
+    id = <ID> (<COMMA> anotherID = <ID> {ids.add(anotherID.image);} )*
     {
-		return new idListNode(id.image, ids.image);
+		return new IDListNode(id.image, ids);
     }
 }
-
-
-
-//I think this is good
 ASTNode classDef():
 {
-	ASTNode classVarsNode, methodsNode = null;
 	Token id;
+	ASTNode classVarsNode = null, methodsNode = null;
 }
 {
     <DEFCLASS> id = <ID> <LB> (classVarsNode = classVars())? (methodsNode = methods())? <RB>
@@ -150,64 +145,60 @@ ASTNode classDef():
 		return new ClassDefNode(id.image, classVarsNode, methodsNode);
     }
 }
-//I think this is good
 ASTNode classVars():
 {
-	ASTNode idListNode = null;
+	ASTNode IDListNode = null;
 }
 {
-    <VARS> idListNode = idList()
+    <VARS> IDListNode = idList()
     {
-		return new ClassVarsNode(idListNode);
+		return new ClassVarsNode(IDListNode);
     }
 }
-
-
-//THIS ONE PROBABLY NEEDS SOME WORK
 ASTNode methods():
 {
-	ASTNode node, idListNode, expressionListNode;
 	Token id;
+	ASTNode IDListNode = null, expressionListNode;
 }
 {
-    (<METHOD> id = <ID> <LP> (idListNode = idList())? <RP> expressionListNode = expressionList())+
+    (<METHOD> id = <ID> <LP> (IDListNode = idList())? <RP> expressionListNode = expressionList())+
     {
-		return new MethodsNode(id.image, idListNode, expressionListNode);
+		return new MethodsNode(id.image, IDListNode, expressionListNode);
     }
 }
-
 ASTNode loadFile():
 {
-	ASTNode node = null;
 	Token id;
 }
 {
     <LOAD> id = <STRING>
     {
-      	return LoadFileNode(id.image);
+      	return new LoadFileNode(id.image);
     }
 }
 ASTNode expressionList():
 {
-	ASTNode node = null;
+	ASTNode node;
+	List<ASTNode> expressionList = new ArrayList<ASTNode>();
 }
 {
-    <LB> (expression())+ <RB>
+    <LB> (node = expression() {expressionList.add(node);} )+ <RB>
     {
-		return node;
+		return new ExpressionListNode(expressionList);
     }
 }
 
-//some of these nodes are really difficult haha
+
 ASTNode expression():
 {
 	ASTNode node = null;
-	ASTNode left, center, right = null;
+	ASTNode left;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    left = compExpr() (center = logOp() right = compExpr())*
+    left = compExpr() (node = logOp(){expressions.add(node);} node = compExpr(){expressions.add(node);})*
     {
-		return new ExpressionBinaryNode(left,center,right);
+		return new ExpressionBinaryNode(left, expressions);
     }
     |<NOT> node = compExpr()
     {

@@ -235,7 +235,16 @@ public class PrintVisitor implements Visitor
 
 	@Override
 	public Object visit(OperandNode n) {
-
+		if(n.isExpression())
+		{
+			System.out.print("(");
+			n.getCenterNode().accept(this);
+			System.out.print(")");
+		}
+		else
+		{
+			n.getCenterNode().accept(this);
+		}
 		return null;
 	}
 
