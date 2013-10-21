@@ -230,8 +230,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode expression() throws ParseException {
-        ASTNode node = null;
-        ASTNode left;
+        ASTNode node = null, left;
         List<ASTNode> expressions = new ArrayList<ASTNode>();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case FUNC:
@@ -261,9 +260,9 @@ public class L485Parser implements L485ParserConstants {
           break label_5;
         }
         node = logOp();
-                                      expressions.add(node);
+                                       expressions.add(node);
         node = compExpr();
-                                                                                expressions.add(node);
+                                                                                  expressions.add(node);
       }
                 {if (true) return new ExpressionBinaryNode(left, expressions);}
       break;
@@ -281,18 +280,15 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode logOp() throws ParseException {
-        ASTNode node;
-        Token id;
+    Token id;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case OR:
       id = jj_consume_token(OR);
-      node = new LogOpNode(id.image);
-      {if (true) return node;}
+      {if (true) return new LogOpNode(id.image);}
       break;
     case AND:
       id = jj_consume_token(AND);
-      node = new LogOpNode(id.image);
-      {if (true) return node;}
+      {if (true) return new LogOpNode(id.image);}
       break;
     default:
       jj_la1[11] = jj_gen;
@@ -303,8 +299,9 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode compExpr() throws ParseException {
-        ASTNode node;
-    addExpr();
+        ASTNode node = null, left;
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
+    left = addExpr();
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -320,10 +317,12 @@ public class L485Parser implements L485ParserConstants {
         jj_la1[12] = jj_gen;
         break label_6;
       }
-      compOp();
-      addExpr();
+      node = compOp();
+                                       expressions.add(node);
+      node = addExpr();
+                                                                                 expressions.add(node);
     }
-                {if (true) return node;}
+                {if (true) return new CompExprNode(left, expressions);}
     throw new Error("Missing return statement in function");
   }
 
@@ -363,9 +362,9 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode addExpr() throws ParseException {
-        ASTNode leftNode, rightNode;
-        Token id;
-    leftNode = mulExpr();
+    ASTNode node = null, left;
+    List<ASTNode> expressions = new ArrayList<ASTNode>();
+    left = mulExpr();
     label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -377,28 +376,38 @@ public class L485Parser implements L485ParserConstants {
         jj_la1[14] = jj_gen;
         break label_7;
       }
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PLUS:
-        id = jj_consume_token(PLUS);
-        rightNode = mulExpr();
-        break;
-      case MINUS:
-        id = jj_consume_token(MINUS);
-        rightNode = mulExpr();
-        break;
-      default:
-        jj_la1[15] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      node = addOp();
+                                      expressions.add(node);
+      node = mulExpr();
+                                                                                expressions.add(node);
     }
-
+                {if (true) return new AddExprNode(left, expressions);}
+    throw new Error("Missing return statement in function");
   }
 
-//this node needs to look similar to the above node
+  static final public ASTNode addOp() throws ParseException {
+    Token id;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case PLUS:
+      id = jj_consume_token(PLUS);
+      {if (true) return new AddOpNode(id.image);}
+      break;
+    case MINUS:
+      id = jj_consume_token(MINUS);
+      {if (true) return new AddOpNode(id.image);}
+      break;
+    default:
+      jj_la1[15] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
   static final public ASTNode mulExpr() throws ParseException {
-        ASTNode node;
-    node = factor();
+        ASTNode node = null, left;
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
+    left = factor();
     label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -410,37 +419,46 @@ public class L485Parser implements L485ParserConstants {
         jj_la1[16] = jj_gen;
         break label_8;
       }
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case MULTIPLY:
-        jj_consume_token(MULTIPLY);
-        factor();
-        break;
-      case DIVIDE:
-        jj_consume_token(DIVIDE);
-        factor();
-        break;
-      default:
-        jj_la1[17] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      node = mulOp();
+                                     expressions.add(node);
+      node = factor();
+                                                                              expressions.add(node);
     }
-                {if (true) return node;}
+                {if (true) return new MulExprNode(left, expressions);}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ASTNode mulOp() throws ParseException {
+    Token id;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case MULTIPLY:
+      id = jj_consume_token(MULTIPLY);
+      {if (true) return new MulOpNode(id.image);}
+      break;
+    case DIVIDE:
+      id = jj_consume_token(DIVIDE);
+      {if (true) return new MulOpNode(id.image);}
+      break;
+    default:
+      jj_la1[17] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode factor() throws ParseException {
-        ASTNode node;
-    operand();
+        ASTNode left, right = null;
+    left = operand();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INVOKE:
-      call();
+      right = call();
       break;
     default:
       jj_la1[18] = jj_gen;
       ;
     }
-                {if (true) return node;}
+                {if (true) return new FactorNode(left, right);}
     throw new Error("Missing return statement in function");
   }
 
@@ -449,7 +467,7 @@ public class L485Parser implements L485ParserConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ID:
       node = varRef();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case TRUE:
     case FALSE:
@@ -458,37 +476,37 @@ public class L485Parser implements L485ParserConstants {
     case INTNUM:
     case LBK:
       node = constant();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case NEW:
       node = newExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case IF:
       node = ifExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case FUNC:
       node = funcExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case ASSIGN:
       node = assignExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case COND:
       node = condExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case WITH:
       node = withExpr();
-                {if (true) return node;}
+                {if (true) return new OperandNode(node);}
       break;
     case LP:
       jj_consume_token(LP);
       node = expression();
       jj_consume_token(RP);
-                {if (true) return node;}
+                {if (true) return new OperandNode(node, true);}
       break;
     default:
       jj_la1[19] = jj_gen;
@@ -499,7 +517,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode call() throws ParseException {
-        ASTNode node;
+        ASTNode node = null;
     jj_consume_token(INVOKE);
     jj_consume_token(LP);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -518,20 +536,21 @@ public class L485Parser implements L485ParserConstants {
     case INTNUM:
     case LP:
     case LBK:
-      paramList();
+      node = paramList();
       break;
     default:
       jj_la1[20] = jj_gen;
       ;
     }
     jj_consume_token(RP);
-                {if (true) return node;}
+                {if (true) return new CallNode(node);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode paramList() throws ParseException {
-        ASTNode node;
-    expression();
+        ASTNode node = null, left;
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
+    left = expression();
     label_9:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -543,77 +562,79 @@ public class L485Parser implements L485ParserConstants {
         break label_9;
       }
       jj_consume_token(COMMA);
-      expression();
+      node = expression();
+                                                      expressions.add(node);
     }
-                {if (true) return node;}
+                {if (true) return new ParamListNode(left, expressions);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode varRef() throws ParseException {
-        ASTNode node;
-        Token firstID = null;
-        Token secondID = null;
-    firstID = jj_consume_token(ID);
+        Token id;
+        Token anotherID = null;
+    id = jj_consume_token(ID);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case DOT:
       jj_consume_token(DOT);
-      secondID = jj_consume_token(ID);
+      anotherID = jj_consume_token(ID);
       break;
     default:
       jj_la1[22] = jj_gen;
       ;
     }
-                {if (true) return new VarRefNode(firstID.image, secondID.image);}
+                {if (true) return new VarRefNode(id.image, anotherID.image);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode constant() throws ParseException {
+    Token id;
         ASTNode node;
-        Token id;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INTNUM:
       id = jj_consume_token(INTNUM);
-
+        {if (true) return new ConstantNode(id.image);}
       break;
     case FLOATNUM:
       id = jj_consume_token(FLOATNUM);
-
+                {if (true) return new ConstantNode(id.image);}
       break;
     case LBK:
       node = list();
-
+        {if (true) return new ConstantNode(node);}
       break;
     case STRING:
       id = jj_consume_token(STRING);
-
+                {if (true) return new ConstantNode(id.image);}
       break;
     case TRUE:
       id = jj_consume_token(TRUE);
-
+                {if (true) return new ConstantNode(id.image);}
       break;
     case FALSE:
       id = jj_consume_token(FALSE);
-
+                {if (true) return new ConstantNode(id.image);}
       break;
     default:
       jj_la1[23] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode list() throws ParseException {
         ASTNode node;
     jj_consume_token(LBK);
-    constantList();
+    node = constantList();
     jj_consume_token(RBK);
-                {if (true) return node;}
+                {if (true) return new ListNode(node);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode constantList() throws ParseException {
-        ASTNode node;
-    constant();
+        ASTNode node = null, left;
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
+    left = constant();
     label_10:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -625,23 +646,23 @@ public class L485Parser implements L485ParserConstants {
         break label_10;
       }
       jj_consume_token(COMMA);
-      constant();
+      node = constant();
+                                                  expressions.add(node);
     }
-                {if (true) return node;}
+                {if (true) return new ConstantListNode(left, expressions);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode newExpr() throws ParseException {
-        ASTNode node;
+        Token id;
     jj_consume_token(NEW);
-    jj_consume_token(ID);
-                {if (true) return node;}
+    id = jj_consume_token(ID);
+                {if (true) return new NewExprNode(id.image);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode ifExpr() throws ParseException {
         ASTNode left, center, right;
-        IfExprNode node;
     jj_consume_token(IF);
     left = expression();
     jj_consume_token(THEN);
@@ -649,14 +670,12 @@ public class L485Parser implements L485ParserConstants {
     jj_consume_token(ELSE);
     right = expression();
     jj_consume_token(FI);
-        node = new IfExprNode(left,center,right);
-                {if (true) return node;}
+                {if (true) return new IfExprNode(left, center, right);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode funcExpr() throws ParseException {
-        ASTNode left, right;
-        left = null;
+        ASTNode left = null, right;
     jj_consume_token(FUNC);
     jj_consume_token(LP);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -669,35 +688,39 @@ public class L485Parser implements L485ParserConstants {
     }
     jj_consume_token(RP);
     right = expressionList();
-                {if (true) return new FuncExprNode(left,right);}
+                {if (true) return new FuncExprNode(left, right);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode assignExpr() throws ParseException {
+    Token id;
         ASTNode node;
     jj_consume_token(ASSIGN);
-    expression();
+    node = expression();
     jj_consume_token(TO);
-    jj_consume_token(ID);
-                {if (true) return node;}
+    id = jj_consume_token(ID);
+                {if (true) return new AssignExprNode(node, id.image);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode condExpr() throws ParseException {
         ASTNode node;
     jj_consume_token(COND);
-    condClauses();
-                {if (true) return node;}
+    node = condClauses();
+                {if (true) return new CondExprNode(node);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode condClauses() throws ParseException {
-        ASTNode left, right = null;
+        ASTNode node;
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
     label_11:
     while (true) {
       jj_consume_token(LB);
-      left = expression();
-      right = expression();
+      node = expression();
+                               expressions.add(node);
+      node = expression();
+                                                                            expressions.add(node);
       jj_consume_token(RB);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case LB:
@@ -708,23 +731,26 @@ public class L485Parser implements L485ParserConstants {
         break label_11;
       }
     }
-                {if (true) return left;}
+                {if (true) return new CondClausesNode(expressions);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode withExpr() throws ParseException {
-        ASTNode node;
+        ASTNode left, right;
     jj_consume_token(WITH);
     jj_consume_token(LP);
-    variableDefs();
+    left = variableDefs();
     jj_consume_token(RP);
-    expressionList();
-                {if (true) return node;}
+    right = expressionList();
+                {if (true) return new WithExprNode(left, right);}
     throw new Error("Missing return statement in function");
   }
 
   static final public ASTNode variableDefs() throws ParseException {
+    Token id;
         ASTNode node;
+        List<String> ids = new ArrayList<String>();
+        List<ASTNode> expressions = new ArrayList<ASTNode>();
     label_12:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -736,11 +762,13 @@ public class L485Parser implements L485ParserConstants {
         break label_12;
       }
       jj_consume_token(LBK);
-      jj_consume_token(ID);
-      expression();
+      id = jj_consume_token(ID);
+                      ids.add(id.image);
+      node = expression();
+                                                               expressions.add(node);
       jj_consume_token(RBK);
     }
-                {if (true) return node;}
+                {if (true) return new VariableDefsNode(ids, expressions);}
     throw new Error("Missing return statement in function");
   }
 

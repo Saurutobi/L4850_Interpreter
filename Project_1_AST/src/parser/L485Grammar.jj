@@ -100,15 +100,15 @@ ASTNode program():
     {
 		return new ProgramNode(node);
     }
-    |node = classDef()
+    | node = classDef()
     {
 		return new ProgramNode(node);
     }
-	|node = expression()
+	| node = expression()
     {
 		return new ProgramNode(node);
 	}
-	|node = loadFile()
+	| node = loadFile()
     {
 		return new ProgramNode(node);
     })+
@@ -187,49 +187,44 @@ ASTNode expressionList():
 		return new ExpressionListNode(expressionList);
     }
 }
-
-
 ASTNode expression():
 {
-	ASTNode node = null;
-	ASTNode left;
+	ASTNode node = null, left;
 	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    left = compExpr() (node = logOp(){expressions.add(node);} node = compExpr(){expressions.add(node);})*
+    left = compExpr() (node = logOp() {expressions.add(node);} node = compExpr() {expressions.add(node);} )*
     {
 		return new ExpressionBinaryNode(left, expressions);
     }
-    |<NOT> node = compExpr()
+    | <NOT> node = compExpr()
     {
 		return new ExpressionUnaryNode(node);
     }
 }
 ASTNode logOp():
 {
-	ASTNode node;
-	Token id;
+    Token id;
 }
 {
     id = <OR>
     {
-      node = new LogOpNode(id.image);
-      return node;
+      return new LogOpNode(id.image);
     }
-    |id = <AND >
+    | id = <AND>
     {
-      node = new LogOpNode(id.image);
-      return node;
+      return new LogOpNode(id.image);
     }
 }
 ASTNode compExpr():
 {
-	ASTNode node;
+	ASTNode node = null, left;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    addExpr() (compOp() addExpr())*
+    left = addExpr() (node = compOp() {expressions.add(node);} node = addExpr() {expressions.add(node);} )*
     {
-		return node;
+		return new CompExprNode(left, expressions);
     }
 }
 ASTNode compOp():
@@ -262,35 +257,62 @@ ASTNode compOp():
 }
 ASTNode addExpr():
 {
-	ASTNode leftNode, rightNode;
-	Token id;
+    ASTNode node = null, left;
+    List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    leftNode = mulExpr() (id = < PLUS > rightNode = mulExpr() | id = < MINUS > rightNode = mulExpr())*
+    left = mulExpr() (node = addOp() {expressions.add(node);} node = mulExpr() {expressions.add(node);} )*
     {
-		//something goes here come back later jason
+		return new AddExprNode(left, expressions);
     }
 }
-
-//this node needs to look similar to the above node
-ASTNode mulExpr():
+ASTNode addOp():
 {
-	ASTNode node;
+    Token id;
 }
 {
-    node = factor() (< MULTIPLY > factor() | < DIVIDE > factor())*
+    id = <PLUS>
     {
-		return node;
+      return new AddOpNode(id.image);
+    }
+    | id = <MINUS>
+    {
+      return new AddOpNode(id.image);
+    }
+}
+ASTNode mulExpr():
+{
+	ASTNode node = null, left;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
+}
+{
+    left = factor() (node = mulOp() {expressions.add(node);} node = factor() {expressions.add(node);} )*
+    {
+		return new MulExprNode(left, expressions);
+    }
+}
+ASTNode mulOp():
+{
+    Token id;
+}
+{
+    id = <MULTIPLY>
+    {
+      return new MulOpNode(id.image);
+    }
+    | id = <DIVIDE>
+    {
+      return new MulOpNode(id.image);
     }
 }
 ASTNode factor():
 {
-	ASTNode node;
+	ASTNode left, right = null;
 }
 {
-    operand() (call())?
+    left = operand() (right = call())?
     {
-		return node;
+		return new FactorNode(left, right);
     }
 }
 ASTNode operand():
@@ -299,94 +321,94 @@ ASTNode operand():
 }
 {
     node = varRef()
-    {		return node;
+    {		return new OperandNode(node);
     }
     | node = constant()
-    {		return node;
+    {		return new OperandNode(node);
     }
     | node = newExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
     | node = ifExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
     | node = funcExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
     | node = assignExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
     | node = condExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
   	| node = withExpr()
-	{		return node;
+	{		return new OperandNode(node);
 	}
     | <LP> node = expression() <RP>
     {
-		return node;
+		return new OperandNode(node, true);
     }
 }
 ASTNode call():
 {
-	ASTNode node;
+	ASTNode node = null;
 }
 {
-    <INVOKE> <LP> (paramList())? <RP>
+    <INVOKE> <LP> (node = paramList())? <RP>
     {
-		return node;
+		return new CallNode(node);
     }
 }
 ASTNode paramList():
 {
-	ASTNode node;
+	ASTNode node = null, left;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    expression() (<COMMA> expression())*
+    left = expression() (<COMMA> node = expression() {expressions.add(node);} )*
     {
-		return node;
+		return new ParamListNode(left, expressions);
     }
 }
 ASTNode varRef():
 {
-	ASTNode node;
-	Token firstID = null;
-	Token secondID = null;
+	Token id;
+	Token anotherID = null;
 }
 {
-    firstID = <ID> (<DOT> secondID = <ID>)?
-    {		return new VarRefNode(firstID.image, secondID.image);
+    id = <ID> (<DOT> anotherID = <ID>)?
+    {		return new VarRefNode(id.image, anotherID.image);
     }
 }
 ASTNode constant():
 {
+    Token id;
 	ASTNode node;
-	Token id;
 }
 {
     id = <INTNUM>
     {
-      		
+      	return new ConstantNode(id.image);
     }
     | id = <FLOATNUM>
     {
-		
+		return new ConstantNode(id.image);
     }
     | node = list()
     {
-		
-    }
+        return new ConstantNode(node);
+	}
     | id = <STRING>
     {
-		
+		return new ConstantNode(id.image);
     }
     | id = <TRUE>
     {
-		
+		return new ConstantNode(id.image);
     }
     | id = <FALSE>
     {
-		
+		return new ConstantNode(id.image);
     }
 }
 ASTNode list():
@@ -394,63 +416,62 @@ ASTNode list():
 	ASTNode node;
 }
 {
-    <LBK> constantList() <RBK>
+    <LBK> node = constantList() <RBK>
     {
-		return node;
+		return new ListNode(node);
     }
 }
 ASTNode constantList():
 {
-	ASTNode node;
+	ASTNode node = null, left;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    constant() (<COMMA> constant())*
+    left = constant() (<COMMA> node = constant() {expressions.add(node);} )*
     {
-		return node;
+		return new ConstantListNode(left, expressions);
     }
 }
 ASTNode newExpr():
 {
-	ASTNode node;
+	Token id;
 }
 {
-    (      <NEW> <ID>
+    (      <NEW> id = <ID>
       )
     {
-		return node;
+		return new NewExprNode(id.image);
     }
 }
 ASTNode ifExpr():
 {
 	ASTNode left, center, right;
-	IfExprNode node;
 }
 {
     <IF> left = expression() <THEN> center = expression() <ELSE> right = expression() <FI>
     {
-      	node = new IfExprNode(left,center,right);
-		return node;
+		return new IfExprNode(left, center, right);
     }
 }
 ASTNode funcExpr():
 {
-	ASTNode left, right;
-	left = null;
+	ASTNode left = null, right;
 }
 {
     <FUNC> <LP> (left = idList())? <RP> right = expressionList()
     {
-		return new FuncExprNode(left,right);
+		return new FuncExprNode(left, right);
     }
 }
 ASTNode assignExpr():
 {
+    Token id;
 	ASTNode node;
 }
 {
-    <ASSIGN> expression() <TO> <ID>
+    <ASSIGN> node = expression() <TO> id = <ID>
     {
-		return node;
+		return new AssignExprNode(node, id.image);
     }
 }
 ASTNode condExpr():
@@ -458,38 +479,42 @@ ASTNode condExpr():
 	ASTNode node;
 }
 {
-    <COND> condClauses()
+    <COND> node = condClauses()
     {
-		return node;
+		return new CondExprNode(node);
     }
 }
 ASTNode condClauses():
 {
-	ASTNode left, right = null;
+	ASTNode node;
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    (<LB> left = expression() right = expression() <RB>)+
+    (<LB> node = expression() {expressions.add(node);} node = expression() {expressions.add(node);} <RB>)+
     {
-		return left;
+		return new CondClausesNode(expressions);
     }
 }
 ASTNode withExpr():
 {
-	ASTNode node;
+	ASTNode left, right;
 }
 {
-    <WITH> <LP> variableDefs() <RP> expressionList()
+    <WITH> <LP> left = variableDefs() <RP> right = expressionList()
     {
-		return node;
+		return new WithExprNode(left, right);
     }
 }
 ASTNode variableDefs():
 {
+    Token id;
 	ASTNode node;
+	List<String> ids = new ArrayList<String>();
+	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
-    (<LBK> <ID> expression() <RBK>)*
+    (<LBK> id = <ID> {ids.add(id.image);} node = expression() {expressions.add(node);} <RBK>)*
     {
-		return node;
+		return new VariableDefsNode(ids, expressions);
     }
 }

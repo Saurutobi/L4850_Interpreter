@@ -1,10 +1,12 @@
 package abstractSyntaxTree;
 
+import java.util.List;
+
 public class VariableDefsNode extends BinaryNode
 {
-	public VariableDefsNode(String token, ASTNode rightNode)
+	public VariableDefsNode(List<String> leftStrings, List<ASTNode> rightNodes)
 	{
-		super(token, rightNode);
+		super(leftStrings, rightNodes);
 	}
 
 	@Override
