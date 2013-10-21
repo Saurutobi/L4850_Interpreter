@@ -41,4 +41,5 @@ public interface Visitor
 	public Object visit(WithExprNode n);
 	public Object visit(VariableDefsNode n);	
 	public Object visit(IDNode n);
+	public Object visit(NullNode n);
 }

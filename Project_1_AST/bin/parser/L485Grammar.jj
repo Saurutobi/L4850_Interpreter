@@ -372,11 +372,12 @@ ASTNode paramList():
 }
 ASTNode varRef():
 {
-	Token id;
-	Token anotherID = null;
+	Token id = new Token();
+	Token anotherID = new Token();
 }
 {
-    id = <ID> (<DOT> anotherID = <ID>)?
+
+    id = <ID>  (<DOT> anotherID = <ID>)?
     {		return new VarRefNode(id.image, anotherID.image);
     }
 }

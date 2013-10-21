@@ -570,8 +570,8 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode varRef() throws ParseException {
-        Token id;
-        Token anotherID = null;
+        Token id = new Token();
+        Token anotherID = new Token();
     id = jj_consume_token(ID);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case DOT:

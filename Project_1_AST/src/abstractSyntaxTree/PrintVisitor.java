@@ -203,7 +203,7 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(CallNode n)
 	{
-		System.out.print("invoke ( ");
+		System.out.print("-> ( ");
 		if(n.getCenterNode() != null) 
 		{
 			n.getCenterNode().accept(this);
@@ -227,13 +227,13 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(VarRefNode n)
 	{
-		if(n.getRightString() != null)
-		{
-			System.out.print(n.getLeftString());
-		}
-		else
+		if(n.getLeftString() != null && n.getRightString() != null)
 		{
 			System.out.print(n.getLeftString() + "." + n.getRightString());
+		}
+		else if(n.getLeftString() != null)
+		{
+			System.out.print(n.getLeftString());
 		}
 		return null;
 	}
@@ -364,6 +364,12 @@ public class PrintVisitor implements Visitor
 	public Object visit(IDNode n)
 	{
 		System.out.print(n.getToken());
+		return null;
+	}
+	@Override
+	public Object visit(NullNode n)
+	{
+		System.out.print("mother fucking null node");
 		return null;
 	}
 }
