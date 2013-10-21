@@ -2,6 +2,8 @@ package interpreter;
 
 import java.io.*;
 import java.util.*;
+
+import abstractSyntaxTree.PrintVisitor;
 import parser.L485Parser;
 import parser.ParseException;
 
@@ -93,8 +95,9 @@ public class L485Interpreter
 			{
 				System.out.println("Working on: " + currentInput);
 				L485Parser.ReInit(new StringReader(currentInput));
-				L485Parser.program();
-				System.out.println("Success!");
+				L485Parser.program().accept(new PrintVisitor());
+				System.out.println("\nSuccess!");
+				//System.out.println("Yo, I like you, and imma let you finish, but let me regurgitate this back for you:");
 			}
 			catch(ParseException e)
 			{
