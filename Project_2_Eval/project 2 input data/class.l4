@@ -1,0 +1,1 @@
+defclass test { vars x method setX(n) { assign n to x } method getX() { x } }
