@@ -82,10 +82,4 @@ public abstract class BinaryNode implements ASTNode
 	{
 		return rightString;
 	}
-	
-	@Override
-	public String toString()
-	{
-		return this.getClass().getName();
-	}
 }

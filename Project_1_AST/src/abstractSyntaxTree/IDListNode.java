@@ -12,6 +12,6 @@ public class IDListNode extends BinaryNode
 	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
 	}
 }

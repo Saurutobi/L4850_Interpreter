@@ -159,11 +159,16 @@ ASTNode methods():
 {
 	Token id;
 	ASTNode IDListNode = null, expressionListNode;
+	List<ASTNode> methodsList = new ArrayList<ASTNode>();
 }
 {
-    (<METHOD> id = <ID> <LP> (IDListNode = idList())? <RP> expressionListNode = expressionList())+
+    (<METHOD> id = <ID> <LP> (IDListNode = idList())? <RP> expressionListNode = expressionList()
     {
-		return new MethodsNode(id.image, IDListNode, expressionListNode);
+    	ASTNode temp = new MethodsNode(id.image, IDListNode, expressionListNode);
+    	methodsList.add(temp);
+    })+
+    {
+		return new MethodsListNode(methodsList);
     }
 }
 ASTNode loadFile():

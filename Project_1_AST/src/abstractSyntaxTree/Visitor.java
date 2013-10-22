@@ -11,7 +11,8 @@ public interface Visitor
 	public Object visit(FunctionDefNode n);
 	public Object visit(IDListNode n);
 	public Object visit(ClassDefNode n);
-	public Object visit(ClassVarsNode n);	
+	public Object visit(ClassVarsNode n);
+	public Object visit(MethodsListNode n);	
 	public Object visit(MethodsNode n);
 	public Object visit(LoadFileNode n);
 	public Object visit(ExpressionListNode n);
@@ -41,5 +42,4 @@ public interface Visitor
 	public Object visit(WithExprNode n);
 	public Object visit(VariableDefsNode n);	
 	public Object visit(IDNode n);
-	public Object visit(NullNode n);
 }

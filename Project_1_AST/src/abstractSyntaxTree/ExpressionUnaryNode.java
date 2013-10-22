@@ -11,6 +11,6 @@ public class ExpressionUnaryNode extends UnaryNode
 	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
 	}
 }

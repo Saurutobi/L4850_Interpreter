@@ -157,6 +157,7 @@ public class L485Parser implements L485ParserConstants {
   static final public ASTNode methods() throws ParseException {
         Token id;
         ASTNode IDListNode = null, expressionListNode;
+        List<ASTNode> methodsList = new ArrayList<ASTNode>();
     label_3:
     while (true) {
       jj_consume_token(METHOD);
@@ -172,6 +173,8 @@ public class L485Parser implements L485ParserConstants {
       }
       jj_consume_token(RP);
       expressionListNode = expressionList();
+        ASTNode temp = new MethodsNode(id.image, IDListNode, expressionListNode);
+        methodsList.add(temp);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case METHOD:
         ;
@@ -181,7 +184,7 @@ public class L485Parser implements L485ParserConstants {
         break label_3;
       }
     }
-                {if (true) return new MethodsNode(id.image, IDListNode, expressionListNode);}
+                {if (true) return new MethodsListNode(methodsList);}
     throw new Error("Missing return statement in function");
   }
 

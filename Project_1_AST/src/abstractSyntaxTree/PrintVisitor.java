@@ -28,10 +28,9 @@ public class PrintVisitor implements Visitor
 	public Object visit(IDListNode n)
 	{
 		System.out.print(n.getLeftString());
-		System.out.print("test");
 		for(int i = 0; i < n.getRightStrings().size(); i++)
 		{
-			System.out.print(" , " + n.getRightStrings().get(i));
+			System.out.print(", " + n.getRightStrings().get(i));
 		}
 		return null;
 	}
@@ -63,7 +62,7 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(MethodsNode n)
 	{
-		System.out.print(" method " + n.getID() + "(");
+		System.out.print("method " + n.getID() + "(");
 		n.getCenterNode().accept(this);
 		System.out.print(")");
 		n.getRightNode().accept(this);
@@ -83,7 +82,6 @@ public class PrintVisitor implements Visitor
 		System.out.print("{");
 		for(int i = 0; i < n.getCenterList().size(); i++)
 		{
-			System.out.print(" ");
 			n.getCenterList().get(i).accept(this);
 		}
 		System.out.print("}");
@@ -93,11 +91,9 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(ExpressionBinaryNode n)
 	{
-		//System.out.print("\n ExpressionBinaryNode");
 		n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(" "); 
 			n.getExtraNodes().get(i).accept(this);
 		}
 		return null;
@@ -114,14 +110,13 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(LogOpNode n)
 	{
-		System.out.print(" " + n.getToken() + " ");
+		System.out.print(n.getToken() + " ");
 		return null;
 	}
 	
 	@Override
 	public Object visit(CompExprNode n)
 	{
-		//System.out.print("\n CompExprNode");
 		n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
@@ -141,12 +136,9 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(AddExprNode n)
 	{
-		//System.out.print("\nAddExprNode");
 		n.getLeftNode().accept(this);
-		System.out.print(" ");
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(" ");
 			n.getExtraNodes().get(i).accept(this);
 		}
 		return null;
@@ -162,7 +154,6 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(MulExprNode n)
 	{
-		//System.out.print("\n MulExprNode");
 		n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
@@ -182,8 +173,6 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(FactorNode n)
 	{
-		//System.out.print("\n FactorNode");
-		//System.out.println("CLASS:" + n.getLeftNode());
 		n.getLeftNode().accept(this);
 		if(n.getRightNode() != null)
 		{
@@ -195,7 +184,6 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(OperandNode n)
 	{
-		//System.out.print("\n OperandNode");
 		if(n.isExpression())
 		{
 			System.out.print("(");
@@ -212,7 +200,7 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(CallNode n)
 	{
-		System.out.print("-> ( ");
+		System.out.print("->(");
 		if(n.getCenterNode() != null) 
 		{
 			n.getCenterNode().accept(this);
@@ -274,7 +262,7 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(ConstantListNode n)
 	{
-		n.getRightNode().accept(this);
+		n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
 			System.out.print(", ");
@@ -311,7 +299,7 @@ public class PrintVisitor implements Visitor
 		{
 			n.getLeftNode().accept(this);
 		}
-		System.out.print(")");
+		System.out.print(") ");
 		n.getRightNode().accept(this);
 		return null;
 	}
@@ -329,7 +317,7 @@ public class PrintVisitor implements Visitor
 	public Object visit(CondExprNode n)
 	{
 		System.out.print("cond ");
-		n.getCenterNode();
+		n.getCenterNode().accept(this);
 		return null;
 	}
 	
@@ -338,11 +326,11 @@ public class PrintVisitor implements Visitor
 	{
 		for(int i = 0; i < n.getCenterList().size(); i++)
 		{
-			System.out.print("[");
+			System.out.print("{");
 			n.getCenterList().get(i).accept(this);
 			i++;
 			n.getCenterList().get(i).accept(this);
-			System.out.print("] ");
+			System.out.print("}");
 		}
 		return null;
 	}
@@ -350,9 +338,9 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(WithExprNode n)
 	{
-		System.out.print("with ( ");
+		System.out.print("with (");
 		n.getLeftNode().accept(this);
-		System.out.print(" )" );
+		System.out.print(") ");
 		n.getRightNode().accept(this);
 		return null;
 	}
@@ -362,7 +350,7 @@ public class PrintVisitor implements Visitor
 	{
 		for(int i = 0; i < n.getLeftStrings().size(); i++)
 		{
-			System.out.print("[" + n.getLeftStrings().get(i));
+			System.out.print("[" + n.getLeftStrings().get(i) + " ");
 			n.getExtraNodes().get(i).accept(this);
 			System.out.print("]");
 		}
@@ -375,10 +363,13 @@ public class PrintVisitor implements Visitor
 		System.out.print(n.getToken());
 		return null;
 	}
+
 	@Override
-	public Object visit(NullNode n)
-	{
-		System.out.print("mother fucking null node");
+	public Object visit(MethodsListNode n) {
+		for(int i = 0; i < n.getCenterList().size(); i++)
+		{
+			n.getCenterList().get(i).accept(this);
+		}
 		return null;
 	}
 }
