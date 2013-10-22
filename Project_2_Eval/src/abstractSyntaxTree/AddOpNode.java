@@ -2,18 +2,11 @@ package abstractSyntaxTree;
 
 import Visitors.Visitor;
 
-public class AddOpNode implements ASTNode
+public class AddOpNode extends UnaryNode
 {
-	String plusMinus;
-	
-	public AddOpNode(String Token)
+	public AddOpNode(String symbol)
 	{
-		plusMinus = Token;
-	}
-	
-	public String getToken()
-	{
-		return plusMinus;
+		super(symbol);
 	}
 	
 	@Override

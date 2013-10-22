@@ -2,18 +2,11 @@ package abstractSyntaxTree;
 
 import Visitors.Visitor;
 
-public class LogOpNode implements ASTNode
+public class LogOpNode extends UnaryNode
 {
-	private String andOr;
-	
-	public LogOpNode(String Token)
+	public LogOpNode(String symbol)
 	{
-		this.andOr = Token;
-	}
-
-	public String getToken()
-	{
-		return andOr;
+		super(symbol);
 	}
 
 	@Override

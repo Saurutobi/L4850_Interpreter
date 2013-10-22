@@ -3,6 +3,7 @@ package interpreter;
 import java.io.*;
 import java.util.*;
 
+import abstractSyntaxTree.ASTNode;
 import Visitors.PrintVisitor;
 import parser.L485Parser;
 import parser.ParseException;
@@ -95,8 +96,12 @@ public class L485Interpreter
 			{
 				System.out.println("Working on: " + currentInput);
 				L485Parser.ReInit(new StringReader(currentInput));
-				L485Parser.program().accept(new PrintVisitor());
-				System.out.println("\nSuccess!/n/n");
+				ASTNode output = L485Parser.program();
+				String outputString = (String)output.accept(new PrintVisitor());
+				System.out.println("Read In Success!");
+				System.out.println("\nYo, I like you, and imma let you finish, but let me regurgitate this back for you:"); 
+				System.out.println(outputString);
+				System.out.println("Done!\n");
 			}
 			catch(ParseException e)
 			{

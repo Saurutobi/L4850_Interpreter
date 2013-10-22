@@ -2,18 +2,11 @@ package abstractSyntaxTree;
 
 import Visitors.Visitor;
 
-public class MulOpNode implements ASTNode
+public class MulOpNode extends UnaryNode
 {
-	private String timesDivide;
-	
-	public MulOpNode(String Token)
+	public MulOpNode(String symbol)
 	{
-		this.timesDivide = Token;
-	}
-
-	public String getToken()
-	{
-		return timesDivide;
+		super(symbol);
 	}
 	
 	@Override

@@ -2,18 +2,11 @@ package abstractSyntaxTree;
 
 import Visitors.Visitor;
 
-public class CompOpNode implements ASTNode
+public class CompOpNode extends UnaryNode
 {
-	private String compOp;
-	
-	public CompOpNode(String Operation)
+	public CompOpNode(String symbol)
 	{
-		this.compOp = Operation;
-	}
-	
-	public String getCompOp()
-	{
-		return compOp;
+		super(symbol);
 	}
 	
 	@Override

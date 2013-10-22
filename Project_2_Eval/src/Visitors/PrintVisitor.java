@@ -1,6 +1,5 @@
 package Visitors;
 
-import java.util.List;
 import abstractSyntaxTree.*;
 
 import Visitors.Visitor;
@@ -10,178 +9,176 @@ public class PrintVisitor implements Visitor
 	@Override
 	public Object visit(ProgramNode n)
 	{
-		n.getCenterNode().accept(this);
-		return null;
+		return n.getCenterNode().accept(this);
 	}
 
 	@Override
 	public Object visit(FunctionDefNode n)
 	{
-		System.out.print("defunc " + n.getID() + "(");
+		String out = "defunc " + n.getID() + "(";
 		if(n.getCenterNode() != null)
 		{
-			n.getCenterNode().accept(this);
+			out += (String)n.getCenterNode().accept(this);
 		}
-		System.out.print(")");
-		n.getRightNode().accept(this);
-		return null;
+		out += ")" + (String)n.getRightNode().accept(this);
+		return out;
 	}
 	
 	@Override
 	public Object visit(IDListNode n)
 	{
-		System.out.print(n.getLeftString());
+		String out = n.getLeftString();
 		for(int i = 0; i < n.getRightStrings().size(); i++)
 		{
-			System.out.print(", " + n.getRightStrings().get(i));
+			out += ", " + n.getRightStrings().get(i);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(ClassDefNode n)
 	{
-		System.out.print("defclass " + n.getID() + "{");
+		String out = "defclass " + n.getID() + "{";
 		if(n.getCenterNode() != null)
 		{
-			n.getCenterNode().accept(this);
+			out += (String)n.getCenterNode().accept(this);
 		}
 		if(n.getRightNode() != null)
 		{
-			n.getRightNode().accept(this);
+			out += (String)n.getRightNode().accept(this);
 		}
-		System.out.print("}");
-		return null;
+		out += "}";
+		return out;
 	}
 	
 	@Override
 	public Object visit(ClassVarsNode n)
 	{
-		System.out.print("vars ");
-		n.getCenterNode().accept(this);
-		return null;
+		return "vars "+ (String)n.getCenterNode().accept(this);
+	}
+
+	@Override
+	public Object visit(MethodsListNode n)
+	{
+		String out = "";
+		for(int i = 0; i < n.getCenterList().size(); i++)
+		{
+			out += (String)n.getCenterList().get(i).accept(this);
+		}
+		return out;
 	}
 	
 	@Override
 	public Object visit(MethodsNode n)
 	{
-		System.out.print("method " + n.getID() + "(");
-		n.getCenterNode().accept(this);
-		System.out.print(")");
-		n.getRightNode().accept(this);
-		return null;
+		String out = "method " + n.getID() + "(";
+		out += (String)n.getCenterNode().accept(this);
+		out += ")";
+		out += (String)n.getRightNode().accept(this);
+		return out;
 	}
 
 	@Override
 	public Object visit(LoadFileNode n)
 	{
-		System.out.print("load " + n.getCenterString());
-		return null;
+		return "load " + n.getCenterString();
 	}
 	
 	@Override
 	public Object visit(ExpressionListNode n)
 	{
-		System.out.print("{");
+		String out = "{";
 		for(int i = 0; i < n.getCenterList().size(); i++)
 		{
-			n.getCenterList().get(i).accept(this);
+			out += (String)n.getCenterList().get(i).accept(this);
 		}
-		System.out.print("}");
-		return null;
+		out += "}";
+		return out;
 	}
 	
 	@Override
 	public Object visit(ExpressionBinaryNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			n.getExtraNodes().get(i).accept(this);
+			out += n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 
 	@Override
 	public Object visit(ExpressionUnaryNode n)
 	{
-		System.out.print("not ");
-		n.getCenterNode().accept(this);
-		return null;
+		return "not " + (String)n.getCenterNode().accept(this);
 	}
 	
 	@Override
 	public Object visit(LogOpNode n)
 	{
-		System.out.print(n.getToken() + " ");
-		return null;
+		return n.getCenterString() + " ";
 	}
 	
 	@Override
 	public Object visit(CompExprNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(" ");
-			n.getExtraNodes().get(i).accept(this);
+			out += " " + (String)n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(CompOpNode n)
 	{
-		System.out.print(n.getCompOp());
-		return null;
+		return n.getCenterString();
 	}
 	
 	@Override
 	public Object visit(AddExprNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			n.getExtraNodes().get(i).accept(this);
+			out += (String)n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(AddOpNode n)
 	{
-		System.out.print(" " + n.getToken() + " ");
-		return null;
+		return " " + n.getCenterString() + " ";
 	}
 	
 	@Override
 	public Object visit(MulExprNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(" ");
-			n.getExtraNodes().get(i).accept(this);
+			out += " " + (String)n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(MulOpNode n)
 	{
-		System.out.print(" " + n.getToken() + " ");
-		return null;
+		return " " + n.getCenterString() + " ";
 	}
 	
 	@Override
 	public Object visit(FactorNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		if(n.getRightNode() != null)
 		{
-			n.getRightNode().accept(this);
+			out += (String)n.getRightNode().accept(this);
 		}
-		return null;
+		return out;
 	}
 
 	@Override
@@ -189,190 +186,157 @@ public class PrintVisitor implements Visitor
 	{
 		if(n.isExpression())
 		{
-			System.out.print("(");
-			n.getCenterNode().accept(this);
-			System.out.print(")");
+			return "(" + (String)n.getCenterNode().accept(this) + ")";
 		}
 		else
 		{
-			n.getCenterNode().accept(this);
+			return n.getCenterNode().accept(this);
 		}
-		return null;
 	}
 
 	@Override
 	public Object visit(CallNode n)
 	{
-		System.out.print("->(");
+		String out = "->(";
 		if(n.getCenterNode() != null) 
 		{
-			n.getCenterNode().accept(this);
+			out += (String)n.getCenterNode().accept(this);
 		}
-		System.out.print(")");
-		return null;
+		out +=")";
+		return out;
 	}
 	
 	@Override
 	public Object visit(ParamListNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(", ");
-			n.getExtraNodes().get(i).accept(this);
+			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(VarRefNode n)
 	{
-		if(n.getLeftString() != null && n.getRightString() != null)
+		if(n.getRightString() != null && n.getLeftString() != null)
 		{
-			System.out.print(n.getLeftString() + "." + n.getRightString());
+			return n.getLeftString() + "." + n.getRightString();
 		}
 		else if(n.getLeftString() != null)
 		{
-			System.out.print(n.getLeftString());
+			return n.getLeftString();
 		}
-		return null;
+		else
+		{
+			return "--VariableReferenceIsNull--";
+		}
 	}
 	
 	@Override
 	public Object visit(ConstantNode n)
 	{
-		//System.out.print("\nConstantNode");
 		if(n.getCenterString() != null)
 		{
-			System.out.print(n.getCenterString());
+			return n.getCenterString();
 		}
 		else
 		{
-			n.getCenterNode().accept(this);
+			return n.getCenterNode().accept(this);
 		}
-		return null;
 	}
 	
 	@Override
 	public Object visit(ListNode n)
 	{
-		System.out.print("[");
-		n.getCenterNode().accept(this);
-		System.out.print("]");
-		return null;
+		return "[" + (String)n.getCenterNode().accept(this) + "]";
 	}
 
 	@Override
 	public Object visit(ConstantListNode n)
 	{
-		n.getLeftNode().accept(this);
+		String out = (String)n.getLeftNode().accept(this);
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			System.out.print(", ");
-			n.getExtraNodes().get(i).accept(this);
+			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(NewExprNode n)
 	{
-		System.out.print("new " + n.getCenterString());
-		return null;
+		return "new " + n.getCenterString();
 	}
 	
 	@Override
 	public Object visit(IfExprNode n)
 	{
-		System.out.print("if ");
-		n.getLeftNode().accept(this);
-		System.out.print(" then ");
-		n.getCenterNode().accept(this);
-		System.out.print(" else ");
-		n.getRightNode().accept(this); 
-		System.out.print(" fi");
-		return null;
+		String out = "if " + (String)n.getLeftNode().accept(this) + " then ";
+		out += (String)n.getCenterNode().accept(this) + " else ";
+		out += (String)n.getRightNode().accept(this) + " fi";
+		return out;
 	}
 	
 	@Override
 	public Object visit(FuncExprNode n)
 	{
-		System.out.print("func (");
+		String out = "func (";
 		if(n.getLeftNode() != null)
 		{
-			n.getLeftNode().accept(this);
+			out += (String)n.getLeftNode().accept(this);
 		}
-		System.out.print(") ");
-		n.getRightNode().accept(this);
-		return null;
+		out += ") " + (String)n.getRightNode().accept(this);
+		return out;
 	}
 	
 	@Override
 	public Object visit(AssignExprNode n)
 	{
-		System.out.print("assign ");
-		n.getLeftNode().accept(this);
-		System.out.print(" to " + n.getRightString());
-		return null;
+		return "assign " + (String)n.getLeftNode().accept(this) + " to " + n.getRightString();
 	}
 	
 	@Override
 	public Object visit(CondExprNode n)
 	{
-		System.out.print("cond ");
-		n.getCenterNode().accept(this);
-		return null;
+		return "cond " + (String)n.getCenterNode().accept(this);
 	}
 	
 	@Override
 	public Object visit(CondClausesNode n)
 	{
+		String out = "";
 		for(int i = 0; i < n.getCenterList().size(); i++)
 		{
-			System.out.print("{");
-			n.getCenterList().get(i).accept(this);
+			out += "{" + (String)n.getCenterList().get(i).accept(this) + " ";
 			i++;
-			n.getCenterList().get(i).accept(this);
-			System.out.print("}");
+			out += (String)n.getCenterList().get(i).accept(this) + "}";
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(WithExprNode n)
 	{
-		System.out.print("with (");
-		n.getLeftNode().accept(this);
-		System.out.print(") ");
-		n.getRightNode().accept(this);
-		return null;
+		return "with (" + (String)n.getLeftNode().accept(this) + ") " + (String)n.getRightNode().accept(this);
 	}
 	
 	@Override
 	public Object visit(VariableDefsNode n)
 	{
+		String out = "";
 		for(int i = 0; i < n.getLeftStrings().size(); i++)
 		{
-			System.out.print("[" + n.getLeftStrings().get(i) + " ");
-			n.getExtraNodes().get(i).accept(this);
-			System.out.print("]");
+			out += "[" + n.getLeftStrings().get(i) + " ";
+			out += (String)n.getExtraNodes().get(i).accept(this) + "]";
 		}
-		return null;
+		return out;
 	}
 	
 	@Override
 	public Object visit(IDNode n)
 	{
-		System.out.print(n.getToken());
-		return null;
-	}
-
-	@Override
-	public Object visit(MethodsListNode n) {
-		for(int i = 0; i < n.getCenterList().size(); i++)
-		{
-			n.getCenterList().get(i).accept(this);
-		}
-		return null;
+		return n.getToken();
 	}
 }
