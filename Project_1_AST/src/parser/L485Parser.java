@@ -29,6 +29,7 @@ public class L485Parser implements L485ParserConstants {
       case WITH:
       case TRUE:
       case FALSE:
+      case NOT:
       case STRING:
       case ID:
       case FLOATNUM:
@@ -59,6 +60,7 @@ public class L485Parser implements L485ParserConstants {
       case WITH:
       case TRUE:
       case FALSE:
+      case NOT:
       case STRING:
       case ID:
       case FLOATNUM:
@@ -208,6 +210,7 @@ public class L485Parser implements L485ParserConstants {
       case WITH:
       case TRUE:
       case FALSE:
+      case NOT:
       case STRING:
       case ID:
       case FLOATNUM:
@@ -229,24 +232,50 @@ public class L485Parser implements L485ParserConstants {
   static final public ASTNode expression() throws ParseException {
         ASTNode node = null, left;
         List<ASTNode> expressions = new ArrayList<ASTNode>();
-    left = compExpr();
-    label_5:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case OR:
-      case AND:
-        ;
-        break;
-      default:
-        jj_la1[9] = jj_gen;
-        break label_5;
-      }
-      node = logOp();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case FUNC:
+    case COND:
+    case IF:
+    case NEW:
+    case ASSIGN:
+    case WITH:
+    case TRUE:
+    case FALSE:
+    case STRING:
+    case ID:
+    case FLOATNUM:
+    case INTNUM:
+    case LP:
+    case LBK:
+      left = compExpr();
+      label_5:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case OR:
+        case AND:
+          ;
+          break;
+        default:
+          jj_la1[9] = jj_gen;
+          break label_5;
+        }
+        node = logOp();
                                        expressions.add(node);
-      node = compExpr();
+        node = compExpr();
                                                                                   expressions.add(node);
-    }
+      }
                 {if (true) return new ExpressionBinaryNode(left, expressions);}
+      break;
+    case NOT:
+      jj_consume_token(NOT);
+      node = compExpr();
+                {if (true) return new ExpressionUnaryNode(node);}
+      break;
+    default:
+      jj_la1[10] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
     throw new Error("Missing return statement in function");
   }
 
@@ -262,7 +291,7 @@ public class L485Parser implements L485ParserConstants {
       {if (true) return new LogOpNode(id.image);}
       break;
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[11] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -285,7 +314,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[12] = jj_gen;
         break label_6;
       }
       node = compOp();
@@ -325,7 +354,7 @@ public class L485Parser implements L485ParserConstants {
                 {if (true) return new CompOpNode(id.image);}
       break;
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[13] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -333,7 +362,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode addExpr() throws ParseException {
-    ASTNode node = null, left;
+    ASTNode node, left;
     List<ASTNode> expressions = new ArrayList<ASTNode>();
     left = mulExpr();
     label_7:
@@ -344,7 +373,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[14] = jj_gen;
         break label_7;
       }
       node = addOp();
@@ -368,7 +397,7 @@ public class L485Parser implements L485ParserConstants {
       {if (true) return new AddOpNode(id.image);}
       break;
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -376,7 +405,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode mulExpr() throws ParseException {
-        ASTNode node = null, left;
+        ASTNode node, left;
         List<ASTNode> expressions = new ArrayList<ASTNode>();
     left = factor();
     label_8:
@@ -387,7 +416,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[15] = jj_gen;
+        jj_la1[16] = jj_gen;
         break label_8;
       }
       node = mulOp();
@@ -411,7 +440,7 @@ public class L485Parser implements L485ParserConstants {
       {if (true) return new MulOpNode(id.image);}
       break;
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -426,7 +455,7 @@ public class L485Parser implements L485ParserConstants {
       right = call();
       break;
     default:
-      jj_la1[17] = jj_gen;
+      jj_la1[18] = jj_gen;
       ;
     }
                 {if (true) return new FactorNode(left, right);}
@@ -434,7 +463,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode operand() throws ParseException {
-        ASTNode node;
+        ASTNode node = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ID:
       node = varRef();
@@ -477,10 +506,10 @@ public class L485Parser implements L485ParserConstants {
       jj_consume_token(LP);
       node = expression();
       jj_consume_token(RP);
-                {if (true) return new OperandNode(node, true);}
+                {if (true) return new OperandNode(node);}
       break;
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[19] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -500,6 +529,7 @@ public class L485Parser implements L485ParserConstants {
     case WITH:
     case TRUE:
     case FALSE:
+    case NOT:
     case STRING:
     case ID:
     case FLOATNUM:
@@ -509,7 +539,7 @@ public class L485Parser implements L485ParserConstants {
       node = paramList();
       break;
     default:
-      jj_la1[19] = jj_gen;
+      jj_la1[20] = jj_gen;
       ;
     }
     jj_consume_token(RP);
@@ -518,7 +548,7 @@ public class L485Parser implements L485ParserConstants {
   }
 
   static final public ASTNode paramList() throws ParseException {
-        ASTNode node = null, left;
+        ASTNode node, left;
         List<ASTNode> expressions = new ArrayList<ASTNode>();
     left = expression();
     label_9:
@@ -528,7 +558,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[20] = jj_gen;
+        jj_la1[21] = jj_gen;
         break label_9;
       }
       jj_consume_token(COMMA);
@@ -549,7 +579,7 @@ public class L485Parser implements L485ParserConstants {
       anotherID = jj_consume_token(ID);
       break;
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[22] = jj_gen;
       ;
     }
                 {if (true) return new VarRefNode(id.image, anotherID.image);}
@@ -558,7 +588,7 @@ public class L485Parser implements L485ParserConstants {
 
   static final public ASTNode constant() throws ParseException {
     Token id = new Token();
-        ASTNode node = null;
+        ASTNode node;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INTNUM:
       id = jj_consume_token(INTNUM);
@@ -585,7 +615,7 @@ public class L485Parser implements L485ParserConstants {
                 {if (true) return new ConstantNode(id.image);}
       break;
     default:
-      jj_la1[22] = jj_gen;
+      jj_la1[23] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -612,7 +642,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[23] = jj_gen;
+        jj_la1[24] = jj_gen;
         break label_10;
       }
       jj_consume_token(COMMA);
@@ -653,7 +683,7 @@ public class L485Parser implements L485ParserConstants {
       left = idList();
       break;
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[25] = jj_gen;
       ;
     }
     jj_consume_token(RP);
@@ -697,7 +727,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[26] = jj_gen;
         break label_11;
       }
     }
@@ -728,7 +758,7 @@ public class L485Parser implements L485ParserConstants {
         ;
         break;
       default:
-        jj_la1[26] = jj_gen;
+        jj_la1[27] = jj_gen;
         break label_12;
       }
       jj_consume_token(LBK);
@@ -752,7 +782,7 @@ public class L485Parser implements L485ParserConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[27];
+  static final private int[] jj_la1 = new int[28];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -760,10 +790,10 @@ public class L485Parser implements L485ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x758ec0,0x758ec0,0x0,0x0,0x20000,0x100,0x0,0x100,0x750e00,0x18000000,0x18000000,0xc0000000,0xc0000000,0x1800000,0x1800000,0x6000000,0x6000000,0x0,0x750e00,0x750e00,0x0,0x0,0x600000,0x0,0x0,0x0,0x0,};
+      jj_la1_0 = new int[] {0x20758ec0,0x20758ec0,0x0,0x0,0x20000,0x100,0x0,0x100,0x20750e00,0x18000000,0x20750e00,0x18000000,0xc0000000,0xc0000000,0x1800000,0x1800000,0x6000000,0x6000000,0x0,0x750e00,0x20750e00,0x0,0x0,0x600000,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x45520,0x45520,0x100,0x100000,0x0,0x0,0x100,0x0,0x45520,0x0,0x0,0xf,0xf,0x0,0x0,0x0,0x0,0x10,0x45520,0x45520,0x100000,0x2000,0x41420,0x100000,0x100,0x10000,0x40000,};
+      jj_la1_1 = new int[] {0x45520,0x45520,0x100,0x100000,0x0,0x0,0x100,0x0,0x45520,0x0,0x45520,0x0,0xf,0xf,0x0,0x0,0x0,0x0,0x10,0x45520,0x45520,0x100000,0x2000,0x41420,0x100000,0x100,0x10000,0x40000,};
    }
 
   /** Constructor with InputStream. */
@@ -784,7 +814,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -798,7 +828,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -815,7 +845,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -825,7 +855,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -841,7 +871,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -850,7 +880,7 @@ public class L485Parser implements L485ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -906,7 +936,7 @@ public class L485Parser implements L485ParserConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 28; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

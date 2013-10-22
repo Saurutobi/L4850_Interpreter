@@ -22,6 +22,6 @@ public class OperandNode extends UnaryNode
 	@Override
 	public Object accept(Visitor v)
 	{
-		return null;
+		return v.visit(this);
 	}
 }

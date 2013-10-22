@@ -197,7 +197,7 @@ ASTNode expression():
     {
 		return new ExpressionBinaryNode(left, expressions);
     }
-//    | <NOT> node = compExpr()//    {//		return new ExpressionUnaryNode(node);//    }
+    | <NOT> node = compExpr()    {		return new ExpressionUnaryNode(node);    }
 }
 ASTNode logOp():
 {
@@ -254,7 +254,7 @@ ASTNode compOp():
 }
 ASTNode addExpr():
 {
-    ASTNode node = null, left;
+    ASTNode node, left;
     List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
@@ -279,7 +279,7 @@ ASTNode addOp():
 }
 ASTNode mulExpr():
 {
-	ASTNode node = null, left;
+	ASTNode node, left;
 	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
@@ -314,37 +314,13 @@ ASTNode factor():
 }
 ASTNode operand():
 {
-	ASTNode node;
+	ASTNode node = null;
 }
 {
-    node = varRef()
+    node = varRef()    {		return new OperandNode(node);    }    |node = constant()
     {		return new OperandNode(node);
     }
-    | node = constant()
-    {		return new OperandNode(node);
-    }
-    | node = newExpr()
-	{		return new OperandNode(node);
-	}
-    | node = ifExpr()
-	{		return new OperandNode(node);
-	}
-    | node = funcExpr()
-	{		return new OperandNode(node);
-	}
-    | node = assignExpr()
-	{		return new OperandNode(node);
-	}
-    | node = condExpr()
-	{		return new OperandNode(node);
-	}
-  	| node = withExpr()
-	{		return new OperandNode(node);
-	}
-    | <LP> node = expression() <RP>
-    {
-		return new OperandNode(node, true);
-    }
+    | node = newExpr()	{		return new OperandNode(node);	}    | node = ifExpr()	{		return new OperandNode(node);	}    | node = funcExpr()	{		return new OperandNode(node);	}    | node = assignExpr()	{		return new OperandNode(node);	}    | node = condExpr()	{		return new OperandNode(node);	}  	| node = withExpr()	{		return new OperandNode(node);	}    | <LP> node = expression() <RP>    {		return new OperandNode(node);    }
 }
 ASTNode call():
 {
@@ -358,7 +334,7 @@ ASTNode call():
 }
 ASTNode paramList():
 {
-	ASTNode node = null, left;
+	ASTNode node, left;
 	List<ASTNode> expressions = new ArrayList<ASTNode>();
 }
 {
@@ -381,7 +357,7 @@ ASTNode varRef():
 ASTNode constant():
 {
     Token id = new Token();
-	ASTNode node = null;
+	ASTNode node;
 }
 {
     id = <INTNUM>
@@ -392,10 +368,7 @@ ASTNode constant():
     {
 		return new ConstantNode(id.image);
     }
-    | node = list()
-    {
-        return new ConstantNode(node);
-	}
+    | node = list()    {        return new ConstantNode(node);	}
     | id = <STRING>
     {
 		return new ConstantNode(id.image);
