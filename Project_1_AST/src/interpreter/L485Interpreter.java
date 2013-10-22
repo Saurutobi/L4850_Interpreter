@@ -2,6 +2,7 @@ package interpreter;
 import java.io.*;
 import java.util.*;
 
+import abstractSyntaxTree.PrintVisitor;
 import parser.L485Parser;
 import parser.ParseException;
 
@@ -51,7 +52,8 @@ public class L485Interpreter {
                 } catch (Error e) {
                         System.out.println("Uncaught Interpreter Error: "+e);
                 } catch (Exception e) {
-                        System.out.println("Uncaught Interpreter Exception: "+e);
+                        System.out.println("Uncaught Interpreter Exception: ");
+                        e.printStackTrace();
                 }
             repl();
         }
@@ -63,8 +65,8 @@ public class L485Interpreter {
                     {
                             System.out.println("Working on: " + currentInput);
                             L485Parser.ReInit(new StringReader(currentInput));
-                            L485Parser.program();
-                            System.out.println("Success!");
+                            L485Parser.program().accept(new PrintVisitor());
+                            System.out.println("\nSuccess!");
                     }
             }
             catch(ParseException e) {

@@ -1,6 +1,6 @@
-package AbstractSyntaxTree;
+package abstractSyntaxTree;
 
-public interface ASTNode {
-	public void acceptDF(Visitor V)
-	public Object accept(Visitor V)
+public interface ASTNode
+{
+	public Object accept(Visitor v);
 }
