@@ -197,10 +197,7 @@ ASTNode expression():
     {
 		return new ExpressionBinaryNode(left, expressions);
     }
-    | <NOT> node = compExpr()
-    {
-		return new ExpressionUnaryNode(node);
-    }
+//    | <NOT> node = compExpr()//    {//		return new ExpressionUnaryNode(node);//    }
 }
 ASTNode logOp():
 {
@@ -383,8 +380,8 @@ ASTNode varRef():
 }
 ASTNode constant():
 {
-    Token id;
-	ASTNode node;
+    Token id = new Token();
+	ASTNode node = null;
 }
 {
     id = <INTNUM>
@@ -435,7 +432,7 @@ ASTNode constantList():
 }
 ASTNode newExpr():
 {
-	Token id;
+	Token id = new Token();
 }
 {
     (      <NEW> id = <ID>

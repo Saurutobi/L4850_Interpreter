@@ -8,6 +8,7 @@ public abstract class BinaryNode implements ASTNode
 	protected ASTNode rightNode;
 	protected List<ASTNode> extraNodes;
 	protected List<String> leftStrings;
+	protected List<String> rightStrings;
 	protected String leftString;
 	protected String rightString;
 	
@@ -41,9 +42,20 @@ public abstract class BinaryNode implements ASTNode
 		this.extraNodes = rightNodes;
 	}
 	
+	public BinaryNode(String leftString, List<String> rightStrings)
+	{
+		this.leftString = leftString;
+		this.rightStrings = rightStrings;
+	}
+	
 	public ASTNode getLeftNode()
 	{
 		return leftNode;
+	}
+	
+	public List<String> getRightStrings()
+	{
+		return rightStrings;
 	}
 	
 	public ASTNode getRightNode()

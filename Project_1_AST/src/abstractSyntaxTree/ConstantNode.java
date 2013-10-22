@@ -1,28 +1,15 @@
 package abstractSyntaxTree;
 
-public class ConstantNode implements ASTNode
+public class ConstantNode extends UnaryNode
 {
-	private String Token;
-	private ASTNode centerNode;
-	
 	public ConstantNode(String name)
 	{
-		Token = name;
+		super(name);
 	}
 	
 	public ConstantNode(ASTNode centerNode)
 	{
-		this.centerNode = centerNode;
-	}
-	
-	public String getToken()
-	{
-		return Token;
-	}
-	
-	public ASTNode getCenterNode()
-	{
-		return centerNode;
+		super(centerNode);
 	}
 
 	@Override

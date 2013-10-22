@@ -66,7 +66,7 @@ public class L485Interpreter {
                             System.out.println("Working on: " + currentInput);
                             L485Parser.ReInit(new StringReader(currentInput));
                             L485Parser.program().accept(new PrintVisitor());
-                            System.out.println("Success!");
+                            System.out.println("\nSuccess!");
                     }
             }
             catch(ParseException e) {
