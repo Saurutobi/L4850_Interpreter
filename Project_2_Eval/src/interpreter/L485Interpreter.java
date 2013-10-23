@@ -17,11 +17,11 @@ public class L485Interpreter
 	{
 		List<String> retVal = new ArrayList<String>();
 		System.out.println("Enter the full file path of your directory of input");
-		Scanner scan = new Scanner(System.in);
 		System.out.print( "====> ");
-		String dirName = scan.nextLine();
 		try
 		{
+			Scanner scan = new Scanner(System.in);
+			String dirName = scan.nextLine();
 			File directory = new File(dirName);
 			File [] contents = directory.listFiles();
 			for(File currentFile : contents)
@@ -41,33 +41,55 @@ public class L485Interpreter
 		return retVal.toArray(new String[retVal.size()]);
 	}
 	
-	private static String getUserInput() throws IOException
+	//This method now returns an array for quicker testing
+	private static String [] getSingleFileInput() throws IOException
 	{
-		Scanner scan = new Scanner(System.in);
-		return scan.nextLine();
+		List<String> retVal = new ArrayList<String>();
+		System.out.println("Enter the full file path of your file of input");
+		System.out.print( "====> ");
+		try
+		{
+			Scanner scan = new Scanner(System.in);
+			String fileName = scan.nextLine();
+			BufferedReader buff = new BufferedReader(new FileReader(fileName));
+			String curLine;
+			while((curLine = buff.readLine()) != null)
+			{
+				retVal.add(curLine);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("It didn't work, try again");
+		}
+		return retVal.toArray(new String[retVal.size()]);
 	}
 	
 	private static void repl()
 	{
 		//This section is modified to ask for 2 types of input: a single line input, or a directory path for batch processing
-		System.out.println("1 for single input\n2 for directory input");
+		System.out.println("1 for single input from command\n2 for single file input from command\n3 for directory input");
 		Scanner operation = new Scanner(System.in);
 		System.out.print( "====> ");
 		String op = operation.nextLine();
 		try 
 		{
-			//Either read in from StdIn
+			System.out.print( "====> ");
+			//single input from command
 			if(op.equals("1"))
 			{
-				System.out.print( "====> ");
 				String [] temp = new String[1];
-				temp[0] = getUserInput();
+				temp[0] = operation.nextLine();
 				processCode(temp);
 			}
-			//Or from the directory
+			//Single file input from command
 			if(op.equals("2"))
 			{
-				System.out.print( "====> ");
+				processCode(getSingleFileInput());
+			}
+			//directory input
+			if(op.equals("3"))
+			{
 				processCode(getDirectoryInput());
 			}
 		}
