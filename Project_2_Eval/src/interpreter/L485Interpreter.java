@@ -12,57 +12,10 @@ import parser.ParseException;
 
 public class L485Interpreter
 {
-	//This method now returns an array for quicker testing
-	private static String [] getDirectoryInput() throws IOException
+	public static void main(String args []) throws ParseException
 	{
-		List<String> retVal = new ArrayList<String>();
-		System.out.println("Enter the full file path of your directory of input");
-		System.out.print( "====> ");
-		try
-		{
-			Scanner scan = new Scanner(System.in);
-			String dirName = scan.nextLine();
-			File directory = new File(dirName);
-			File [] contents = directory.listFiles();
-			for(File currentFile : contents)
-			{
-				BufferedReader buff = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
-				String curLine;
-				while((curLine = buff.readLine()) != null)
-				{
-					retVal.add(curLine);
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println("It didn't work, try again");
-		}
-		return retVal.toArray(new String[retVal.size()]);
-	}
-	
-	//This method now returns an array for quicker testing
-	private static String [] getSingleFileInput() throws IOException
-	{
-		List<String> retVal = new ArrayList<String>();
-		System.out.println("Enter the full file path of your file of input");
-		System.out.print( "====> ");
-		try
-		{
-			Scanner scan = new Scanner(System.in);
-			String fileName = scan.nextLine();
-			BufferedReader buff = new BufferedReader(new FileReader(fileName));
-			String curLine;
-			while((curLine = buff.readLine()) != null)
-			{
-				retVal.add(curLine);
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println("It didn't work, try again");
-		}
-		return retVal.toArray(new String[retVal.size()]);
+		L485Parser parser = new L485Parser(System.in);
+		repl();
 	}
 	
 	private static void repl()
@@ -107,6 +60,59 @@ public class L485Interpreter
 		}
 		repl();
 	}
+	
+	//This method now returns an array for quicker testing
+	private static String [] getSingleFileInput() throws IOException
+	{
+		List<String> retVal = new ArrayList<String>();
+		System.out.println("Enter the full file path of your file of input");
+		System.out.print( "====> ");
+		try
+		{
+			Scanner scan = new Scanner(System.in);
+			String fileName = scan.nextLine();
+			BufferedReader buff = new BufferedReader(new FileReader(fileName));
+			String curLine;
+			while((curLine = buff.readLine()) != null)
+			{
+				retVal.add(curLine);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("It didn't work, try again");
+		}
+		return retVal.toArray(new String[retVal.size()]);
+	}
+		
+	//This method now returns an array for quicker testing
+	private static String [] getDirectoryInput() throws IOException
+	{
+		List<String> retVal = new ArrayList<String>();
+		System.out.println("Enter the full file path of your directory of input");
+		System.out.print( "====> ");
+		try
+		{
+			Scanner scan = new Scanner(System.in);
+			String dirName = scan.nextLine();
+			File directory = new File(dirName);
+			File [] contents = directory.listFiles();
+			for(File currentFile : contents)
+			{
+				BufferedReader buff = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
+				String curLine;
+				while((curLine = buff.readLine()) != null)
+				{
+					retVal.add(curLine);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("It didn't work, try again");
+		}
+		return retVal.toArray(new String[retVal.size()]);
+	}
 
 	public static void processCode(String [] code)
 	{
@@ -120,21 +126,15 @@ public class L485Interpreter
 				L485Parser.ReInit(new StringReader(currentInput));
 				ASTNode output = L485Parser.program();
 				String outputString = (String)output.accept(new PrintVisitor());
-				System.out.println("Read In Success!");
+				System.out.println("Read In Done!");
 				System.out.println("\nYo, I like you, and imma let you finish, but let me regurgitate this back for you:"); 
 				System.out.println(outputString);
-				System.out.println("Done!\n");
+				System.out.println("Yea, Science, Bitch!\n");
 			}
 			catch(ParseException e)
 			{
 				System.out.println("----------------------------------------------------Syntax Error: "+e);
 			}
 		}
-	}
-	
-	public static void main(String args []) throws ParseException
-	{
-		L485Parser parser = new L485Parser(System.in);
-		repl();
 	}
 }
