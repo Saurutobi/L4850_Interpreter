@@ -3,17 +3,12 @@ package util;
 import java.util.List;
 
 public class ListValue extends Value{
-	
-//	private List<FloatValue> floatVal;
-//	private List<FloatValue> floatVal;
-	private List<FloatValue> floatVal;
-	private List<IntValue> integerVal;
+
 	
 	public ListValue(List<IntValue> val)
 	{
 		integerVal = val;
 	}
-
 //	public ListValue(List<BooleanValue> val)
 //	{
 //		this.val = val;
