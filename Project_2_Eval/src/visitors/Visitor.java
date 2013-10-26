@@ -1,4 +1,4 @@
-package Visitors;
+package visitors;
 
 import abstractSyntaxTree.AddExprNode;
 import abstractSyntaxTree.AddOpNode;

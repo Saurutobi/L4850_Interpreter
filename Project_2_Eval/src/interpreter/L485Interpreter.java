@@ -4,9 +4,10 @@ import java.io.*;
 import java.util.*;
 
 import abstractSyntaxTree.ASTNode;
-import Visitors.PrintVisitor;
 import parser.L485Parser;
 import parser.ParseException;
+import visitors.EvalVisitor;
+import visitors.PrintVisitor;
 
 //Author: Marcel Englmaier
 
@@ -129,7 +130,7 @@ public class L485Interpreter
 				System.out.println("Read In Done!");
 				System.out.println("\nYo, I like you, and imma let you finish, but let me regurgitate this back for you:"); 
 				System.out.println(outputString);
-				System.out.println("Yea, Science, Bitch!\n");
+				System.out.println("Yea, Science, Bitches!\n");
 			}
 			catch(ParseException e)
 			{
