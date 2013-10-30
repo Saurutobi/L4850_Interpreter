@@ -1,5 +1,7 @@
 package Visitors;
 
+import util.BooleanValue;
+import util.Value;
 import abstractSyntaxTree.AddExprNode;
 import abstractSyntaxTree.AddOpNode;
 import abstractSyntaxTree.AssignExprNode;
@@ -207,11 +209,25 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(IfExprNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Value visit(IfExprNode n) {
+		try{
+			BooleanValue lv = (BooleanValue)n.getLeftNode().accept(this);
+	
+			if(lv.getVal())
+			{
+				n.getCenterNode().accept(this);
+			}
+			else
+			{
+				n.getRightNode().accept(this);
+			}
+		
+		}
+		catch (ClassCastException c)
+		{
+			System.out.println("Casting Error");
+		}
 	}
-
 	@Override
 	public Object visit(AssignExprNode n) {
 		// TODO Auto-generated method stub
