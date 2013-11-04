@@ -1,6 +1,6 @@
 package abstractSyntaxTree;
 
-import visitors.Visitor;
+import Visitors.*;
 
 public class WithExprNode extends BinaryNode
 {

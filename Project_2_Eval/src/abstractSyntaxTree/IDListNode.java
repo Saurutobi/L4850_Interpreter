@@ -1,8 +1,8 @@
 package abstractSyntaxTree;
 
 import java.util.List;
+import Visitors.*;
 
-import visitors.Visitor;
 
 public class IDListNode extends BinaryNode
 {	

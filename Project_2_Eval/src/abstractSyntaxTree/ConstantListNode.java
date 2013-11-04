@@ -1,8 +1,7 @@
 package abstractSyntaxTree;
 
 import java.util.List;
-
-import visitors.Visitor;
+import Visitors.*;
 
 public class ConstantListNode extends BinaryNode
 {

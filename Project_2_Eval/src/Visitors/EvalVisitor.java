@@ -126,14 +126,47 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(AddExprNode n) {
-		// TODO Auto-generated method stub
+		try
+		{
+
+			String tempOperand;
+			
+			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
+			{
+				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+				if(tempOperand.compareTo("+") == 0)
+				{
+					
+					
+				}
+				else
+				{
+					if(tempOperand.compareTo("-") == 0)
+					{
+						
+						
+					}
+					else
+					{
+						throw(DeclareANewException)
+					}
+				}
+			}
+		}
+		catch(DeclareANewException)
+		{
+			
+		}
+		catch(ClassCastException c)
+		{
+			
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(AddOpNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterString();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
-package visitors;
+package Visitors;
 
-import visitors.Visitor;
 import abstractSyntaxTree.*;
 
 public class PrintVisitor implements Visitor

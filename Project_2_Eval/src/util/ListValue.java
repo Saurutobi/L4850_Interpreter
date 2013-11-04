@@ -1,32 +1,32 @@
 package util;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ListValue extends Value{
 
+	private ArrayList<Value> values;
 	
-	public ListValue(List<IntValue> val)
+	public ListValue(ArrayList<Value> values)
 	{
-		integerVal = val;
+		this.values = values;
 	}
-//	public ListValue(List<BooleanValue> val)
-//	{
-//		this.val = val;
-//	}
-//	
-//	public ListValue(List<StringValue> val)
-//	{
-//		this.val = val;
-//	}
-//	
-//	public ListValue(List<List> val)
-//	{
-//		this.val = val;
-//	}
-//	
-//	public boolean getVal()
-//	{
-//		return val;
-//	}
-//	
+	
+	public ArrayList<Value> get()
+	{
+		return values;
+	}
+	
+	public void set(ArrayList<Value> newValues)
+	{
+		this.values = newValues;
+	}
+	public String toString()
+	{
+		String temp = "";
+		for(int i = 0; i < values.size(); i++)
+		{
+			temp += values.get(i).toString() + " ";
+		}
+		return temp;
+	}
 }

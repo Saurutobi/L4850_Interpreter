@@ -1,7 +1,6 @@
 package abstractSyntaxTree;
 
-import visitors.Visitor;
-
+import Visitors.*;
 public class CallNode extends UnaryNode
 {
 	public CallNode(ASTNode centerNode)

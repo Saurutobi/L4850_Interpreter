@@ -1,9 +1,7 @@
 package abstractSyntaxTree;
 
 import java.util.List;
-
-import visitors.Visitor;
-
+import Visitors.*;
 public class CondClausesNode extends UnaryNode
 {
 	public CondClausesNode(List<ASTNode> centerNodeList)
