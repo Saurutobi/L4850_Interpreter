@@ -1,42 +1,7 @@
 package Visitors;
 
-import util.BooleanValue;
-import util.Value;
-import abstractSyntaxTree.AddExprNode;
-import abstractSyntaxTree.AddOpNode;
-import abstractSyntaxTree.AssignExprNode;
-import abstractSyntaxTree.CallNode;
-import abstractSyntaxTree.ClassDefNode;
-import abstractSyntaxTree.ClassVarsNode;
-import abstractSyntaxTree.CompExprNode;
-import abstractSyntaxTree.CompOpNode;
-import abstractSyntaxTree.CondClausesNode;
-import abstractSyntaxTree.CondExprNode;
-import abstractSyntaxTree.ConstantListNode;
-import abstractSyntaxTree.ConstantNode;
-import abstractSyntaxTree.ExpressionBinaryNode;
-import abstractSyntaxTree.ExpressionListNode;
-import abstractSyntaxTree.ExpressionUnaryNode;
-import abstractSyntaxTree.FactorNode;
-import abstractSyntaxTree.FuncExprNode;
-import abstractSyntaxTree.FunctionDefNode;
-import abstractSyntaxTree.IDListNode;
-import abstractSyntaxTree.IDNode;
-import abstractSyntaxTree.IfExprNode;
-import abstractSyntaxTree.ListNode;
-import abstractSyntaxTree.LoadFileNode;
-import abstractSyntaxTree.LogOpNode;
-import abstractSyntaxTree.MethodsListNode;
-import abstractSyntaxTree.MethodsNode;
-import abstractSyntaxTree.MulExprNode;
-import abstractSyntaxTree.MulOpNode;
-import abstractSyntaxTree.NewExprNode;
-import abstractSyntaxTree.OperandNode;
-import abstractSyntaxTree.ParamListNode;
-import abstractSyntaxTree.ProgramNode;
-import abstractSyntaxTree.VarRefNode;
-import abstractSyntaxTree.VariableDefsNode;
-import abstractSyntaxTree.WithExprNode;
+import util.*;
+import abstractSyntaxTree.*;
 
 public class EvalVisitor implements Visitor{
 
@@ -114,20 +79,21 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Object visit(CompOpNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterString();
 	}
 
 	@Override
-	public Object visit(AddExprNode n) {
+	public Integer visit(AddExprNode n) {
 		try
 		{
+			IntValue lv = (IntValue)n.getLeftNode().accept(this);
+			IntValue rvHolder;
 
 			String tempOperand;
 			
@@ -136,32 +102,34 @@ public class EvalVisitor implements Visitor{
 				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 				if(tempOperand.compareTo("+") == 0)
 				{
-					
-					
+					rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+					lv.setVal(lv.getVal() + rvHolder.getVal());
 				}
 				else
 				{
 					if(tempOperand.compareTo("-") == 0)
 					{
-						
-						
+						rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+						lv.setVal(lv.getVal() - rvHolder.getVal());
 					}
 					else
 					{
-						throw(DeclareANewException)
+						throw(new BadSignError());
 					}
 				}
 			}
-		}
-		catch(DeclareANewException)
-		{
 			
+			return lv.getVal();
+		}
+		catch(BadSignError c)
+		{
+			System.out.print("Was Expecting + or -");
 		}
 		catch(ClassCastException c)
 		{
-			
+			System.out.println("Casting Error");
 		}
-		return null;
+		return -1337;
 	}
 
 	@Override
@@ -171,14 +139,50 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(MulExprNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		try
+		{
+			IntValue lv = (IntValue)n.getLeftNode().accept(this);
+			IntValue rvHolder;
+
+			String tempOperand;
+			
+			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
+			{
+				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+				if(tempOperand.compareTo("*") == 0)
+				{
+					rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+					lv.setVal(lv.getVal() * rvHolder.getVal());
+				}
+				else
+				{
+					if(tempOperand.compareTo("/") == 0)
+					{
+						rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+						lv.setVal(lv.getVal() / rvHolder.getVal());
+					}
+					else
+					{
+						throw(new BadSignError());
+					}
+				}
+			}
+			
+			return lv.getVal();
+		}
+		catch(BadSignError c)
+		{
+			System.out.print("Was Expecting + or -");
+		}
+		catch(ClassCastException c)
+		{
+			System.out.println("Casting Error");
+		}
 	}
 
 	@Override
 	public Object visit(MulOpNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterString();
 	}
 
 	@Override

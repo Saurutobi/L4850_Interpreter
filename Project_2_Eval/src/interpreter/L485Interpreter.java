@@ -6,8 +6,7 @@ import java.util.*;
 import abstractSyntaxTree.ASTNode;
 import parser.L485Parser;
 import parser.ParseException;
-import visitors.EvalVisitor;
-import visitors.PrintVisitor;
+import Visitors.*;
 
 //Author: Marcel Englmaier
 
@@ -126,7 +125,7 @@ public class L485Interpreter
 				System.out.println("Working on: " + currentInput);
 				L485Parser.ReInit(new StringReader(currentInput));
 				ASTNode output = L485Parser.program();
-				String outputString = (String)output.accept(new PrintVisitor());
+				String outputString = (String)output.accept(new EvalVisitor());
 				System.out.println("Read In Done!");
 				System.out.println("\nYo, I like you, and imma let you finish, but let me regurgitate this back for you:"); 
 				System.out.println(outputString);
