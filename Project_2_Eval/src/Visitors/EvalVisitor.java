@@ -79,7 +79,30 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
-		
+		try
+		{
+			IntValue lv = (IntValue) n.getLeftNode().accept(this);
+			IntValue rvHolder;
+			
+			String tempOperand;
+			
+			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
+			{
+				switch(tempOperand){
+				case 
+				
+				//there is no such thing as a switch in java
+				//for strings so we need to find a way to represent
+				// all the different outcomes for less than greater than
+				//etc here
+				
+				}
+			}
+		}
+		catch(ClassCastException c)
+		{
+			
+		}
 		return null;
 	}
 
