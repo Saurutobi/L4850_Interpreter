@@ -102,7 +102,8 @@ public class EvalVisitor implements Visitor{
 		{
 			
 		}
-		return "gothere";
+		System.out.print("Made It Here\n");
+		return n.getLeftNode().accept(this);
 	}
 
 	@Override
@@ -118,6 +119,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
+		System.out.print("Another Sucess\n");
 		try
 		{
 			IntValue lv = (IntValue) n.getLeftNode().accept(this);
@@ -156,6 +158,8 @@ public class EvalVisitor implements Visitor{
 		{
 			
 		}
+
+		System.out.print("Made It Through CompExprNode\n");
 		return null;
 	}
 
@@ -166,6 +170,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Integer visit(AddExprNode n) {
+		System.out.print("Add ExprNode Entered\n");
 		try
 		{
 			IntValue lv = (IntValue)n.getLeftNode().accept(this);
@@ -194,7 +199,7 @@ public class EvalVisitor implements Visitor{
 					}
 				}
 			}
-			
+			System.out.print("About to leave Add Expr Node\n");
 			return lv.getVal();
 		}
 		catch(BadSignError c)
@@ -215,6 +220,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(MulExprNode n) {
+		System.out.print("Mul Expr Node Entered\n");
 		try
 		{
 			IntValue lv = (IntValue)n.getLeftNode().accept(this);
@@ -243,7 +249,7 @@ public class EvalVisitor implements Visitor{
 					}
 				}
 			}
-			
+			System.out.print("Mul Expr About To Leave\n");
 			return lv.getVal();
 		}
 		catch(BadSignError c)
@@ -266,14 +272,23 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(FactorNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.print("Factor Node Entered\n");
+		try
+		{
+			//this one will be tricky to handle because it can have a call in it too
+			
+		}
+		catch(ClassCastException c)
+		{
+			
+		}
+		System.out.print("Mul Expr Node About To Leave\n");
+		return n.getLeftNode().accept(this);
 	}
 
 	@Override
 	public Object visit(OperandNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterNode().accept(this);
 	}
 
 	@Override
@@ -296,8 +311,18 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(ConstantNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.print("Constant Node Entered\n");
+		try
+		{
+			//there are gunna be a lot of different casts here but for now im assuming they are
+			//  going to be int numbers so that i can get fucking addition working
+		}
+		catch(ClassCastException c)
+		{
+			
+		}
+		System.out.print("Constant Node About To Leave\n");
+		return n.getCenterNode().accept(this);
 	}
 
 	@Override
@@ -383,8 +408,9 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(IDNode n) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		System.out.print("IDNode Entered\n");
+		int tempValue = (Integer.parseInt(n.getToken()));
+		return tempValue;
 	}
 
 }
