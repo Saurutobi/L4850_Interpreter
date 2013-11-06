@@ -127,9 +127,7 @@ public class L485Interpreter
 				ASTNode output = L485Parser.program();
 				String outputString = (String)output.accept(new EvalVisitor());
 				System.out.println("Read In Done!");
-				System.out.println("\nYo, I like you, and imma let you finish, but let me regurgitate this back for you:"); 
 				System.out.println(outputString);
-				System.out.println("Yea, Science, Bitches!\n");
 			}
 			catch(ParseException e)
 			{

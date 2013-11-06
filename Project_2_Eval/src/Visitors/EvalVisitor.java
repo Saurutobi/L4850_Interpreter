@@ -5,28 +5,53 @@ import abstractSyntaxTree.*;
 
 public class EvalVisitor implements Visitor{
 
+	//copied from print visitor
 	@Override
-	public Object visit(ProgramNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ProgramNode n)
+	{
+		return n.getCenterNode().accept(this);
 	}
 
+	//copied from print visitor
 	@Override
-	public Object visit(FunctionDefNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(FunctionDefNode n)
+	{
+		String out = "defunc " + n.getID() + "(";
+		if(n.getCenterNode() != null)
+		{
+			out += (String)n.getCenterNode().accept(this);
+		}
+		out += ")" + (String)n.getRightNode().accept(this);
+		return out;
+	}
+	
+	//copied from print visitor
+	@Override
+	public Object visit(IDListNode n)
+	{
+		String out = n.getLeftString();
+		for(int i = 0; i < n.getRightStrings().size(); i++)
+		{
+			out += ", " + n.getRightStrings().get(i);
+		}
+		return out;
 	}
 
+	//copied from print visitor
 	@Override
-	public Object visit(IDListNode n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(ClassDefNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ClassDefNode n)
+	{
+		String out = "defclass " + n.getID() + "{";
+		if(n.getCenterNode() != null)
+		{
+			out += (String)n.getCenterNode().accept(this);
+		}
+		if(n.getRightNode() != null)
+		{
+			out += (String)n.getRightNode().accept(this);
+		}
+		out += "}";
+		return out;
 	}
 
 	@Override
@@ -55,14 +80,29 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(ExpressionListNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		BooleanValue cv = (BooleanValue) n.getCenterNode().accept(this);
+		if(cv.getVal())
+		{
+			cv.setVal(false);
+		}
+		else
+		{
+			cv.setVal(true);
+		}
+		return cv.getVal();
 	}
 
 	@Override
 	public Object visit(ExpressionBinaryNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		try
+		{
+			
+		}
+		catch(ClassCastException c)
+		{
+			
+		}
+		return "gothere";
 	}
 
 	@Override
@@ -73,8 +113,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(LogOpNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterString();
 	}
 
 	@Override
@@ -82,20 +121,34 @@ public class EvalVisitor implements Visitor{
 		try
 		{
 			IntValue lv = (IntValue) n.getLeftNode().accept(this);
-			IntValue rvHolder;
+			BooleanValue rvHolder;
 			
 			String tempOperand;
 			
 			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
 			{
-				switch(tempOperand){
-				case 
-				
-				//there is no such thing as a switch in java
-				//for strings so we need to find a way to represent
-				// all the different outcomes for less than greater than
-				//etc here
-				
+				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+				if(tempOperand.compareTo("==") == 0)
+				{
+					
+				}
+				else if(tempOperand.compareTo(">") == 0){
+					
+				}
+				else if(tempOperand.compareTo("<") == 0){
+					
+				}
+				else if(tempOperand.compareTo(">=") == 0){
+					
+				}
+				else if(tempOperand.compareTo("<=") == 0){
+					
+				}
+				else if(tempOperand.compareTo("!=") == 0){
+					
+				}
+				else{
+					
 				}
 			}
 		}
@@ -201,6 +254,9 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.println("Casting Error");
 		}
+		
+		//something went wrong
+		return -1337;
 	}
 
 	@Override
@@ -287,6 +343,8 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.println("Casting Error");
 		}
+		
+		return null;
 	}
 	@Override
 	public Object visit(AssignExprNode n) {
