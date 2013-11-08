@@ -1,1 +1,1 @@
-if [] then 1 else 2 fi
+if 1 then 1 else 2 fi
