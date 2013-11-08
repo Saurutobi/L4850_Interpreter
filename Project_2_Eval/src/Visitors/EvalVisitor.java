@@ -119,7 +119,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
-		System.out.print("Another Sucess\n");
+		//System.out.print("Another Sucess\n");
 		try
 		{
 			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
@@ -160,7 +160,7 @@ public class EvalVisitor implements Visitor{
 			System.out.print("Shit Broke Yo\n");
 		}
 
-		System.out.print("Made It Through CompExprNode\n");
+		//System.out.print("Made It Through CompExprNode\n");
 		return "shit";
 	}
 
@@ -171,7 +171,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Integer visit(AddExprNode n) {
-		System.out.print("Add ExprNode Entered\n");
+		//zzSystem.out.print("Add ExprNode Entered\n");
 		try
 		{
 			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
@@ -200,7 +200,7 @@ public class EvalVisitor implements Visitor{
 					}
 				}
 			}
-			System.out.print("About to leave Add Expr Node\n");
+			//System.out.print("About to leave Add Expr Node\n");
 			return lv.getVal();
 		}
 		catch(BadSignError c)
@@ -221,10 +221,31 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(MulExprNode n) {
-		System.out.print("Mul Expr Node Entered\n");
+		//System.out.print("Mul Expr Node Entered\n");
 		try
 		{
-			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
+			Object temp = n.getLeftNode().accept(this);
+			if(temp instanceof IntValue)
+			{
+				System.out.print("SHIT FUCKING WORKED");
+				IntValue lv = new IntValue(Integer.parseInt("" + temp));
+			}
+			else if(temp instanceof BooleanValue)
+			{
+				System.out.print("That was a bool dipshit");
+			}
+			else if(temp instanceof ListValue)
+			{
+				System.out.print("That was a list dipshit");
+			}
+			else if(temp instanceof FloatValue)
+			{
+				System.out.print("We can handle floats");
+			}
+			else if(temp instanceof StringValue)
+			{
+				System.out.print("That was a string dipshit");
+			}
 			IntValue rvHolder = new IntValue();
 
 			String tempOperand = "";
@@ -241,7 +262,7 @@ public class EvalVisitor implements Visitor{
 				{
 					if(tempOperand.compareTo("/") == 0)
 					{
-						rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+						rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
 						lv.setVal(lv.getVal() / rvHolder.getVal());
 					}
 					else
@@ -250,7 +271,7 @@ public class EvalVisitor implements Visitor{
 					}
 				}
 			}
-			System.out.print("Mul Expr About To Leave\n");
+			//System.out.print("Mul Expr About To Leave\n");
 			return lv.getVal();
 		}
 		catch(BadSignError c)
@@ -269,11 +290,11 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(MulOpNode n) {
 		return n.getCenterString();
-	}
+	} 	 
 
 	@Override
 	public Object visit(FactorNode n) {
-		System.out.print("Factor Node Entered\n");
+		//System.out.print("Factor Node Entered\n");
 		try
 		{
 			//this one will be tricky to handle because it can have a call in it too
@@ -283,7 +304,7 @@ public class EvalVisitor implements Visitor{
 		{
 			
 		}
-		System.out.print("Mul Expr Node About To Leave\n");
+		//System.out.print("Mul Expr Node About To Leave\n");
 		return n.getLeftNode().accept(this);
 	}
 
@@ -311,21 +332,21 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(ConstantNode n) {
-		System.out.print("Constant Node Entered\n");
+	public Value visit(ConstantNode n) {
+		//System.out.print("Constant Node Entered\n");
 		try
 		{
 			//there are gunna be a lot of different casts here but for now im assuming they are
 			//  going to be int numbers so that i can get fucking addition working
 			int temp = Integer.parseInt(n.getCenterString());
-			return temp;
+			return new IntValue(temp);
 		}
 		catch(ClassCastException c)
 		{
 			System.out.print("shits broke yo");
 		}
-		System.out.print("Constant Node About To Leave\n");
-		return -1337;
+		//System.out.print("Constant Node About To Leave\n");
+		return new IntValue(-1337);
 	}
 
 	@Override
