@@ -4,6 +4,8 @@ import util.*;
 import abstractSyntaxTree.*;
 
 public class EvalVisitor implements Visitor{
+	
+	boolean useFloats;
 
 	//copied from print visitor
 	@Override
@@ -122,9 +124,9 @@ public class EvalVisitor implements Visitor{
 		System.out.print("Another Sucess\n");
 		try
 		{		
+			useFloats = false;
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
-			boolean useFloats = false;
 			if(temp instanceof IntValue)
 			{
 				System.out.print("SHIT FUCKING WORKED");
@@ -211,7 +213,6 @@ public class EvalVisitor implements Visitor{
 		{
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
-			boolean useFloats = false;
 			if(temp instanceof IntValue)
 			{
 				System.out.print("SHIT FUCKING WORKED");
@@ -248,7 +249,7 @@ public class EvalVisitor implements Visitor{
 				}
 				if(useFloats)
 				{ 
-					((FloatValue) rvHolder).setVal(Float.parseFloat("" + insideTemp + "f"));
+					rvHolder = (FloatValue)insideTemp;
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 					if(tempOperand.compareTo("+") == 0)
 					{
@@ -268,7 +269,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else
 				{
-					((IntValue) rvHolder).setVal(Integer.parseInt("" + insideTemp));
+					rvHolder = (IntValue)insideTemp;
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 					if(tempOperand.compareTo("*") == 0)
 					{
@@ -323,7 +324,6 @@ public class EvalVisitor implements Visitor{
 		{
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
-			boolean useFloats = false;
 			if(temp instanceof IntValue)
 			{
 				System.out.print("SHIT FUCKING WORKED");
@@ -360,7 +360,7 @@ public class EvalVisitor implements Visitor{
 				}
 				if(useFloats)
 				{ 
-					((FloatValue) rvHolder).setVal(Float.parseFloat("" + insideTemp + "f"));
+					rvHolder = (FloatValue)insideTemp;
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 					if(tempOperand.compareTo("*") == 0)
 					{
@@ -380,7 +380,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else
 				{
-					((IntValue) rvHolder).setVal(Integer.parseInt("" + insideTemp));
+					rvHolder = (IntValue)insideTemp;
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 					if(tempOperand.compareTo("*") == 0)
 					{
@@ -430,6 +430,16 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(FactorNode n) {
 		//System.out.print("Factor Node Entered\n");
+		//
+		//	 	 ____  _  _  __ _   ___  ____  __  __   __ _    __  __ _  _  _   __    ___   __  ____  __  __   __ _       
+		//		(  __)/ )( \(  ( \ / __)(_  _)(  )/  \ (  ( \  (  )(  ( \/ )( \ /  \  / __) / _\(_  _)(  )/  \ (  ( \      
+		//		 ) _) ) \/ (/    /( (__   )(   )((  O )/    /   )( /    /\ \/ /(  O )( (__ /    \ )(   )((  O )/    /      
+		//		(__)  \____/\_)__) \___) (__) (__)\__/ \_)__)  (__)\_)__) \__/  \__/  \___)\_/\_/(__) (__)\__/ \_)__)      
+		//		  ___  __   _  _  __    ____    _  _   __   ____  ____  ____  __ _    _  _  ____  ____  ____               
+		//		 / __)/  \ / )( \(  )  (    \  / )( \ / _\ (  _ \(  _ \(  __)(  ( \  / )( \(  __)(  _ \(  __)              
+		//		( (__(  O )) \/ (/ (_/\ ) D (  ) __ (/    \ ) __/ ) __/ ) _) /    /  ) __ ( ) _)  )   / ) _)               
+		//		 \___)\__/ \____/\____/(____/  \_)(_/\_/\_/(__)  (__)  (____)\_)__)  \_)(_/(____)(__\_)(____)
+		//
 		try
 		{
 			//this one will be tricky to handle because it can have a call in it too
