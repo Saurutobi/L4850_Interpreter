@@ -119,10 +119,36 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
-		//System.out.print("Another Sucess\n");
+		System.out.print("Another Sucess\n");
 		try
-		{
-			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
+		{		
+			Object temp = n.getLeftNode().accept(this);
+			Value lv = null;
+			boolean useFloats = false;
+			if(temp instanceof IntValue)
+			{
+				System.out.print("SHIT FUCKING WORKED");
+				lv = (IntValue) temp;
+			}
+			else if(temp instanceof BooleanValue)
+			{
+				System.out.print("That was a bool dipshit");
+			}
+			else if(temp instanceof ListValue)
+			{
+				System.out.print("That was a list dipshit");
+			}
+			else if(temp instanceof FloatValue)
+			{
+				System.out.print("SHIT FUCKING WORKED");
+				lv = (FloatValue) temp;
+				useFloats = true;
+			}
+			else if(temp instanceof StringValue)
+			{
+				System.out.print("That was a string dipshit");
+			}
+			
 			BooleanValue rvHolder;
 			
 			String tempOperand;
@@ -152,8 +178,17 @@ public class EvalVisitor implements Visitor{
 				else{
 					
 				}
+			}			
+			if(useFloats)
+			{
+				System.out.print(((FloatValue)lv).toString());
+				return ((FloatValue) lv);
 			}
-			return "" + lv.getVal();
+			else
+			{
+				System.out.print(((IntValue)lv).toString());
+				return ((IntValue) lv);
+			}
 		}
 		catch(ClassCastException c)
 		{
@@ -170,65 +205,17 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Integer visit(AddExprNode n) {
-		//zzSystem.out.print("Add ExprNode Entered\n");
-		try
-		{
-			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
-			IntValue rvHolder = new IntValue();
-
-			String tempOperand;
-			
-			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
-			{
-				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
-				if(tempOperand.compareTo("+") == 0)
-				{
-					rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
-					lv.setVal(lv.getVal() + rvHolder.getVal());
-				}
-				else
-				{
-					if(tempOperand.compareTo("-") == 0)
-					{
-						rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
-						lv.setVal(lv.getVal() - rvHolder.getVal());
-					}
-					else
-					{
-						throw(new BadSignError());
-					}
-				}
-			}
-			//System.out.print("About to leave Add Expr Node\n");
-			return lv.getVal();
-		}
-		catch(BadSignError c)
-		{
-			System.out.print("Was Expecting + or -");
-		}
-		//catch(ClassCastException c)
-		//{
-		//	System.out.println("Bitch Titties");
-		//}
-		return -1337;
-	}
-
-	@Override
-	public Object visit(AddOpNode n) {
-		return n.getCenterString();
-	}
-
-	@Override
-	public Object visit(MulExprNode n) {
-		//System.out.print("Mul Expr Node Entered\n");
+	public Object visit(AddExprNode n) {
+		System.out.print("Add Expr Node Entered\n");
 		try
 		{
 			Object temp = n.getLeftNode().accept(this);
+			Value lv = null;
+			boolean useFloats = false;
 			if(temp instanceof IntValue)
 			{
 				System.out.print("SHIT FUCKING WORKED");
-				IntValue lv = new IntValue(Integer.parseInt("" + temp));
+				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
 			{
@@ -240,39 +227,187 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof FloatValue)
 			{
-				System.out.print("We can handle floats");
+				System.out.print("SHIT FUCKING WORKED");
+				lv = (FloatValue) temp;
+				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
 				System.out.print("That was a string dipshit");
 			}
-			IntValue rvHolder = new IntValue();
+			Value rvHolder = null;
 
 			String tempOperand = "";
 			
 			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
 			{
-				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
-				if(tempOperand.compareTo("*") == 0)
+				Object insideTemp = n.getExtraNodes().get(i + 1).accept(this);
+				if(insideTemp instanceof FloatValue)
 				{
-					rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
-					lv.setVal(lv.getVal() * rvHolder.getVal());
+					useFloats = true;
 				}
-				else
-				{
-					if(tempOperand.compareTo("/") == 0)
+				if(useFloats)
+				{ 
+					((FloatValue) rvHolder).setVal(Float.parseFloat("" + insideTemp + "f"));
+					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+					if(tempOperand.compareTo("+") == 0)
 					{
-						rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
-						lv.setVal(lv.getVal() / rvHolder.getVal());
+						((FloatValue) lv).setVal(((FloatValue) lv).getVal() + ((FloatValue)rvHolder).getVal());
 					}
 					else
 					{
-						throw(new BadSignError());
+						if(tempOperand.compareTo("-") == 0)
+						{
+							((FloatValue) lv).setVal(((FloatValue) lv).getVal() - ((FloatValue)rvHolder).getVal());
+						}
+						else
+						{
+							throw(new BadSignError());
+						}
+					}
+				}
+				else
+				{
+					((IntValue) rvHolder).setVal(Integer.parseInt("" + insideTemp));
+					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+					if(tempOperand.compareTo("*") == 0)
+					{
+						((IntValue) lv).setVal(((IntValue) lv).getVal() * ((IntValue)rvHolder).getVal());
+					}
+					else
+					{
+						if(tempOperand.compareTo("/") == 0)
+						{
+							((IntValue) lv).setVal(((IntValue) lv).getVal() / ((IntValue)rvHolder).getVal());
+						}
+						else
+						{
+							throw(new BadSignError());
+						}
 					}
 				}
 			}
 			//System.out.print("Mul Expr About To Leave\n");
-			return lv.getVal();
+			if(useFloats)
+			{
+				return ((FloatValue) lv);
+			}
+			else
+			{
+				return ((IntValue) lv);
+			}
+		}
+		catch(BadSignError c)
+		{
+			System.out.print("Was Expecting + or -");
+		}
+		//catch(ClassCastException c)
+		//{
+			//System.out.println("Titties Bitch");
+		//}
+		
+		//something went wrong
+		return -1337;
+	}
+
+	@Override
+	public Object visit(AddOpNode n) {
+		return n.getCenterString();
+	}
+
+	@SuppressWarnings("null")
+	@Override
+	public Object visit(MulExprNode n) {
+		System.out.print("Mul Expr Node Entered\n");
+		try
+		{
+			Object temp = n.getLeftNode().accept(this);
+			Value lv = null;
+			boolean useFloats = false;
+			if(temp instanceof IntValue)
+			{
+				System.out.print("SHIT FUCKING WORKED");
+				lv = (IntValue) temp;
+			}
+			else if(temp instanceof BooleanValue)
+			{
+				System.out.print("That was a bool dipshit");
+			}
+			else if(temp instanceof ListValue)
+			{
+				System.out.print("That was a list dipshit");
+			}
+			else if(temp instanceof FloatValue)
+			{
+				System.out.print("SHIT FUCKING WORKED");
+				lv = (FloatValue) temp;
+				useFloats = true;
+			}
+			else if(temp instanceof StringValue)
+			{
+				System.out.print("That was a string dipshit");
+			}
+			Value rvHolder = null;
+
+			String tempOperand = "";
+			
+			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
+			{
+				Object insideTemp = n.getExtraNodes().get(i + 1).accept(this);
+				if(insideTemp instanceof FloatValue)
+				{
+					useFloats = true;
+				}
+				if(useFloats)
+				{ 
+					((FloatValue) rvHolder).setVal(Float.parseFloat("" + insideTemp + "f"));
+					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+					if(tempOperand.compareTo("*") == 0)
+					{
+						((FloatValue) lv).setVal(((FloatValue) lv).getVal() * ((FloatValue)rvHolder).getVal());
+					}
+					else
+					{
+						if(tempOperand.compareTo("/") == 0)
+						{
+							((FloatValue) lv).setVal(((FloatValue) lv).getVal() / ((FloatValue)rvHolder).getVal());
+						}
+						else
+						{
+							throw(new BadSignError());
+						}
+					}
+				}
+				else
+				{
+					((IntValue) rvHolder).setVal(Integer.parseInt("" + insideTemp));
+					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+					if(tempOperand.compareTo("*") == 0)
+					{
+						((IntValue) lv).setVal(((IntValue) lv).getVal() * ((IntValue)rvHolder).getVal());
+					}
+					else
+					{
+						if(tempOperand.compareTo("/") == 0)
+						{
+							((IntValue) lv).setVal(((IntValue) lv).getVal() / ((IntValue)rvHolder).getVal());
+						}
+						else
+						{
+							throw(new BadSignError());
+						}
+					}
+				}
+			}
+			//System.out.print("Mul Expr About To Leave\n");
+			if(useFloats)
+			{
+				return ((FloatValue) lv);
+			}
+			else
+			{
+				return ((IntValue) lv);
+			}
 		}
 		catch(BadSignError c)
 		{
@@ -333,20 +468,40 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Value visit(ConstantNode n) {
-		//System.out.print("Constant Node Entered\n");
+		System.out.print("Constant Node Entered\n");
 		try
 		{
-			//there are gunna be a lot of different casts here but for now im assuming they are
-			//  going to be int numbers so that i can get fucking addition working
-			int temp = Integer.parseInt(n.getCenterString());
-			return new IntValue(temp);
+			if(n.getCenterString() != null)
+			{
+				String temp = n.getCenterString().trim();
+				if(temp.compareTo("true") == 0)
+				{
+					return new BooleanValue(true);
+				}
+				else if(temp.compareTo("false") == 0)
+				{
+					return new BooleanValue(false);
+				}
+				else
+				{
+					try{
+						return new IntValue(Integer.parseInt(temp));
+					}
+					catch (Exception e){}
+					try{
+						return new FloatValue(Float.parseFloat(temp + "f"));
+					}
+					catch (Exception e){}
+				}
+				return new StringValue(temp);
+			}
 		}
 		catch(ClassCastException c)
 		{
 			System.out.print("shits broke yo");
 		}
 		//System.out.print("Constant Node About To Leave\n");
-		return new IntValue(-1337);
+		return null;
 	}
 
 	@Override
