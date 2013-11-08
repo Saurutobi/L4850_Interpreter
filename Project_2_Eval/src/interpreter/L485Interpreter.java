@@ -129,7 +129,7 @@ public class L485Interpreter
 				System.out.println("Read In Done!");
 				System.out.println(outputString);
 			}
-			catch(ParseException e)
+			catch(Exception e)
 			{
 				System.out.println("----------------------------------------------------Syntax Error: "+e);
 			}

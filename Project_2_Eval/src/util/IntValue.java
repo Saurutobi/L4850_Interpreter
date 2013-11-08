@@ -4,6 +4,11 @@ public class IntValue extends Value{
 	
 	private int val;
 	
+	public IntValue()
+	{
+		
+	}
+	
 	public IntValue(int val)
 	{
 		this.val = val;

@@ -122,7 +122,7 @@ public class EvalVisitor implements Visitor{
 		System.out.print("Another Sucess\n");
 		try
 		{
-			IntValue lv = (IntValue) n.getLeftNode().accept(this);
+			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
 			BooleanValue rvHolder;
 			
 			String tempOperand;
@@ -153,14 +153,15 @@ public class EvalVisitor implements Visitor{
 					
 				}
 			}
+			return "" + lv.getVal();
 		}
 		catch(ClassCastException c)
 		{
-			
+			System.out.print("Shit Broke Yo\n");
 		}
 
 		System.out.print("Made It Through CompExprNode\n");
-		return null;
+		return "shit";
 	}
 
 	@Override
@@ -173,8 +174,8 @@ public class EvalVisitor implements Visitor{
 		System.out.print("Add ExprNode Entered\n");
 		try
 		{
-			IntValue lv = (IntValue)n.getLeftNode().accept(this);
-			IntValue rvHolder;
+			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
+			IntValue rvHolder = new IntValue();
 
 			String tempOperand;
 			
@@ -183,14 +184,14 @@ public class EvalVisitor implements Visitor{
 				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 				if(tempOperand.compareTo("+") == 0)
 				{
-					rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+					rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
 					lv.setVal(lv.getVal() + rvHolder.getVal());
 				}
 				else
 				{
 					if(tempOperand.compareTo("-") == 0)
 					{
-						rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+						rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
 						lv.setVal(lv.getVal() - rvHolder.getVal());
 					}
 					else
@@ -206,10 +207,10 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.print("Was Expecting + or -");
 		}
-		catch(ClassCastException c)
-		{
-			System.out.println("Casting Error");
-		}
+		//catch(ClassCastException c)
+		//{
+		//	System.out.println("Bitch Titties");
+		//}
 		return -1337;
 	}
 
@@ -223,17 +224,17 @@ public class EvalVisitor implements Visitor{
 		System.out.print("Mul Expr Node Entered\n");
 		try
 		{
-			IntValue lv = (IntValue)n.getLeftNode().accept(this);
-			IntValue rvHolder;
+			IntValue lv = new IntValue(Integer.parseInt("" + n.getLeftNode().accept(this)));
+			IntValue rvHolder = new IntValue();
 
-			String tempOperand;
+			String tempOperand = "";
 			
 			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
 			{
 				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 				if(tempOperand.compareTo("*") == 0)
 				{
-					rvHolder = (IntValue) n.getExtraNodes().get(i + 1).accept(this);
+					rvHolder.setVal(Integer.parseInt("" + n.getExtraNodes().get(i + 1).accept(this)));
 					lv.setVal(lv.getVal() * rvHolder.getVal());
 				}
 				else
@@ -256,10 +257,10 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.print("Was Expecting + or -");
 		}
-		catch(ClassCastException c)
-		{
-			System.out.println("Casting Error");
-		}
+		//catch(ClassCastException c)
+		//{
+			//System.out.println("Titties Bitch");
+		//}
 		
 		//something went wrong
 		return -1337;
@@ -316,13 +317,15 @@ public class EvalVisitor implements Visitor{
 		{
 			//there are gunna be a lot of different casts here but for now im assuming they are
 			//  going to be int numbers so that i can get fucking addition working
+			int temp = Integer.parseInt(n.getCenterString());
+			return temp;
 		}
 		catch(ClassCastException c)
 		{
-			
+			System.out.print("shits broke yo");
 		}
 		System.out.print("Constant Node About To Leave\n");
-		return n.getCenterNode().accept(this);
+		return -1337;
 	}
 
 	@Override
