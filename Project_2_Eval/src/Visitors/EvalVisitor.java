@@ -57,27 +57,36 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(ClassVarsNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ClassVarsNode n)
+	{
+		return "vars "+ (String)n.getCenterNode().accept(this);
 	}
 
 	@Override
-	public Object visit(MethodsListNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(MethodsListNode n)
+	{
+		String out = "";
+		for(int i = 0; i < n.getCenterList().size(); i++)
+		{
+			out += (String)n.getCenterList().get(i).accept(this);
+		}
+		return out;
+	}
+	
+	@Override
+	public Object visit(MethodsNode n)
+	{
+		String out = "method " + n.getID() + "(";
+		out += (String)n.getCenterNode().accept(this);
+		out += ")";
+		out += (String)n.getRightNode().accept(this);
+		return out;
 	}
 
 	@Override
-	public Object visit(MethodsNode n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(LoadFileNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(LoadFileNode n)
+	{
+		return "load " + n.getCenterString();
 	}
 
 	@Override
@@ -338,27 +347,36 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof BooleanValue)
 			{
-				return temp;
+				if(n.getExtraNodes().size() > 0){
+					System.out.print("Cannot add/subtract with a boolean\n");
+					return null;
+				}
+				else{
+					return temp;
+				}
 			}
 			else if(temp instanceof ListValue)
-			{
+			{				
+				if(n.getExtraNodes().size() > 0){
+				System.out.print("Cannot add/subtract with a list\n");
+				return null;
+			}
+			else{
 				return temp;
+			}
 			}
 			else if(temp instanceof FloatValue)
 			{
-				//System.out.print("Float Value in Add Expr Node");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
-				if(n.getExtraNodes().size() > 0)
-				{
-					System.out.print("Cannot Add With Strings\n");
+				if(n.getExtraNodes().size() > 0){
+					System.out.print("Cannot add/subtract with a string\n");
 					return null;
 				}
-				else
-				{
+				else{
 					return temp;
 				}
 			}
@@ -375,7 +393,17 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(insideTemp instanceof StringValue)
 				{
-					System.out.print("Cannot add with a String");
+					System.out.print("Cannot add/subtract with a String\n");
+					return null;
+				}
+				else if(insideTemp instanceof ListValue)
+				{
+					System.out.print("Cannot add/subtract with a List\n");
+					return null;
+				}
+				else if(insideTemp instanceof BooleanValue)
+				{
+					System.out.print("Cannot add/subtract with a Boolean\n");
 					return null;
 				}
 				if(useFloats)
@@ -462,21 +490,38 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof BooleanValue)
 			{
-				return temp;
+				if(n.getExtraNodes().size() > 0){
+					System.out.print("Cannot divide/multiply with a boolean\n");
+					return null;
+				}
+				else{
+					return temp;
+				}
 			}
 			else if(temp instanceof ListValue)
-			{
+			{				
+				if(n.getExtraNodes().size() > 0){
+				System.out.print("Cannot divide/multiply with a list\n");
+				return null;
+			}
+			else{
 				return temp;
+			}
 			}
 			else if(temp instanceof FloatValue)
 			{
-				//System.out.print("Float value in Mul Expr Node");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
-				return temp;
+				if(n.getExtraNodes().size() > 0){
+					System.out.print("Cannot divide/multiply with a string\n");
+					return null;
+				}
+				else{
+					return temp;
+				}
 			}
 			Value rvHolder = null;
 
@@ -488,6 +533,21 @@ public class EvalVisitor implements Visitor{
 				if(insideTemp instanceof FloatValue)
 				{
 					useFloats = true;
+				}				
+				else if(insideTemp instanceof StringValue)
+				{
+					System.out.print("Cannot divide/multiply with a String\n");
+					return null;
+				}
+				else if(insideTemp instanceof ListValue)
+				{
+					System.out.print("Cannot divide/multiply with a List\n");
+					return null;
+				}
+				else if(insideTemp instanceof BooleanValue)
+				{
+					System.out.print("Cannot divide/multiply with a Boolean\n");
+					return null;
 				}
 				if(useFloats)
 				{ 
@@ -565,26 +625,56 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(OperandNode n) {
-		return n.getCenterNode().accept(this);
+	public Object visit(OperandNode n)
+	{
+		if(n.isExpression())
+		{
+			return "(" + (String)n.getCenterNode().accept(this) + ")";
+		}
+		else
+		{
+			return n.getCenterNode().accept(this);
+		}
 	}
 
 	@Override
-	public Object visit(CallNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(CallNode n)
+	{
+		String out = "->(";
+		if(n.getCenterNode() != null) 
+		{
+			out += (String)n.getCenterNode().accept(this);
+		}
+		out +=")";
+		return out;
 	}
-
+	
 	@Override
-	public Object visit(ParamListNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ParamListNode n)
+	{
+		String out = (String)n.getLeftNode().accept(this);
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
+		}
+		return out;
 	}
-
+	
 	@Override
-	public Object visit(VarRefNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(VarRefNode n)
+	{
+		if(n.getRightString() != null && n.getLeftString() != null)
+		{
+			return n.getLeftString() + "." + n.getRightString();
+		}
+		else if(n.getLeftString() != null)
+		{
+			return n.getLeftString();
+		}
+		else
+		{
+			return "--VariableReferenceIsNull--";
+		}
 	}
 
 	@Override
@@ -626,27 +716,38 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(ListNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ListNode n)
+	{
+		return "[" + (String)n.getCenterNode().accept(this) + "]";
 	}
 
 	@Override
-	public Object visit(ConstantListNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(ConstantListNode n)
+	{
+		String out = (String)n.getLeftNode().accept(this);
+		for(int i = 0; i < n.getExtraNodes().size(); i++)
+		{
+			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
+		}
+		return out;
+	}
+	
+	@Override
+	public Object visit(NewExprNode n)
+	{
+		return "new " + n.getCenterString();
 	}
 
 	@Override
-	public Object visit(NewExprNode n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(FuncExprNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(FuncExprNode n)
+	{
+		String out = "func (";
+		if(n.getLeftNode() != null)
+		{
+			out += (String)n.getLeftNode().accept(this);
+		}
+		out += ") " + (String)n.getRightNode().accept(this);
+		return out;
 	}
 
 	@Override
@@ -671,10 +772,11 @@ public class EvalVisitor implements Visitor{
 		
 		return null;
 	}
+	
 	@Override
-	public Object visit(AssignExprNode n) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(AssignExprNode n)
+	{
+		return "assign " + (String)n.getLeftNode().accept(this) + " to " + n.getRightString();
 	}
 
 	@Override
@@ -706,17 +808,21 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(WithExprNode n) 
+	public Object visit(WithExprNode n)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return "with (" + (String)n.getLeftNode().accept(this) + ") " + (String)n.getRightNode().accept(this);
 	}
-
+	
 	@Override
-	public Object visit(VariableDefsNode n) 
+	public Object visit(VariableDefsNode n)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String out = "";
+		for(int i = 0; i < n.getLeftStrings().size(); i++)
+		{
+			out += "[" + n.getLeftStrings().get(i) + " ";
+			out += (String)n.getExtraNodes().get(i).accept(this) + "]";
+		}
+		return out;
 	}
 
 	@Override
