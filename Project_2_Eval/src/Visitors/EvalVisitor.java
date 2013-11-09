@@ -10,7 +10,7 @@ public class EvalVisitor implements Visitor{
 	
 	boolean useFloats;
 	Object Function;
-	Environment env;
+	Environment env = new Environment();
 	//copied from print visitor
 	@Override
 	public Object visit(ProgramNode n)
@@ -673,7 +673,14 @@ public class EvalVisitor implements Visitor{
 	public Object visit(CallNode n)
 	{
 		BuiltInFunction tempFunction = (BuiltInFunction) env.get(Function.toString());
-		return tempFunction.invoke(env, (ArrayList<Value>) n.getCenterNode().accept(this));
+		if(n.getCenterNode() != null)
+		{
+			return tempFunction.invoke(env, (ArrayList<Value>) n.getCenterNode().accept(this));
+		}
+		else
+		{
+			return tempFunction.invoke(env, new ArrayList<Value>());
+		}
 	}
 	
 	@Override

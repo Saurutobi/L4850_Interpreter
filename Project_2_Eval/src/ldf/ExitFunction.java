@@ -10,6 +10,7 @@ public class ExitFunction extends BuiltInFunction
 	{
 		try
 		{
+			System.out.println("EXITTING");
 			System.exit(0);
 		}
 		catch (Exception e)

@@ -131,7 +131,7 @@ public class L485Interpreter
 			}
 			catch(Exception e)
 			{
-				System.out.println("----------------------------------------------------Syntax Error: "+e);
+				System.out.println("----------------------------------------------------Syntax Error: "+e + "\n" + e.getMessage());
 			}
 		}
 	}
