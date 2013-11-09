@@ -126,15 +126,19 @@ public class EvalVisitor implements Visitor{
 		{		
 			useFloats = false;
 			Object temp = n.getLeftNode().accept(this);
-			Value lv = null;
+			Value lv = null; 
+			if(temp == null)
+			{
+				return null;
+			}
 			if(temp instanceof IntValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				System.out.print("Int Value at Comp Expr Node\n");
 				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
 			{
-				System.out.print("That was a bool dipshit");
+				return temp;
 			}
 			else if(temp instanceof ListValue)
 			{
@@ -142,7 +146,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof FloatValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				System.out.print("Float Value at Comp Expr Node\n");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
@@ -151,35 +155,151 @@ public class EvalVisitor implements Visitor{
 				System.out.print("That was a string dipshit");
 			}
 			
-			BooleanValue rvHolder;
+			BooleanValue rvHolder = new BooleanValue();
 			
 			String tempOperand;
 			
-			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
+			for(int i = 0; i < n.getExtraNodes().size();)
 			{
 				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 				if(tempOperand.compareTo("==") == 0)
 				{
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() == ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() == ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else if(tempOperand.compareTo(">") == 0){
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() > ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() > ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else if(tempOperand.compareTo("<") == 0){
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() < ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() < ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else if(tempOperand.compareTo(">=") == 0){
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() >= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() >= ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else if(tempOperand.compareTo("<=") == 0){
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() <= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() <= ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else if(tempOperand.compareTo("!=") == 0){
-					
+					if(useFloats){
+						 if(((FloatValue)lv).getVal() != ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 {
+							 rvHolder.setVal(true);
+						 }
+						 else
+						 {
+							 rvHolder.setVal(false);
+						 }
+					}
+					else{						
+						if(((IntValue)lv).getVal() != ((IntValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						{
+							rvHolder.setVal(true);
+						}
+						else
+						{
+							rvHolder.setVal(false);
+						}
+					}
 				}
 				else{
-					
+					//some fucking crazy shit goes here
 				}
+				
+				return rvHolder;
 			}			
 			if(useFloats)
 			{
@@ -220,7 +340,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof BooleanValue)
 			{
-				System.out.print("That was a bool dipshit");
+				return temp;
 			}
 			else if(temp instanceof ListValue)
 			{
@@ -331,7 +451,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof BooleanValue)
 			{
-				System.out.print("That was a bool dipshit");
+				return temp;
 			}
 			else if(temp instanceof ListValue)
 			{
@@ -569,15 +689,21 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(CondExprNode n) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return n.getCenterNode().accept(this);
 	}
 
 	@Override
 	public Object visit(CondClausesNode n) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		for(int i = 0; i < n.getCenterList().size(); i+=2)
+		{
+			BooleanValue Statement = (BooleanValue)n.getCenterList().get(i).accept(this);
+			if(Statement.getVal())
+			{
+				return n.getCenterList().get(i + 1).accept(this);
+			}
+		}
+		return "That cond was gay";
 	}
 
 	@Override

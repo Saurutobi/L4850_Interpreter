@@ -9,6 +9,10 @@ public class BooleanValue extends Value{
 		this.val = val;
 	}
 	
+	public BooleanValue() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public boolean getVal()
 	{
 		return val;
