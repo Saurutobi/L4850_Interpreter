@@ -391,13 +391,13 @@ public class EvalVisitor implements Visitor{
 				{
 					rvHolder = (IntValue)insideTemp;
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
-					if(tempOperand.compareTo("*") == 0)
+					if(tempOperand.compareTo("+") == 0)
 					{
 						((IntValue) lv).setVal(((IntValue) lv).getVal() * ((IntValue)rvHolder).getVal());
 					}
 					else
 					{
-						if(tempOperand.compareTo("/") == 0)
+						if(tempOperand.compareTo("-") == 0)
 						{
 							((IntValue) lv).setVal(((IntValue) lv).getVal() / ((IntValue)rvHolder).getVal());
 						}
@@ -531,7 +531,7 @@ public class EvalVisitor implements Visitor{
 		}
 		catch(BadSignError c)
 		{
-			System.out.print("Was Expecting + or -");
+			System.out.print("Was Expecting * or /");
 		}
 		//catch(ClassCastException c)
 		//{
