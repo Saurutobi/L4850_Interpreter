@@ -6,9 +6,9 @@ public class ListValue extends Value{
 
 	private ArrayList<Value> values;
 	
-	public ListValue(ArrayList<Value> values)
+	public ListValue(ArrayList<Value> arrayList)
 	{
-		this.values = values;
+		this.values = arrayList;
 	}
 	
 	public ArrayList<Value> get()
@@ -22,11 +22,12 @@ public class ListValue extends Value{
 	}
 	public String toString()
 	{
-		String temp = "";
+		//idk if we want brackets here or not yet so we shall see
+		String temp = "[";
 		for(int i = 0; i < values.size(); i++)
 		{
-			temp += values.get(i).toString() + " ";
+			temp += values.get(i).toString() + ", ";
 		}
-		return temp;
+		return temp + "]";
 	}
 }

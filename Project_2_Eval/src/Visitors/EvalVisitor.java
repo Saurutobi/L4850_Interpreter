@@ -1,5 +1,7 @@
 package Visitors;
 
+import java.util.ArrayList;
+
 import util.*;
 import abstractSyntaxTree.*;
 
@@ -105,7 +107,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(ExpressionBinaryNode n) {
-		if(n.getExtraNodes() != null)
+		if(n.getExtraNodes().size() > 0)
 		{
 			try
 			{
@@ -123,8 +125,8 @@ public class EvalVisitor implements Visitor{
 			}
 			catch(ClassCastException c)
 			{
-				System.out.print("Need a boolean to compare");
-				return null;
+				System.out.print("Need a boolean to compare\n");
+				return "";
 			}
 		}
 		else
@@ -730,6 +732,12 @@ public class EvalVisitor implements Visitor{
 				}
 				return new StringValue(temp);
 			}
+			else
+			{
+				@SuppressWarnings("unchecked")
+				ArrayList<Value> temp = (ArrayList<Value>)(n.getCenterNode().accept(this));
+				return new ListValue(temp);
+			}
 		}
 		catch(ClassCastException c)
 		{
@@ -742,18 +750,19 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(ListNode n)
 	{
-		return "[" + (String)n.getCenterNode().accept(this) + "]";
+		return n.getCenterNode().accept(this);
 	}
 
 	@Override
 	public Object visit(ConstantListNode n)
 	{
-		String out = (String)n.getLeftNode().accept(this);
+		ArrayList<Value> temp = new ArrayList<Value>();
+		temp.add((Value)n.getLeftNode().accept(this));
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
+			temp.add( (Value)n.getExtraNodes().get(i).accept(this));
 		}
-		return out;
+		return temp;
 	}
 	
 	@Override
