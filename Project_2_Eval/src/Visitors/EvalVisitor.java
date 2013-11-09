@@ -2,13 +2,15 @@ package Visitors;
 
 import java.util.ArrayList;
 
+import ldf.*;
 import util.*;
 import abstractSyntaxTree.*;
 
 public class EvalVisitor implements Visitor{
 	
 	boolean useFloats;
-
+	Object Function;
+	Environment env;
 	//copied from print visitor
 	@Override
 	public Object visit(ProgramNode n)
@@ -644,6 +646,7 @@ public class EvalVisitor implements Visitor{
 	public Object visit(FactorNode n) {
 		if(n.getRightNode() != null)
 		{
+			Function = n.getLeftNode().accept(this);
 			return n.getRightNode().accept(this);
 		}
 		else
@@ -665,20 +668,22 @@ public class EvalVisitor implements Visitor{
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object visit(CallNode n)
 	{
-		//TODO SHIT HERE
-		return null;
+		BuiltInFunction tempFunction = (BuiltInFunction) env.get(Function.toString());
+		return tempFunction.invoke(env, (ArrayList<Value>) n.getCenterNode().accept(this));
 	}
 	
 	@Override
 	public Object visit(ParamListNode n)
 	{
-		String out = (String)n.getLeftNode().accept(this);
+		ArrayList<Value> out = new ArrayList<Value>();
+		out.add((Value)n.getLeftNode().accept(this));
 		for(int i = 0; i < n.getExtraNodes().size(); i++)
 		{
-			out += ", " + (String)n.getExtraNodes().get(i).accept(this);
+			out.add((Value)n.getExtraNodes().get(i).accept(this));
 		}
 		return out;
 	}

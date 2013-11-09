@@ -24,10 +24,10 @@ public class ListValue extends Value{
 	{
 		//idk if we want brackets here or not yet so we shall see
 		String temp = "[";
-		for(int i = 0; i < values.size(); i++)
+		for(int i = 0; i < values.size() - 1; i++)
 		{
 			temp += values.get(i).toString() + ", ";
 		}
-		return temp + "]";
+		return temp + values.get(values.size() -1).toString() + "]";
 	}
 }
