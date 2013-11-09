@@ -635,17 +635,17 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Value visit(IfExprNode n) {
+	public Object visit(IfExprNode n) {
 		try{
 			BooleanValue lv = (BooleanValue)n.getLeftNode().accept(this);
 	
 			if(lv.getVal())
 			{
-				n.getCenterNode().accept(this);
+				return n.getCenterNode().accept(this);
 			}
 			else
 			{
-				n.getRightNode().accept(this);
+				return n.getRightNode().accept(this);
 			}
 		
 		}
@@ -669,17 +669,25 @@ public class EvalVisitor implements Visitor{
 	}
 
 	@Override
-	public Object visit(CondClausesNode n) 
+	public Object visit(CondClausesNode n)
 	{
 		for(int i = 0; i < n.getCenterList().size(); i+=2)
 		{
-			BooleanValue Statement = (BooleanValue)n.getCenterList().get(i).accept(this);
-			if(Statement.getVal())
+			Object temp = n.getCenterList().get(i).accept(this);
+			if(temp instanceof BooleanValue)
 			{
-				return n.getCenterList().get(i + 1).accept(this);
+				BooleanValue Statement = (BooleanValue) temp;
+				if(Statement.getVal())
+				{
+					return n.getCenterList().get(i + 1).accept(this);
+				}
+			}
+			else
+			{
+				System.out.print("Expected a Boolean Exception\n");
 			}
 		}
-		return "That cond was gay";
+		return null;
 	}
 
 	@Override
