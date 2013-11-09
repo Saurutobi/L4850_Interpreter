@@ -9,6 +9,10 @@ public class FloatValue extends Value{
 		this.val = val;
 	}
 	
+	public FloatValue() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public float getVal()
 	{
 		return val;

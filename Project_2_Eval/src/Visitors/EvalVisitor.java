@@ -171,7 +171,6 @@ public class EvalVisitor implements Visitor{
 			}
 			if(temp instanceof IntValue)
 			{
-				//System.out.print("Int Value at Comp Expr Node\n");
 				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
@@ -180,7 +179,6 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				//System.out.print("That was a list dipshit");
 				return temp;
 			}
 			else if(temp instanceof FloatValue)
@@ -191,7 +189,6 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof StringValue)
 			{
-				//System.out.print("That was a string dipshit");
 				return temp;
 			}
 			
@@ -202,10 +199,23 @@ public class EvalVisitor implements Visitor{
 			for(int i = 0; i < n.getExtraNodes().size();)
 			{
 				tempOperand = ((String) n.getExtraNodes().get(i).accept(this)).trim();
+				FloatValue tempFloatValue = null;
+				if(useFloats)
+				{
+					if(lv instanceof IntValue)
+					{
+						float tempFloat = ((IntValue) lv).getVal();
+						tempFloatValue = new FloatValue(tempFloat);
+					}
+					else
+					{
+						tempFloatValue = (FloatValue) lv;
+					}
+				}
 				if(tempOperand.compareTo("==") == 0)
 				{
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() == ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 if(tempFloatValue.getVal() == ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -227,7 +237,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(tempOperand.compareTo(">") == 0){
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() > ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						if(tempFloatValue.getVal() > ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -249,7 +259,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(tempOperand.compareTo("<") == 0){
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() < ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 if(tempFloatValue.getVal() < ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -271,7 +281,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(tempOperand.compareTo(">=") == 0){
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() >= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 if(tempFloatValue.getVal() >= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -293,7 +303,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(tempOperand.compareTo("<=") == 0){
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() <= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 if(tempFloatValue.getVal() <= ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -315,7 +325,7 @@ public class EvalVisitor implements Visitor{
 				}
 				else if(tempOperand.compareTo("!=") == 0){
 					if(useFloats){
-						 if(((FloatValue)lv).getVal() != ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
+						 if(tempFloatValue.getVal() != ((FloatValue)n.getExtraNodes().get(i + 1).accept(this)).getVal())
 						 {
 							 rvHolder.setVal(true);
 						 }
@@ -335,22 +345,24 @@ public class EvalVisitor implements Visitor{
 						}
 					}
 				}
-				else{
-					//some fucking crazy shit goes here
-				}
-				
 				return rvHolder;
 			}			
 		}
 		catch(ClassCastException c)
 		{
-			//System.out.print("Shit Broke Yo\n");
+			System.out.print("Cast Error in Comp Expr Node");
 		}
 
 		//System.out.print("Made It Through CompExprNode\n");
 		if(useFloats)
 		{
-			return ((FloatValue) lv);
+			if(lv instanceof IntValue)
+			{
+				float tempFloat = ((IntValue) lv).getVal();
+				FloatValue tempFloatValue = new FloatValue(tempFloat);
+				return tempFloatValue;
+			}
+			return (FloatValue) lv;
 		}
 		else
 		{
@@ -363,6 +375,7 @@ public class EvalVisitor implements Visitor{
 		return n.getCenterString();
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public Object visit(AddExprNode n) {
 		//System.out.print("Add Expr Node Entered\n");
@@ -370,6 +383,7 @@ public class EvalVisitor implements Visitor{
 		{
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
+			FloatValue returningFloat= null;
 			if(temp instanceof IntValue)
 			{
 				//System.out.print("Add Node Int Value");
@@ -417,6 +431,7 @@ public class EvalVisitor implements Visitor{
 			for(int i = 0; i < n.getExtraNodes().size(); i+=2)
 			{
 				Object insideTemp = n.getExtraNodes().get(i + 1).accept(this);
+				
 				if(insideTemp instanceof FloatValue)
 				{
 					useFloats = true;
@@ -436,25 +451,50 @@ public class EvalVisitor implements Visitor{
 					System.out.print("Cannot add/subtract with a Boolean\n");
 					return null;
 				}
+				
+				
 				if(useFloats)
 				{ 
 					rvHolder = (FloatValue)insideTemp;
+					FloatValue tempFloatValue = null;
+					if(lv instanceof IntValue)
+					{
+						float tempFloat = ((IntValue) lv).getVal();
+						tempFloatValue = new FloatValue(tempFloat);
+					}
+					else
+					{
+						tempFloatValue = (FloatValue) lv;
+					}
+					
+					FloatValue tempRVValue = null;
+					if(rvHolder instanceof IntValue)
+					{
+						float tempFloat = ((IntValue) rvHolder).getVal();
+						tempRVValue = new FloatValue(tempFloat);
+					}
+					else
+					{
+						tempRVValue = (FloatValue) rvHolder;
+					}
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+					
 					if(tempOperand.compareTo("+") == 0)
 					{
-						((FloatValue) lv).setVal(((FloatValue) lv).getVal() + ((FloatValue)rvHolder).getVal());
+						(tempFloatValue).setVal((tempFloatValue).getVal() + tempRVValue.getVal());
 					}
 					else
 					{
 						if(tempOperand.compareTo("-") == 0)
 						{
-							((FloatValue) lv).setVal(((FloatValue) lv).getVal() - ((FloatValue)rvHolder).getVal());
+							(tempFloatValue).setVal((tempFloatValue).getVal() - tempRVValue.getVal());
 						}
 						else
 						{
 							throw(new BadSignError());
 						}
 					}
+					returningFloat = new FloatValue(tempFloatValue.getVal());
 				}
 				else
 				{
@@ -480,7 +520,11 @@ public class EvalVisitor implements Visitor{
 			//System.out.print("Mul Expr About To Leave\n");
 			if(useFloats)
 			{
-				return (FloatValue) lv;
+				if(returningFloat != null)
+				{
+					return returningFloat;
+				}
+				return lv;
 			}
 			else
 			{
@@ -491,12 +535,6 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.print("Was Expecting + or -");
 		}
-		//catch(ClassCastException c)
-		//{
-			//System.out.println("Titties Bitch");
-		//}
-		
-		//something went wrong
 		return -1337;
 	}
 
@@ -623,6 +661,12 @@ public class EvalVisitor implements Visitor{
 			//System.out.print("Mul Expr About To Leave\n");
 			if(useFloats)
 			{
+				if(lv instanceof IntValue)
+				{
+					float tempFloat = ((IntValue) lv).getVal();
+					FloatValue tempFloatValue = new FloatValue(tempFloat);
+					return tempFloatValue;
+				}
 				return ((FloatValue) lv);
 			}
 			else
