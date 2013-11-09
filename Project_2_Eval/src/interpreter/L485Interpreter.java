@@ -125,7 +125,7 @@ public class L485Interpreter
 				System.out.println("Working on: " + currentInput);
 				L485Parser.ReInit(new StringReader(currentInput));
 				ASTNode output = L485Parser.program();
-				String outputString = (String)output.accept(new EvalVisitor());
+				String outputString = output.accept(new EvalVisitor()).toString();
 				System.out.println("Read In Done!");
 				System.out.println(outputString);
 			}

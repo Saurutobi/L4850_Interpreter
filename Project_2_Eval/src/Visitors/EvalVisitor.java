@@ -96,22 +96,21 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(ExpressionBinaryNode n) {
-		try
-		{
-			
-		}
-		catch(ClassCastException c)
-		{
-			
-		}
-		System.out.print("Made It Here\n");
 		return n.getLeftNode().accept(this);
 	}
 
 	@Override
 	public Object visit(ExpressionUnaryNode n) {
-		// TODO Auto-generated method stub
-		return null;
+		BooleanValue temp = (BooleanValue) n.getCenterNode().accept(this);
+		if(temp.getVal())
+		{
+			temp.setVal(false);
+		}
+		else
+		{
+			temp.setVal(true);
+		}
+		return temp.getVal();
 	}
 
 	@Override
@@ -122,11 +121,11 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(CompExprNode n) {
 		//System.out.print("Another Sucess\n");
+		Value lv = null; 
 		try
 		{		
 			useFloats = false;
 			Object temp = n.getLeftNode().accept(this);
-			Value lv = null; 
 			if(temp == null)
 			{
 				return "";
@@ -161,7 +160,7 @@ public class EvalVisitor implements Visitor{
 			
 			for(int i = 0; i < n.getExtraNodes().size();)
 			{
-				tempOperand = (String) n.getExtraNodes().get(i).accept(this);
+				tempOperand = ((String) n.getExtraNodes().get(i).accept(this)).trim();
 				if(tempOperand.compareTo("==") == 0)
 				{
 					if(useFloats){
@@ -301,16 +300,6 @@ public class EvalVisitor implements Visitor{
 				
 				return rvHolder;
 			}			
-			if(useFloats)
-			{
-				System.out.print(((FloatValue)lv).toString());
-				return ((FloatValue) lv);
-			}
-			else
-			{
-				System.out.print(((IntValue)lv).toString());
-				return ((IntValue) lv);
-			}
 		}
 		catch(ClassCastException c)
 		{
@@ -318,7 +307,14 @@ public class EvalVisitor implements Visitor{
 		}
 
 		//System.out.print("Made It Through CompExprNode\n");
-		return "shit";
+		if(useFloats)
+		{
+			return ((FloatValue) lv);
+		}
+		else
+		{
+			return ((IntValue) lv);
+		}
 	}
 
 	@Override
@@ -533,12 +529,6 @@ public class EvalVisitor implements Visitor{
 		{
 			System.out.print("Was Expecting * or /");
 		}
-		//catch(ClassCastException c)
-		//{
-			//System.out.println("Titties Bitch");
-		//}
-		
-		//something went wrong
 		return -1337;
 	}
 
@@ -549,28 +539,14 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(FactorNode n) {
-		//System.out.print("Factor Node Entered\n");
-		//
-		//	 	 ____  _  _  __ _   ___  ____  __  __   __ _    __  __ _  _  _   __    ___   __  ____  __  __   __ _       
-		//		(  __)/ )( \(  ( \ / __)(_  _)(  )/  \ (  ( \  (  )(  ( \/ )( \ /  \  / __) / _\(_  _)(  )/  \ (  ( \      
-		//		 ) _) ) \/ (/    /( (__   )(   )((  O )/    /   )( /    /\ \/ /(  O )( (__ /    \ )(   )((  O )/    /      
-		//		(__)  \____/\_)__) \___) (__) (__)\__/ \_)__)  (__)\_)__) \__/  \__/  \___)\_/\_/(__) (__)\__/ \_)__)      
-		//		  ___  __   _  _  __    ____    _  _   __   ____  ____  ____  __ _    _  _  ____  ____  ____               
-		//		 / __)/  \ / )( \(  )  (    \  / )( \ / _\ (  _ \(  _ \(  __)(  ( \  / )( \(  __)(  _ \(  __)              
-		//		( (__(  O )) \/ (/ (_/\ ) D (  ) __ (/    \ ) __/ ) __/ ) _) /    /  ) __ ( ) _)  )   / ) _)               
-		//		 \___)\__/ \____/\____/(____/  \_)(_/\_/\_/(__)  (__)  (____)\_)__)  \_)(_/(____)(__\_)(____)
-		//
-		try
+		if(n.getRightNode() != null)
 		{
-			//this one will be tricky to handle because it can have a call in it too
-			
+			return n.getRightNode().accept(this);
 		}
-		catch(ClassCastException c)
+		else
 		{
-			
+			return n.getLeftNode().accept(this);
 		}
-		//System.out.print("Mul Expr Node About To Leave\n");
-		return n.getLeftNode().accept(this);
 	}
 
 	@Override
