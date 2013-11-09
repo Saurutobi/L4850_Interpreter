@@ -393,13 +393,13 @@ public class EvalVisitor implements Visitor{
 					tempOperand = (String) n.getExtraNodes().get(i).accept(this);
 					if(tempOperand.compareTo("+") == 0)
 					{
-						((IntValue) lv).setVal(((IntValue) lv).getVal() * ((IntValue)rvHolder).getVal());
+						((IntValue) lv).setVal(((IntValue) lv).getVal() + ((IntValue)rvHolder).getVal());
 					}
 					else
 					{
 						if(tempOperand.compareTo("-") == 0)
 						{
-							((IntValue) lv).setVal(((IntValue) lv).getVal() / ((IntValue)rvHolder).getVal());
+							((IntValue) lv).setVal(((IntValue) lv).getVal() - ((IntValue)rvHolder).getVal());
 						}
 						else
 						{
