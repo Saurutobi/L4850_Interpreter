@@ -1,0 +1,260 @@
+1 for single input from command
+2 for single file input from command
+3 for directory input
+====> 3
+====> Enter the full file path of your directory of input
+====> L:\GIT\L4850_Interpreter\Project_2_Eval\project 2 input data
+Working on: 2+3
+Read In Done!
+5
+Working on: 2.0+3.1
+Read In Done!
+5.1
+Working on: 2+3.0
+Read In Done!
+5.0
+Working on: 2.0+3
+Read In Done!
+5.0
+Working on: [1]+3
+Cannot add/subtract with a list
+Read In Done!
+
+Working on: 'hi'+3
+Cannot add/subtract with a string
+Read In Done!
+
+Working on: 1 + true
+Cannot add/subtract with a Boolean
+Read In Done!
+
+Working on: true && false
+Read In Done!
+false
+Working on: true && 1
+Need a boolean to compare
+Read In Done!
+
+Working on: 3.0 && false
+Need a boolean to compare
+Read In Done!
+
+Working on: 4 + 5 * 6 - 10 / 2
+Read In Done!
+29
+Working on: 4.2 + 5.33 * 6.7 - 11.0 / 2.2
+Read In Done!
+34.911
+Working on: cond {false 1} {true  2} {false 3}
+Read In Done!
+2
+Working on: cond {true 1} {true  2} {false 3}
+Read In Done!
+1
+Working on: cond {false 1} {4  2} {false 3}
+Expected a Boolean Exception
+Read In Done!
+
+Working on: 2/3
+Read In Done!
+0
+Working on: 2.0/3.1
+Read In Done!
+0.64516133
+Working on: emptyp->([1,2,3])
+Read In Done!
+false
+Working on: emptyp->(rest->([1]))
+Read In Done!
+true
+Working on: emptyp->(3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: 2 == 3
+Read In Done!
+false
+Working on: 2.0 == 3.1
+Read In Done!
+false
+Working on: equalp->([2,3],[2,3])
+Read In Done!
+false
+Working on: equalp->([2,1],[2,3])
+Read In Done!
+false
+Working on: equalp->([2,[3,1]],[2,[3,1]])
+Read In Done!
+false
+Working on: equalp->([2,[3,1]],[2,[3],1])
+Read In Done!
+false
+Working on: equalp->([1],rest->([1]))
+Read In Done!
+false
+Working on: equalp->(rest->([1]),[1])
+Read In Done!
+false
+Working on: equalp->(1,[3])
+Read In Done!
+false
+Working on: equalp->([1],3)
+Read In Done!
+false
+Working on: false
+Read In Done!
+false
+Working on: first->([1,2,3])
+Read In Done!
+1
+Working on: first->(rest->([1]))
+List must contain at least one value to call first
+Read In Done!
+
+Working on: first->(3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: 3.01227
+Read In Done!
+3.01227
+Working on: 2 > 3
+Read In Done!
+false
+Working on: 2 >= 3
+Read In Done!
+false
+Working on: 2.0 >= 3.1
+Read In Done!
+false
+Working on: 2.0 > 3.1
+Read In Done!
+false
+Working on: if false then 1 else 2 fi
+Read In Done!
+2
+Working on: if true then 1 else 2 fi
+Read In Done!
+1
+Working on: if 1 then 1 else 2 fi
+Casting Error In If Expr Node
+Read In Done!
+
+Working on: insert->(1,[2,3])
+Read In Done!
+[1, 2, 3]
+Working on: insert->(1,rest->([1]))
+Read In Done!
+[1]
+Working on: insert->(1,3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: 3
+Read In Done!
+3
+Working on: length->([1,2,3])
+Read In Done!
+3
+Working on: length->(rest->([1]))
+Read In Done!
+0
+Working on: length->(3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: 2 < 3
+Read In Done!
+true
+Working on: 2 <= 3
+Read In Done!
+true
+Working on: 2.0 <= 3.1
+Read In Done!
+true
+Working on: 2.0 < 3.1
+Read In Done!
+true
+Working on: [1,2,3]
+Read In Done!
+[1, 2, 3]
+Working on: list->(1,2,3)
+Read In Done!
+[1, 2, 3]
+Working on: list->(3)
+Read In Done!
+[3]
+Working on: listp->([1,2,3])
+Read In Done!
+true
+Working on: listp->(rest->([1]))
+Read In Done!
+true
+Working on: listp->(3)
+Read In Done!
+false
+Working on: [1,2,[3,4]]
+Read In Done!
+[1, 2, [3, 4]]
+Working on: 2*3
+Read In Done!
+6
+Working on: 2.0*3.1
+Read In Done!
+6.2
+Working on: 2 != 3
+Read In Done!
+true
+Working on: 2.0 != 3.1
+Read In Done!
+true
+Working on: !true
+Read In Done!
+false
+Working on: numberp->(1)
+Read In Done!
+true
+Working on: numberp->(1.2)
+Read In Done!
+true
+Working on: numberp->([1])
+Read In Done!
+false
+Working on: true || false
+Read In Done!
+true
+Working on: pairp->([1,2,3])
+Read In Done!
+true
+Working on: pairp->(rest->([1]))
+Read In Done!
+false
+Working on: pairp->(3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: rest->([1,2,3])
+Read In Done!
+[2, 3]
+Working on: rest->(rest->([1]))
+List must contain at least one value to call first
+Read In Done!
+
+Working on: rest->(3)
+util.IntValue cannot be cast to util.ListValue
+Read In Done!
+
+Working on: 'Hi'
+Read In Done!
+'Hi'
+Working on: 2-3
+Read In Done!
+-1
+Working on: 2.0-3.1
+Read In Done!
+-1.0999999
+Working on: true
+Read In Done!
+true
+Working on: exit->()
+EXITTING
