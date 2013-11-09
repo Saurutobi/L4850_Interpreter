@@ -105,9 +105,35 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(ExpressionBinaryNode n) {
-		return n.getLeftNode().accept(this);
+		if(n.getExtraNodes() != null)
+		{
+			try
+			{
+				BooleanValue left = (BooleanValue) n.getLeftNode().accept(this);
+				String AndOr = (String) n.getExtraNodes().get(0).accept(this);
+				BooleanValue right = (BooleanValue) n.getExtraNodes().get(1).accept(this);
+				if(AndOr.compareTo("&&") == 0)
+				{
+					return new BooleanValue((left.getVal() && right.getVal()));
+				}
+				else if(AndOr.compareTo("||") == 0)
+				{
+					return new BooleanValue((left.getVal() || right.getVal()));
+				}	
+			}
+			catch(ClassCastException c)
+			{
+				System.out.print("Need a boolean to compare");
+				return null;
+			}
+		}
+		else
+		{
+			return n.getLeftNode().accept(this);
+	
+		}
+		return null;
 	}
-
 	@Override
 	public Object visit(ExpressionUnaryNode n) {
 		BooleanValue temp = (BooleanValue) n.getCenterNode().accept(this);
@@ -450,7 +476,7 @@ public class EvalVisitor implements Visitor{
 			//System.out.print("Mul Expr About To Leave\n");
 			if(useFloats)
 			{
-				return ((FloatValue) lv);
+				return (FloatValue) lv;
 			}
 			else
 			{
@@ -691,11 +717,14 @@ public class EvalVisitor implements Visitor{
 				else
 				{
 					try{
-						return new IntValue(Integer.parseInt(temp));
+							return new IntValue(Integer.parseInt(temp));
+						
 					}
 					catch (Exception e){}
 					try{
-						return new FloatValue(Float.parseFloat(temp + "f"));
+
+							return new FloatValue(Float.parseFloat(temp + "f"));
+						
 					}
 					catch (Exception e){}
 				}
@@ -736,13 +765,7 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(FuncExprNode n)
 	{
-		String out = "func (";
-		if(n.getLeftNode() != null)
-		{
-			out += (String)n.getLeftNode().accept(this);
-		}
-		out += ") " + (String)n.getRightNode().accept(this);
-		return out;
+		return null;
 	}
 
 	@Override
