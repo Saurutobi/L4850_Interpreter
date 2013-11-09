@@ -121,7 +121,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(CompExprNode n) {
-		System.out.print("Another Sucess\n");
+		//System.out.print("Another Sucess\n");
 		try
 		{		
 			useFloats = false;
@@ -129,11 +129,11 @@ public class EvalVisitor implements Visitor{
 			Value lv = null; 
 			if(temp == null)
 			{
-				return null;
+				return "";
 			}
 			if(temp instanceof IntValue)
 			{
-				System.out.print("Int Value at Comp Expr Node\n");
+				//System.out.print("Int Value at Comp Expr Node\n");
 				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
@@ -142,17 +142,17 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				System.out.print("That was a list dipshit");
+				//System.out.print("That was a list dipshit");
 			}
 			else if(temp instanceof FloatValue)
 			{
-				System.out.print("Float Value at Comp Expr Node\n");
+				//System.out.print("Float Value at Comp Expr Node\n");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
-				System.out.print("That was a string dipshit");
+				//System.out.print("That was a string dipshit");
 			}
 			
 			BooleanValue rvHolder = new BooleanValue();
@@ -314,7 +314,7 @@ public class EvalVisitor implements Visitor{
 		}
 		catch(ClassCastException c)
 		{
-			System.out.print("Shit Broke Yo\n");
+			//System.out.print("Shit Broke Yo\n");
 		}
 
 		//System.out.print("Made It Through CompExprNode\n");
@@ -328,14 +328,14 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Object visit(AddExprNode n) {
-		System.out.print("Add Expr Node Entered\n");
+		//System.out.print("Add Expr Node Entered\n");
 		try
 		{
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
 			if(temp instanceof IntValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				//System.out.print("Add Node Int Value");
 				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
@@ -344,17 +344,17 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				System.out.print("That was a list dipshit");
+				//System.out.print("Add Expr Node List");
 			}
 			else if(temp instanceof FloatValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				//System.out.print("Float Value in Add Expr Node");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
-				System.out.print("That was a string dipshit");
+				//System.out.print("String Value in Add Expr Node");
 			}
 			Value rvHolder = null;
 
@@ -439,14 +439,14 @@ public class EvalVisitor implements Visitor{
 	@SuppressWarnings("null")
 	@Override
 	public Object visit(MulExprNode n) {
-		System.out.print("Mul Expr Node Entered\n");
+		//System.out.print("Mul Expr Node Entered\n");
 		try
 		{
 			Object temp = n.getLeftNode().accept(this);
 			Value lv = null;
 			if(temp instanceof IntValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				//System.out.print("Int Value in Mul Expr Node");
 				lv = (IntValue) temp;
 			}
 			else if(temp instanceof BooleanValue)
@@ -455,17 +455,17 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				System.out.print("That was a list dipshit");
+				//System.out.print("List Value in Muul Expr Node");
 			}
 			else if(temp instanceof FloatValue)
 			{
-				System.out.print("SHIT FUCKING WORKED");
+				//System.out.print("Float value in Mul Expr Node");
 				lv = (FloatValue) temp;
 				useFloats = true;
 			}
 			else if(temp instanceof StringValue)
 			{
-				System.out.print("That was a string dipshit");
+				//System.out.print("String Value in Mul Expr Node");
 			}
 			Value rvHolder = null;
 
@@ -598,7 +598,7 @@ public class EvalVisitor implements Visitor{
 
 	@Override
 	public Value visit(ConstantNode n) {
-		System.out.print("Constant Node Entered\n");
+		//System.out.print("Constant Node Entered\n");
 		try
 		{
 			if(n.getCenterString() != null)
@@ -628,7 +628,7 @@ public class EvalVisitor implements Visitor{
 		}
 		catch(ClassCastException c)
 		{
-			System.out.print("shits broke yo");
+			System.out.print("Casting Exception in Constant Node");
 		}
 		//System.out.print("Constant Node About To Leave\n");
 		return null;
@@ -675,7 +675,7 @@ public class EvalVisitor implements Visitor{
 		}
 		catch (ClassCastException c)
 		{
-			System.out.println("Casting Error");
+			System.out.println("Casting Error In If Expr Node");
 		}
 		
 		return null;
