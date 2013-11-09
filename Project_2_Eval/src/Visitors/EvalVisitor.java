@@ -640,13 +640,8 @@ public class EvalVisitor implements Visitor{
 	@Override
 	public Object visit(CallNode n)
 	{
-		String out = "->(";
-		if(n.getCenterNode() != null) 
-		{
-			out += (String)n.getCenterNode().accept(this);
-		}
-		out +=")";
-		return out;
+		//TODO SHIT HERE
+		return null;
 	}
 	
 	@Override
