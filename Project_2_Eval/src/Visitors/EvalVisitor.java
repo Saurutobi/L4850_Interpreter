@@ -142,6 +142,7 @@ public class EvalVisitor implements Visitor{
 			else if(temp instanceof ListValue)
 			{
 				//System.out.print("That was a list dipshit");
+				return temp;
 			}
 			else if(temp instanceof FloatValue)
 			{
@@ -152,6 +153,7 @@ public class EvalVisitor implements Visitor{
 			else if(temp instanceof StringValue)
 			{
 				//System.out.print("That was a string dipshit");
+				return temp;
 			}
 			
 			BooleanValue rvHolder = new BooleanValue();
@@ -340,7 +342,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				//System.out.print("Add Expr Node List");
+				return temp;
 			}
 			else if(temp instanceof FloatValue)
 			{
@@ -350,7 +352,15 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof StringValue)
 			{
-				//System.out.print("String Value in Add Expr Node");
+				if(n.getExtraNodes().size() > 0)
+				{
+					System.out.print("Cannot Add With Strings\n");
+					return null;
+				}
+				else
+				{
+					return temp;
+				}
 			}
 			Value rvHolder = null;
 
@@ -362,6 +372,11 @@ public class EvalVisitor implements Visitor{
 				if(insideTemp instanceof FloatValue)
 				{
 					useFloats = true;
+				}
+				else if(insideTemp instanceof StringValue)
+				{
+					System.out.print("Cannot add with a String");
+					return null;
 				}
 				if(useFloats)
 				{ 
@@ -451,7 +466,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof ListValue)
 			{
-				//System.out.print("List Value in Muul Expr Node");
+				return temp;
 			}
 			else if(temp instanceof FloatValue)
 			{
@@ -461,7 +476,7 @@ public class EvalVisitor implements Visitor{
 			}
 			else if(temp instanceof StringValue)
 			{
-				//System.out.print("String Value in Mul Expr Node");
+				return temp;
 			}
 			Value rvHolder = null;
 
