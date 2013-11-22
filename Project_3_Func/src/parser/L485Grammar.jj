@@ -1,0 +1,463 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  JDK_VERSION = "1.6";  static = true;}PARSER_BEGIN(L485Parser)package parser;
+
+import ast.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class L485Parser{}PARSER_END(L485Parser)SKIP :{  " "| "\r"| "\t"| "\n"
+| < "//" (~["\n","\r"])* ("\r")? "\n" >}
+TOKEN : /* Keywords */
+{  < DEFUNC : "defunc" >
+| < DEFCLASS : "defclass" >
+| < METHOD : "method" >
+| < FUNC : "func" >
+| < COND : "cond" >
+| < IF : "if" >
+| < THEN : "then" >
+| < ELSE: "else" >
+| < FI: "fi" >
+| < LOAD : "load" >
+| < NEW : "new" >
+| < VARS: "vars" >
+| < ASSIGN: "assign" >
+| < TO: "to" >
+| < WITH: "with" >
+| < TRUE: "true" >
+| < FALSE: "false" >
+
+}
+TOKEN : /* OPERATORS */{  < PLUS : "+" >| < MINUS : "-" >| < MULTIPLY : "*" >| < DIVIDE : "/" >
+| < OR : "||" >
+| < AND : "&&" >
+| < NOT : "!" >
+| < EQUAL : "==" >
+| < NOTEQUAL : "!=" >
+| < LESS : "< " >
+| < LESSEQUAL : "<=" >
+| < GREATER: ">" >
+| < GREATEREQUAL: ">=" >
+| < INVOKE: "->" >}TOKEN :{
+  <STRING: "'"(~["'"])*"'">
+| <#DIGIT: ["0" - "9"] >
+| <#ALPHA: ["a" - "z"] | ["A" - "Z"] >
+| <ID: <ALPHA> (<ALPHA> | <DIGIT>)*>
+| <#EXPONENT: ("e" | "E") ("+" | "-")? (<DIGIT>)+ >
+| <FLOATNUM: <INTNUM> (< DOT > (<DIGIT>)+ (<EXPONENT>)? | <EXPONENT>) >
+| < #POSITIVE : ["1" - "9"] >
+| <INTNUM: "0" | < POSITIVE > (<DIGIT>)* >
+| < DOT : "." >
+| < LP : "(" >
+| < RP : ")" >
+| < LB : "{" >
+| < RB : "}" >
+| < LBK: "[" >
+| < RBK: "]" >
+| < COMMA: "," >}
+ASTNodeList program() :
+{
+   ASTNodeList ast = new ASTNodeList();
+   ASTNode fd,cd,lf,expr;
+}
+{  (
+    fd = functionDef()
+		{
+			ast.add(fd);
+		}
+	| cd = classDef()
+		{
+	   		ast.add(cd);
+		}
+	| lf = loadFile()
+		{
+			ast.add(lf);
+		}
+    | expr = expression()
+        {
+            ast.add(expr);
+        }
+  )+
+  {    return ast;
+  }
+}
+
+DefuncNode functionDef() :
+{
+   ArrayList<String> arglist = new ArrayList<String>();
+   ASTNodeList body = new ASTNodeList();
+   ASTNode expr;
+   Token name,arg;
+}
+{  < DEFUNC > name = < ID > < LP >
+    (
+      arg = < ID >
+         {
+             arglist.add(arg.image);
+         }
+      (        < COMMA > arg = < ID >
+         {
+             arglist.add(arg.image);
+         }
+       )*
+     )? < RP > 
+     body  = expressionList()
+  {
+     return new DefuncNode(name.image,arglist,body);
+  }}
+
+ClassNode classDef() :
+{
+  ArrayList<String > cv = new ArrayList<String >();
+  ASTNodeList mth = new ASTNodeList();
+  Token id;
+}
+{  < DEFCLASS > id = < ID > < LB > (cv = classVars())? (mth = methods())? < RB > 
+    {
+    	return new ClassNode(id.image,cv,mth);
+    }
+}
+
+ArrayList<String > classVars():
+{
+ 	ArrayList<String > list = new ArrayList<String >();
+ 	Token id;
+}
+{  < VARS > id = < ID >
+    {
+            list.add(id.image);
+    }
+    (      < COMMA > id = < ID >
+        {
+        	list.add(id.image);
+        }
+    )*
+    {      return list;
+    }
+}
+
+ASTNodeList methods() :
+{
+ 	ASTNodeList list = new ASTNodeList();
+ 	ArrayList<String > paramlist;
+ 	ASTNodeList body;
+ 	ASTNode expr;
+ 	Token name,id;
+}
+{   ( < METHOD > name = < ID >
+    {
+    	paramlist = new ArrayList<String >();
+    	body = new ASTNodeList();
+    }
+    < LP >  (     id = < ID >
+         {
+             paramlist.add(id.image);
+         }
+      (
+        < COMMA > id = < ID >
+         {
+             paramlist.add(id.image);
+         }
+       )*
+     )? < RP >
+     body = expressionList()
+          {
+			list.add(new MethodNode(name.image,paramlist,body));
+          }
+  )+
+  {    return list;
+  }
+}
+
+LoadNode loadFile() :
+{  Token str;
+}
+{  < LOAD >  str = < STRING >
+  {    return new LoadNode(str.image);
+  }
+}
+
+ASTNode expression() :
+{  ASTNode rexpr,ast;
+}
+{  (
+    ast = simpleExpr()
+    (
+      < OR > rexpr = simpleExpr()
+      {
+        ast = new OrNode(ast,rexpr);
+      }
+    | < AND > rexpr = simpleExpr()
+      {
+        ast = new AndNode(ast,rexpr);
+      }
+    )*
+    | < NOT > rexpr = simpleExpr()
+      {
+        ast = new NotNode(rexpr);
+      }
+   )
+   {     return ast;
+   }
+}
+
+ASTNode simpleExpr():
+{  ASTNode rexpr, ast;
+}
+{  ast = addExpr()
+  (
+    < EQUAL > rexpr = addExpr()
+    {
+	  ast = new EqualNode(ast,rexpr);
+	}
+	| < NOTEQUAL > rexpr = addExpr()
+	{
+      ast = new NotEqualNode(ast,rexpr);
+    }
+    | < LESS > rexpr = addExpr()
+    {
+      ast = new LessNode(ast,rexpr);
+    }
+    | < LESSEQUAL > rexpr = addExpr()
+    {
+      ast = new LessEqualNode(ast,rexpr);
+    }
+    | < GREATER > rexpr = addExpr()
+    {
+      ast = new GreaterNode(ast,rexpr);
+    }
+    | < GREATEREQUAL > rexpr = addExpr()
+    {
+      ast = new GreaterEqualNode(ast,rexpr);
+    }
+   )*
+	{
+	  return ast;
+	}
+}
+
+ASTNode addExpr():
+{  ASTNode rexpr,ast;
+}
+{  ast = mulExpr()
+  ( 
+	< PLUS > rexpr = mulExpr()
+	{
+      ast = new AddNode(ast,rexpr);
+	}
+    | < MINUS > rexpr = mulExpr()
+    {
+      ast = new SubNode(ast,rexpr);
+    }
+  )*
+	{	  return ast;
+	}
+}
+
+ASTNode mulExpr() :
+{  ASTNode rexpr,ast;
+}
+{   ast = factor()
+   (
+     < MULTIPLY > rexpr = factor()
+     {
+       ast = new MultiplyNode(ast,rexpr);
+     }
+     | < DIVIDE > rexpr = factor()
+     {       ast = new DivideNode(ast,rexpr);
+     }
+   )*
+   {     return ast;
+   }
+}
+
+ASTNode factor():
+{  Token var,method,className,id;
+  ASTNode ast,testExpr,thenExpr,elseExpr,expr,body;
+  ArgumentListNode fp=null;
+  ASTNodeList clauses;
+  ArrayList<String > paramList;
+  HashMap<String,ASTNode > varDefs;
+}
+{  (
+    var = < ID >
+    {
+      ast = new VarrefNode(var.image);
+    }
+    (< DOT > method = < ID >
+	{
+	  ast = new MethodrefNode(var.image,method.image);
+    }
+    )?
+  | ast = constant()
+  | < NEW > className = < ID >
+  	{
+    	ast = new NewNode(className.image);
+    }
+  | < IF > testExpr = expression() < THEN > thenExpr = expression() < ELSE > elseExpr = expression() < FI >
+  	{
+  	  ast = new IfNode(testExpr,thenExpr,elseExpr);
+  	}
+  | < FUNC > < LP >
+  	{
+  	  paramList = new ArrayList<String >();
+    }
+    (
+      id = < ID >
+      	{
+      	  paramList.add(id.image);    	}
+      (< COMMA > id = < ID >
+		{
+		  paramList.add(id.image);
+        }
+      )*
+    )? < RP >  body = expressionList() 
+        {
+        	ast = new FuncNode(paramList,body);
+        }
+  | < ASSIGN > expr = expression() < TO > id = < ID >
+        {
+        	ast = new AssignNode(id.image,expr);
+        }
+  | < COND > clauses = cond_clauses()
+        {
+        	ast = new CondNode(clauses);
+        }
+  | < WITH > < LP > varDefs = variableDefs() < RP > body = expressionList()
+ 	{
+ 	  ast = new WithNode(varDefs,body);
+  	}
+  | < LP > ast = expression() < RP >
+  )  fp = factor_prime()
+        {
+        	if (fp != null)
+        	   ast = new CallNode(ast,fp);
+        }
+  {    return ast;
+  }
+}
+
+ASTNode constant():
+{  Token con;
+  ASTNode expr,list;
+}
+{  (
+    con = < INTNUM >
+        {
+        	expr = new IntegerNode(Integer.valueOf(con.image));
+        }
+  | con = < FLOATNUM >
+        {
+        	expr = new FloatNode(Float.valueOf(con.image));
+        }
+  | expr = list_expression()
+  | con = < STRING >
+  		{
+        	expr = new StringNode(con.image.substring(1,con.image.length()-1));
+        }
+| < TRUE >
+{  expr = new BooleanNode(true);
+}
+| < FALSE >
+{  expr = new BooleanNode(false);
+}
+  )
+  {    return expr;
+  }
+}
+
+ASTNodeList expressionList() :
+{  ASTNodeList astList = new ASTNodeList();
+  ASTNode expr;
+}
+{
+  < LB >
+  (    expr = expression()
+    	{    	  astList.add(expr);
+    	}
+  )+ < RB >
+  {    return astList;
+  }
+}
+
+HashMap<String,ASTNode > variableDefs() :
+{	HashMap<String,ASTNode > defMap = new HashMap<String,ASTNode >();
+	Token var;
+	ASTNode expr;
+}
+{  (    < LBK > var = < ID > expr = expression() < RBK >
+    {      defMap.put(var.image,expr);
+    }
+  )*
+  {    return defMap;
+  }
+}
+
+ListNode list_expression():
+{  ASTNode expr;
+  ArrayList<ASTNode > list = new ArrayList<ASTNode >();
+}
+{  < LBK > expr = constant() 
+    {
+    	list.add(expr);
+    }
+  (< COMMA > expr = constant()
+    {
+    	list.add(expr);
+    }
+  )*
+  < RBK >
+    {
+    	return new ListNode(list);
+    }
+}
+
+ASTNodeList cond_clauses():
+{
+ ASTNodeList ast = new ASTNodeList();
+ ASTNode condition,action;
+}
+{  (    < LB > condition = expression() action = expression() < RB >
+  		{
+   			ast.add(new CondClauseNode(condition,action));
+   	    }
+  )+
+	{
+	  return ast;
+	}
+}
+
+
+ArgumentListNode factor_prime():
+{  ArgumentListNode ast;
+}
+{  (    < INVOKE > < LP > ast = paramList() < RP >
+  |
+  {    ast = null;
+  }
+  )
+  {    return ast;
+  }
+}
+    
+ArgumentListNode paramList() :
+{
+  ArgumentListNode ast = new ArgumentListNode();
+  ASTNode expr;
+}
+{   (
+     expr = expression() 
+        {
+        	ast.add(expr);
+        }
+     (
+	  < COMMA > expr = expression() 
+            {
+            	ast.add(expr);
+            }
+     )*
+   )?
+	{
+	  return ast;
+	}
+}

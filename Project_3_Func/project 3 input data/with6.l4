@@ -1,0 +1,6 @@
+with ([x with ([y 3]) { y + 7 }] 
+      [y with ([y 4]) { y + 7 }]) {
+	with ([y x + y]) {
+	  x + y 
+	}
+}

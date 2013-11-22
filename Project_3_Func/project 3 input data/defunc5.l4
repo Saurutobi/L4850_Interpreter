@@ -1,0 +1,7 @@
+defunc f(L,x) { 
+	cond
+		{emptyp->(L) 0}
+		{first->(L) == x f->(rest->(L),x) + 1}
+		{true f->(rest->(L),x)}
+}
+f->([1,2,3,2,4,5,2],2)

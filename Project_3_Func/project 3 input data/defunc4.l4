@@ -1,0 +1,6 @@
+defunc f(x) { 
+	with ([y 7]) {
+	  x + y
+	}
+}
+f->(4)
