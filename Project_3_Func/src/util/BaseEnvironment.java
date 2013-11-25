@@ -172,7 +172,12 @@ public class BaseEnvironment extends Environment {
 		}
 		
 	}
-
+	public Value get(String var) throws L485Error {
+		if (containsKey(var)) 
+			return super.get(var);
+		else
+			throw new L485Error("Undefined Variable: "+var);
+	}
 	public BaseEnvironment() {
 		
 		super(new ArrayList<String>(),new ArrayList<Value>(),null);

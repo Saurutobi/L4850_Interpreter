@@ -15,12 +15,14 @@ public class Environment extends HashMap<String,Value>{
 	/**
 	 * 
 	 */
+	private Environment enclosing;
 	private static final long serialVersionUID = -8991149306084765376L;
 	
 	public Environment(List<String> vars, List<Value> vals, Environment enclosingEnv) {
 		super();
 		
 		addToMap(vars,vals);
+		enclosing = enclosingEnv;
 		
 	}
 	
@@ -28,7 +30,7 @@ public class Environment extends HashMap<String,Value>{
 		if (containsKey(var)) 
 			return super.get(var);
 		else
-			throw new L485Error("Undefined Variable: "+var);
+			return enclosing.get(var);
 	}
 	
 	public Value put(String var,Value val) {
