@@ -175,7 +175,7 @@ public class EvalVisitor implements Visitor {
 		
 		env.put(n.getName(), temp);
 
-		return null;
+		return temp;
 	}
 
 	/* (non-Javadoc)
@@ -191,7 +191,7 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(FuncNode n) throws L485Error {
-		System.out.println("We are in func node too");
+		System.out.println("FUCK THIS SHIT");
 		return null;
 	}
 
@@ -277,6 +277,7 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(MethodrefNode n) throws L485Error {
+		System.out.println("hello world");
 		return null;
 	}
 
