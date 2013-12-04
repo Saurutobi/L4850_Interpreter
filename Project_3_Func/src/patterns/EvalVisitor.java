@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import util.BooleanValue;
 import util.Environment;
@@ -308,17 +309,22 @@ public class EvalVisitor implements Visitor {
 		//	but our environment only maps strings to values
 		//	should our environment map values or should it map
 		//	ASTNodes? 
-		Environment temp = new Environment(n.getVarDefs(),env);
+		
+		HashMap<String,Value> tempHashMap = new HashMap<String, Value>();
+		Object[] tempVals = n.getVarDefs().keySet().toArray();
+		
+		for(int i = 0; i < tempVals.length; i++)
+		{
+			Value tempValue = (Value) n.getVarDefs().get(tempVals[i]).accept(new EvalVisitor(env));
+			tempHashMap.put(tempVals[i].toString(), tempValue);
+		}	
+		Environment temp = new Environment(tempHashMap,env);
 		
 		//visit the n node using the new environment
 		//	this code below i think will drop down into a 
 		//	eval visitor using the nested scheme of environments
 		
-		n.getBody().accept(new EvalVisitor(temp));
-		
-		//return from the old environment 
-		
-		return null;
+		return (Value) n.getBody().accept(new EvalVisitor(temp));
 	}
 
 	@Override

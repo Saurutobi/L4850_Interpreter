@@ -12,7 +12,7 @@ import patterns.Visitor;
 import ast.ASTNode;
 
 /**
- * @author carr
+ * @author carr AND JASON!!!
  *
  */
 public class Environment extends HashMap<String,Value>{
@@ -31,28 +31,10 @@ public class Environment extends HashMap<String,Value>{
 		
 	}
 	
-	public Environment(HashMap<String,ASTNode> vals, Environment enclosingEnv) throws L485Error
+	public Environment(HashMap<String,Value> vals, Environment enclosingEnv) throws L485Error
 	{
-		//See withnode
-		// WARNING
-		// WARNING
-		// WARNING
-		// WARNING
-		// WARNING			this may or may not work but im pushing for good luck dinner time
-		// WARNING
-		// WARNING
-		// WARNING
-		// WARNING
-		// WARNING
-		// WARNING
-		HashMap<String,Value> tempHashMap = null;
-		ArrayList<ASTNode> astNodes;
-		String[] tempVals = (String[]) vals.keySet().toArray();
-		
-		for(int i = 0; i < tempVals.length; i++)
-		{
-			tempHashMap.put(tempVals[i], (Value)vals.get(tempVals[i]).accept(new EvalVisitor(enclosingEnv)));
-		}		
+		// IT WORKS SCIENCE!!!!!!!!!!!!!!!!!!!!!!
+		super(vals);
 		enclosing = enclosingEnv;
 	}
 	
