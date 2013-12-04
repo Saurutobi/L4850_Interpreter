@@ -295,7 +295,7 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(VarrefNode n) throws L485Error {
-		if (env.containsKey(n.getId()))
+		if (env.hasKey(n.getId()))
 			return env.get(n.getId());
 		else
 			throw new L485Error("Undefined variable: "+n.getId());

@@ -40,9 +40,25 @@ public class Environment extends HashMap<String,Value>{
 	
 	public Value get(String var) throws L485Error {
 		if (containsKey(var)) 
+		{
 			return super.get(var);
+		}
 		else
+		{
 			return enclosing.get(var);
+		}
+	}
+	public boolean hasKey(String Key)
+	{
+		if(this.containsKey(Key))
+		{
+			return true;
+		}
+		else
+		{
+			return enclosing.hasKey(Key);
+		}
+		
 	}
 	
 	public Value put(String var,Value val) {

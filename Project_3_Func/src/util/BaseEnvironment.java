@@ -160,6 +160,18 @@ public class BaseEnvironment extends Environment {
 		}
 		
 	}
+	
+	public boolean hasKey(String key)
+	{
+		if(containsKey(key))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	static class Exit extends BuiltinFunction {
 
