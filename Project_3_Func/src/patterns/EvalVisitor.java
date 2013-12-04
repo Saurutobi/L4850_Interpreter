@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import util.BooleanValue;
+import util.Closure;
 import util.Environment;
 import util.FloatValue;
 import util.Function;
@@ -170,6 +171,10 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(DefuncNode n) throws L485Error {
+		Closure temp = new Closure(n.getName(), n.getParams(), n.getBody(), env);
+		
+		env.put(n.getName(), temp);
+
 		return null;
 	}
 
@@ -186,6 +191,7 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(FuncNode n) throws L485Error {
+		System.out.println("We are in func node too");
 		return null;
 	}
 

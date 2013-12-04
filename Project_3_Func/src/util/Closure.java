@@ -2,12 +2,20 @@ package util;
 
 import java.util.ArrayList;
 
+import ast.ASTNode;
+
 public class Closure extends Function{
 
-	public Closure(){
-		
-		
-		
+	private String name;
+	private ArrayList<String> parameters;
+	private ASTNode body;
+	private Environment env;
+	
+	public Closure(String name, ArrayList<String> parameters, ASTNode body, Environment env){
+			this.name = name;
+			this.parameters = parameters;
+			this.body = body;
+			this.env = env;
 	}
 
 	@Override
@@ -18,7 +26,6 @@ public class Closure extends Function{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 }
