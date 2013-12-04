@@ -191,7 +191,12 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(FuncNode n) throws L485Error {
-		System.out.println("FUCK THIS SHIT");
+		//get closure from the environment
+		n.getBody();
+		
+		//interpret the args
+		
+		//inkoke closure with current args
 		return null;
 	}
 
@@ -277,7 +282,6 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(MethodrefNode n) throws L485Error {
-		System.out.println("hello world");
 		return null;
 	}
 

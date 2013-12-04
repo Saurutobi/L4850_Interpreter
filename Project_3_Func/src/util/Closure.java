@@ -2,6 +2,7 @@ package util;
 
 import java.util.ArrayList;
 
+import patterns.EvalVisitor;
 import ast.ASTNode;
 
 public class Closure extends Function{
@@ -19,9 +20,14 @@ public class Closure extends Function{
 	}
 
 	@Override
-	public Value invoke(Environment env, ArrayList<Value> args) throws L485Error {
+	public Value invoke(Environment paramenv, ArrayList<Value> args) throws L485Error {
 		//something needs to go here
-		return null;
+		
+		Closure holder = (Closure) env.get(name);
+		// There needs to be some error checking here to make
+		//	sure that the correct number of parameters are sent to this function
+		paramenv.addToMap(parameters, args);
+		return (Value) body.accept(new EvalVisitor(paramenv));
 	}
 
 	@Override
