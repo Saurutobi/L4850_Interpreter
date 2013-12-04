@@ -303,12 +303,9 @@ public class EvalVisitor implements Visitor {
 
 	@Override
 	public Value visit(WithNode n) throws L485Error {		
-		//create a new environment
-		//ok it looks like the hashmap that is the beginning
-		//	part of the with node is a string that points to an ASTNode
-		//	but our environment only maps strings to values
-		//	should our environment map values or should it map
-		//	ASTNodes? 
+		//only the first with expression for the thigns that it is supposed to woirk
+		//	with is giving me errors
+		
 		
 		HashMap<String,Value> tempHashMap = new HashMap<String, Value>();
 		Object[] tempVals = n.getVarDefs().keySet().toArray();
@@ -318,12 +315,7 @@ public class EvalVisitor implements Visitor {
 			Value tempValue = (Value) n.getVarDefs().get(tempVals[i]).accept(new EvalVisitor(env));
 			tempHashMap.put(tempVals[i].toString(), tempValue);
 		}	
-		Environment temp = new Environment(tempHashMap,env);
-		
-		//visit the n node using the new environment
-		//	this code below i think will drop down into a 
-		//	eval visitor using the nested scheme of environments
-		
+		Environment temp = new Environment(tempHashMap,env);		
 		return (Value) n.getBody().accept(new EvalVisitor(temp));
 	}
 
