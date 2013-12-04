@@ -3,8 +3,13 @@
  */
 package util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import patterns.EvalVisitor;
+import patterns.Visitor;
+import ast.ASTNode;
 
 /**
  * @author carr
@@ -24,6 +29,31 @@ public class Environment extends HashMap<String,Value>{
 		addToMap(vars,vals);
 		enclosing = enclosingEnv;
 		
+	}
+	
+	public Environment(HashMap<String,ASTNode> vals, Environment enclosingEnv) throws L485Error
+	{
+		//See withnode
+		// WARNING
+		// WARNING
+		// WARNING
+		// WARNING
+		// WARNING			this may or may not work but im pushing for good luck dinner time
+		// WARNING
+		// WARNING
+		// WARNING
+		// WARNING
+		// WARNING
+		// WARNING
+		HashMap<String,Value> tempHashMap = null;
+		ArrayList<ASTNode> astNodes;
+		String[] tempVals = (String[]) vals.keySet().toArray();
+		
+		for(int i = 0; i < tempVals.length; i++)
+		{
+			tempHashMap.put(tempVals[i], (Value)vals.get(tempVals[i]).accept(new EvalVisitor(enclosingEnv)));
+		}		
+		enclosing = enclosingEnv;
 	}
 	
 	public Value get(String var) throws L485Error {

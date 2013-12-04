@@ -70,6 +70,7 @@ public class EvalVisitor implements Visitor {
 	 * 
 	 */
 	public EvalVisitor(Environment env) {
+		//when this is first called env is the base environment
 		this.env = env;
 	}
 
@@ -254,7 +255,7 @@ public class EvalVisitor implements Visitor {
 			throw new L485Error("File not found: "+n.getFileName());
 		}
 		return new StringValue("done.");
-	}
+	} 
 
 	/* (non-Javadoc)
 	 * @see visitor.Visitor#visit(ast.MethodNode)
@@ -300,7 +301,23 @@ public class EvalVisitor implements Visitor {
 	}
 
 	@Override
-	public Value visit(WithNode n) throws L485Error {
+	public Value visit(WithNode n) throws L485Error {		
+		//create a new environment
+		//ok it looks like the hashmap that is the beginning
+		//	part of the with node is a string that points to an ASTNode
+		//	but our environment only maps strings to values
+		//	should our environment map values or should it map
+		//	ASTNodes? 
+		Environment temp = new Environment(n.getVarDefs(),env);
+		
+		//visit the n node using the new environment
+		//	this code below i think will drop down into a 
+		//	eval visitor using the nested scheme of environments
+		
+		n.getBody().accept(new EvalVisitor(temp));
+		
+		//return from the old environment 
+		
 		return null;
 	}
 
