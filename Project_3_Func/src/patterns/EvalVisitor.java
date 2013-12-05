@@ -193,11 +193,15 @@ public class EvalVisitor implements Visitor {
 	public Value visit(FuncNode n) throws L485Error {
 		//get closure from the environment
 		n.getBody();
+		n.getParams();
 		
 		//interpret the args
 		
+		Closure temp = new Closure("",n.getParams(),n.getBody(),env);
+		
+		env.put("", temp);
 		//inkoke closure with current args
-		return null;
+		return temp;
 	}
 
 	/* (non-Javadoc)
