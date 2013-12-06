@@ -28,11 +28,11 @@ public class Closure extends Function{
 	public Value invoke(Environment paramenv, ArrayList<Value> args) throws L485Error {
 		//something needs to go here
 		
-		Closure holder = (Closure) env.get(name);
-		paramenv.addToMap(parameters, args);
 		
 		if(args.size() == ((Closure)env.get(name)).getParameters().size())
 		{
+			Closure holder = (Closure) env.get(name);
+			paramenv.addToMap(parameters, args);
 			return (Value) body.accept(new EvalVisitor(paramenv));
 		}
 		else
