@@ -180,7 +180,14 @@ public class SourceVisitor implements Visitor {
 		for (String param: n.getParams())
 			pStr += (param + ", ");
 		
-		return source + (pStr.substring(0, pStr.length()-2) + ") {\n" + n.getBody().accept(this) + "\n}");
+		if(pStr.length() > 1)
+		{
+			return source + (pStr.substring(0, pStr.length()-2) + ") {\n" + n.getBody().accept(this) + "\n}");
+		}
+		else
+		{
+			return source + (") {\n" + n.getBody().accept(this) + "\n}");
+		}
 	
 	}
 
@@ -273,7 +280,15 @@ public class SourceVisitor implements Visitor {
 		for (String var:n.getVariables()) {
 			source += "["+var+" "+n.getVarExpr(var).accept(this)+"]\n";
 		}
-		return "with ("+source.substring(0,source.length()-1)+")" + "{ \n"+n.getBody().accept(this)+"\n}\n";
+		
+		if(source.length() > 0)
+		{
+			return "with ("+source.substring(0,source.length()-1)+")" + "{ \n"+n.getBody().accept(this)+"\n}\n";
+		}
+		else
+		{
+			return "with (" + ")" + "{ \n"+n.getBody().accept(this)+"\n}\n";
+		}
 	}
 
 	@Override
