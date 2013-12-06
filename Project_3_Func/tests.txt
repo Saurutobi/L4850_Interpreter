@@ -1,0 +1,6 @@
+defunc 0 fails with index out of bounds -2
+defunc 1 same
+defunc 2 good
+defunc 3 good
+defunc 4 
+defunc 5

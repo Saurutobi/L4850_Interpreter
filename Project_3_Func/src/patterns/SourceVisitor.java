@@ -150,7 +150,14 @@ public class SourceVisitor implements Visitor {
 		for (String param: n.getParams())
 			pStr += (param + ", ");
 		
-		return source + (pStr.substring(0, pStr.length()-2) + ") {\n" + n.getBody().accept(this) + "\n}");
+		if(pStr.length() > 1)
+		{
+			return source + (pStr.substring(0, pStr.length()-2) + ") {\n" + n.getBody().accept(this) + "\n}");
+		}
+		else
+		{
+			return source + (") {\n" + n.getBody().accept(this) + "\n}");
+		}
 		
 	}
 
