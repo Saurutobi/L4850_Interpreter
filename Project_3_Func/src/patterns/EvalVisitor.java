@@ -121,7 +121,7 @@ public class EvalVisitor implements Visitor {
 	public Value visit(CallNode n) throws L485Error {
 		Value v = (Value)n.getArgs().accept(this);
 		ArrayList<Value> argvals = (ArrayList<Value>)((ListValue)v).get();
-		
+				
 		try {
 			return ((Function)n.getFunc().accept(this)).invoke(env, argvals);
 		}
@@ -191,12 +191,6 @@ public class EvalVisitor implements Visitor {
 	 */
 	@Override
 	public Value visit(FuncNode n) throws L485Error {
-		//get closure from the environment
-		n.getBody();
-		n.getParams();
-		
-		//interpret the args
-		
 		Closure temp = new Closure("",n.getParams(),n.getBody(),env);
 		
 		env.put("", temp);

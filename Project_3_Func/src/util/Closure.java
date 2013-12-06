@@ -19,15 +19,26 @@ public class Closure extends Function{
 			this.env = env;
 	}
 
+	public ArrayList<String> getParameters()
+	{
+		return this.parameters;
+	}
+	
 	@Override
 	public Value invoke(Environment paramenv, ArrayList<Value> args) throws L485Error {
 		//something needs to go here
 		
 		Closure holder = (Closure) env.get(name);
-		// There needs to be some error checking here to make
-		//	sure that the correct number of parameters are sent to this function
 		paramenv.addToMap(parameters, args);
-		return (Value) body.accept(new EvalVisitor(paramenv));
+		
+		if(args.size() == ((Closure)env.get(name)).getParameters().size())
+		{
+			return (Value) body.accept(new EvalVisitor(paramenv));
+		}
+		else
+		{
+			throw new L485Error("Use the correct number of parameters please");
+		}
 	}
 
 	@Override
